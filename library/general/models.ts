@@ -1,49 +1,73 @@
-export interface Rectangle {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
-
-export interface RecursiveSpatialStructure<
-  InterposedSpatialStructure extends InterposedSpatialStructureBase<SubSpatialStructure> = InterposedSpatialStructureBase<any>,
-  TerminalSpatialStructure extends TerminalSpatialStructureBase = TerminalSpatialStructureBase,
+export type RecursiveSpatialStructure<
+  InitialSpatialStructureExtension extends Record<string, unknown>,
+  BaseSpatialStructureExtension extends Record<string, unknown>,
+  SubSpatialStructureExtension extends Record<string, unknown>,
   SubSpatialStructure extends
-    | InterposedSpatialStructure
-    | TerminalSpatialStructure =
-    | InterposedSpatialStructure
-    | TerminalSpatialStructure
-> extends InitialSpatialStructureBase<SubSpatialStructure> {}
+    | InterposedSpatialStructure<
+        BaseSpatialStructureExtension,
+        SubSpatialStructureExtension
+      >
+    | TerminalSpatialStructure<SubSpatialStructureExtension> =
+    | InterposedSpatialStructure<
+        BaseSpatialStructureExtension,
+        SubSpatialStructureExtension
+      >
+    | TerminalSpatialStructure<SubSpatialStructureExtension>
+> = InitialSpatialStructure<
+  InitialSpatialStructureExtension,
+  BaseSpatialStructureExtension,
+  SubSpatialStructureExtension,
+  SubSpatialStructure
+>;
 
-export interface InitialSpatialStructureBase<
-  SubStructure extends
-    | InterposedSpatialStructureBase<SubStructure>
-    | TerminalSpatialStructureBase
-> extends RecursiveSpatialStructureBase<"initial">,
-    BaseSpatialStructureBase<SubStructure> {}
+type InitialSpatialStructure<
+  InitialSpatialStructureExtension extends Record<string, unknown>,
+  BaseSpatialStructureExtension extends Record<string, unknown>,
+  SubSpatialStructureExtension extends Record<string, unknown>,
+  SubSpatialStructure extends
+    | InterposedSpatialStructure<
+        BaseSpatialStructureExtension,
+        SubSpatialStructureExtension
+      >
+    | TerminalSpatialStructure<SubSpatialStructureExtension>
+> = RecursiveSpatialStructureBase<
+  "initial",
+  InitialSpatialStructureExtension &
+    BaseSpatialStructureBase<
+      BaseSpatialStructureExtension,
+      SubSpatialStructureExtension,
+      SubSpatialStructure
+    >
+>;
 
-export interface InterposedSpatialStructureBase<
-  SubStructure extends
-    | InterposedSpatialStructureBase<SubStructure>
-    | TerminalSpatialStructureBase
-> extends RecursiveSpatialStructureBase<"interposed">,
-    BaseSpatialStructureBase<SubStructure>,
-    SubSpatialStructureBase {}
+type InterposedSpatialStructure<
+  BaseSpatialStructureExtension extends Record<string, unknown>,
+  SubSpatialStructureExtension extends Record<string, unknown>
+> = RecursiveSpatialStructureBase<
+  "interposed",
+  BaseSpatialStructureExtension & SubSpatialStructureExtension
+>;
 
-export interface TerminalSpatialStructureBase
-  extends RecursiveSpatialStructureBase<"terminal">,
-    SubSpatialStructureBase {}
+type TerminalSpatialStructure<
+  SubSpatialStructureExtension extends Record<string, unknown>
+> = RecursiveSpatialStructureBase<"terminal", SubSpatialStructureExtension>;
 
-interface BaseSpatialStructureBase<
-  SubStructure extends
-    | InterposedSpatialStructureBase<SubStructure>
-    | TerminalSpatialStructureBase
-> {
-  subStructure: SubStructure;
-}
+type BaseSpatialStructureBase<
+  BaseSpatialStructureExtension extends Record<string, unknown>,
+  SubSpatialStructureExtension extends Record<string, unknown>,
+  SubSpatialStructure extends
+    | InterposedSpatialStructure<
+        BaseSpatialStructureExtension,
+        SubSpatialStructureExtension
+      >
+    | TerminalSpatialStructure<SubSpatialStructureExtension>
+> = BaseSpatialStructureExtension & {
+  subStructure: SubSpatialStructure;
+};
 
-interface SubSpatialStructureBase {}
-
-interface RecursiveSpatialStructureBase<StructureType extends string> {
+type RecursiveSpatialStructureBase<
+  StructureType extends string,
+  StructureExtension extends Record<string, unknown>
+> = {
   structureType: StructureType;
-}
+} & StructureExtension;

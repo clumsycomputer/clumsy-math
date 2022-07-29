@@ -1,47 +1,18 @@
-import {
-  InterposedSpatialStructureBase,
-  RecursiveSpatialStructure,
-  TerminalSpatialStructureBase,
-} from "../general/models";
+import { RecursiveSpatialStructure } from "../general/models";
 
 export type Rhythm = Array<boolean>;
 
-export type RhythmPoints = Array<number>;
+export type PhasedRhythmStructure = RhythmStructure<{ rhythmPhase: number }>;
 
-export interface RhythmMap extends Pick<RhythmStructure, "rhythmResolution"> {
-  rhythmPoints: RhythmPoints;
-}
+export type AlignedRhythmStructure = RhythmStructure;
 
-export interface RhythmStructure
-  extends RecursiveSpatialStructure<
-      InterposedRhythmStructure,
-      TerminalRhythmStructure
-    >,
-    BaseRhythmStructureBase {
-  rhythmResolution: number;
-}
-
-export interface InterposedRhythmStructure
-  extends InterposedSpatialStructureBase<
-      InterposedRhythmStructure | TerminalRhythmStructure
-    >,
-    BaseRhythmStructureBase,
-    SubRhythmStructureBase {}
-
-export interface TerminalRhythmStructure
-  extends TerminalSpatialStructureBase,
-    SubRhythmStructureBase {}
-
-interface BaseRhythmStructureBase {
-  rhythmPhase: number;
-}
-
-interface SubRhythmStructureBase {
-  rhythmDensity: number;
-  rhythmOrientation: number;
-}
-
-export interface BasicRhythmStructure
-  extends Pick<RhythmStructure, "rhythmResolution">,
-    Pick<BaseRhythmStructureBase, "rhythmPhase">,
-    SubRhythmStructureBase {}
+export type RhythmStructure<
+  BaseRhythmStructureExtension extends Record<string, unknown> = {}
+> = RecursiveSpatialStructure<
+  { rhythmResolution: number },
+  BaseRhythmStructureExtension,
+  {
+    rhythmDensity: number;
+    rhythmOrientation: number;
+  }
+>;
