@@ -1,42 +1,23 @@
 export type RecursiveSpatialStructure<
   InitialSpatialStructureExtension extends Record<string, unknown>,
   BaseSpatialStructureExtension extends Record<string, unknown>,
-  SubSpatialStructureExtension extends Record<string, unknown>,
-  SubSpatialStructure extends
-    | InterposedSpatialStructure<
-        BaseSpatialStructureExtension,
-        SubSpatialStructureExtension
-      >
-    | TerminalSpatialStructure<SubSpatialStructureExtension> =
-    | InterposedSpatialStructure<
-        BaseSpatialStructureExtension,
-        SubSpatialStructureExtension
-      >
-    | TerminalSpatialStructure<SubSpatialStructureExtension>
+  SubSpatialStructureExtension extends Record<string, unknown>
 > = InitialSpatialStructure<
   InitialSpatialStructureExtension,
   BaseSpatialStructureExtension,
-  SubSpatialStructureExtension,
-  SubSpatialStructure
+  SubSpatialStructureExtension
 >;
 
 type InitialSpatialStructure<
   InitialSpatialStructureExtension extends Record<string, unknown>,
   BaseSpatialStructureExtension extends Record<string, unknown>,
-  SubSpatialStructureExtension extends Record<string, unknown>,
-  SubSpatialStructure extends
-    | InterposedSpatialStructure<
-        BaseSpatialStructureExtension,
-        SubSpatialStructureExtension
-      >
-    | TerminalSpatialStructure<SubSpatialStructureExtension>
+  SubSpatialStructureExtension extends Record<string, unknown>
 > = RecursiveSpatialStructureBase<
   "initial",
   InitialSpatialStructureExtension &
     BaseSpatialStructureBase<
       BaseSpatialStructureExtension,
-      SubSpatialStructureExtension,
-      SubSpatialStructure
+      SubSpatialStructureExtension
     >
 >;
 
@@ -45,7 +26,11 @@ type InterposedSpatialStructure<
   SubSpatialStructureExtension extends Record<string, unknown>
 > = RecursiveSpatialStructureBase<
   "interposed",
-  BaseSpatialStructureExtension & SubSpatialStructureExtension
+  BaseSpatialStructureBase<
+    BaseSpatialStructureExtension,
+    SubSpatialStructureExtension
+  > &
+    SubSpatialStructureExtension
 >;
 
 type TerminalSpatialStructure<
@@ -54,15 +39,14 @@ type TerminalSpatialStructure<
 
 type BaseSpatialStructureBase<
   BaseSpatialStructureExtension extends Record<string, unknown>,
-  SubSpatialStructureExtension extends Record<string, unknown>,
-  SubSpatialStructure extends
+  SubSpatialStructureExtension extends Record<string, unknown>
+> = BaseSpatialStructureExtension & {
+  subStructure:
     | InterposedSpatialStructure<
         BaseSpatialStructureExtension,
         SubSpatialStructureExtension
       >
-    | TerminalSpatialStructure<SubSpatialStructureExtension>
-> = BaseSpatialStructureExtension & {
-  subStructure: SubSpatialStructure;
+    | TerminalSpatialStructure<SubSpatialStructureExtension>;
 };
 
 type RecursiveSpatialStructureBase<
@@ -71,3 +55,72 @@ type RecursiveSpatialStructureBase<
 > = {
   structureType: StructureType;
 } & StructureExtension;
+
+export type ExtractInitialStructure<
+  SomeRecursiveSpatialStructure extends RecursiveSpatialStructure<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    Record<string, unknown>
+  >
+> = ExtractSpatialStructure<"initial", SomeRecursiveSpatialStructure>;
+
+export type ExtractInterposedStructure<
+  SomeRecursiveSpatialStructure extends RecursiveSpatialStructure<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    Record<string, unknown>
+  >
+> = ExtractSpatialStructure<"interposed", SomeRecursiveSpatialStructure>;
+
+export type ExtractTerminalStructure<
+  SomeRecursiveSpatialStructure extends RecursiveSpatialStructure<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    Record<string, unknown>
+  >
+> = Exclude<
+  SomeRecursiveSpatialStructure["subStructure"],
+  ExtractInterposedStructure<SomeRecursiveSpatialStructure>
+>;
+
+type ExtractSpatialStructure<
+  TargetStructureType extends SomeStructureType,
+  SomeSpatialStructure extends RecursiveSpatialStructureBase<
+    SomeStructureType,
+    Record<string, unknown>
+  >,
+  SomeStructureType extends
+    | RecursiveSpatialStructure<
+        Record<string, unknown>,
+        Record<string, unknown>,
+        Record<string, unknown>
+      >["structureType"]
+    | RecursiveSpatialStructure<
+        Record<string, unknown>,
+        Record<string, unknown>,
+        Record<string, unknown>
+      >["subStructure"]["structureType"] =
+    | RecursiveSpatialStructure<
+        Record<string, unknown>,
+        Record<string, unknown>,
+        Record<string, unknown>
+      >["structureType"]
+    | RecursiveSpatialStructure<
+        Record<string, unknown>,
+        Record<string, unknown>,
+        Record<string, unknown>
+      >["subStructure"]["structureType"]
+> = SomeSpatialStructure extends RecursiveSpatialStructureBase<
+  TargetStructureType,
+  infer TargetStructureExtension
+>
+  ? RecursiveSpatialStructureBase<TargetStructureType, TargetStructureExtension>
+  : SomeSpatialStructure extends BaseSpatialStructureBase<
+      Record<string, unknown>,
+      Record<string, unknown>
+    >
+  ? ExtractSpatialStructure<
+      TargetStructureType,
+      SomeSpatialStructure["subStructure"]
+    >
+  : never;
