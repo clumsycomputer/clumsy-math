@@ -26,11 +26,11 @@ type InterposedSpatialStructure<
   SubSpatialStructureExtension extends Record<string, unknown>
 > = RecursiveSpatialStructureBase<
   "interposed",
-  BaseSpatialStructureBase<
-    BaseSpatialStructureExtension,
-    SubSpatialStructureExtension
-  > &
-    SubSpatialStructureExtension
+  SubSpatialStructureExtension &
+    BaseSpatialStructureBase<
+      BaseSpatialStructureExtension,
+      SubSpatialStructureExtension
+    >
 >;
 
 type TerminalSpatialStructure<

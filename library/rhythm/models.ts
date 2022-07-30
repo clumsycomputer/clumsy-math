@@ -7,6 +7,12 @@ import {
 
 export type Rhythm = Array<boolean>;
 
+export interface RhythmMap extends Pick<RhythmStructure, "rhythmResolution"> {
+  rhythmPoints: RhythmPoints;
+}
+
+export type RhythmPoints = Array<number>;
+
 export type PhasedRhythmStructure = RhythmStructure<{ rhythmPhase: number }>;
 
 export type InitialPhasedRhythmStructure =
@@ -29,7 +35,7 @@ export type InterposedAlignedRhythmStructure =
 export type TerminalAlignedRhythmStructure =
   ExtractTerminalStructure<AlignedRhythmStructure>;
 
-type RhythmStructure<
+export type RhythmStructure<
   BaseRhythmStructureExtension extends Record<string, unknown> = {}
 > = RecursiveSpatialStructure<
   { rhythmResolution: number },
@@ -38,4 +44,20 @@ type RhythmStructure<
     rhythmDensity: number;
     rhythmOrientation: number;
   }
+>;
+
+export type GeneralRhythmStructure = Array<BasicRhythmStructure>;
+
+export type BasicRhythmStructure = Pick<
+  InitialPhasedRhythmStructure,
+  "rhythmResolution"
+> &
+  Pick<
+    InterposedPhaseRhythmStructure,
+    "rhythmDensity" | "rhythmOrientation" | "rhythmPhase"
+  >;
+
+export type EuclideanRhythmStructure = Pick<
+  BasicRhythmStructure,
+  "rhythmResolution" | "rhythmDensity"
 >;

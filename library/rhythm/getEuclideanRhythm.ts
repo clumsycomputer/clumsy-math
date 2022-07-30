@@ -1,15 +1,16 @@
-import { Rhythm } from "./models";
+import { EuclideanRhythmStructure, Rhythm } from "./models";
 
 export interface GetEuclideanRhythmApi {
-  rhythmResolution: number;
-  rhythmDensity: number;
+  someEuclideanRhythmStructure: EuclideanRhythmStructure;
 }
 
 export function getEuclideanRhythm(api: GetEuclideanRhythmApi): Rhythm {
-  const { rhythmDensity, rhythmResolution } = api;
+  const { someEuclideanRhythmStructure } = api;
   return _getEuclideanRhythm({
-    lhsCount: rhythmDensity,
-    rhsCount: rhythmResolution - rhythmDensity,
+    lhsCount: someEuclideanRhythmStructure.rhythmDensity,
+    rhsCount:
+      someEuclideanRhythmStructure.rhythmResolution -
+      someEuclideanRhythmStructure.rhythmDensity,
     lhsRhythm: [true],
     rhsRhythm: [false],
   });
