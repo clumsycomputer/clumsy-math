@@ -13,6 +13,7 @@ import {
   getPhasedRhythmId,
 } from "../library/rhythm/getRhythmId";
 import { getRhythmIntervals } from "../library/rhythm/getRhythmIntervals";
+import { getRhythmComponents } from "../library/rhythm/getRhythmComponents";
 
 const RhythmImageModule: AnimationModule = {
   moduleName: "rhythm",
@@ -41,9 +42,15 @@ async function getRhythmFrameDescription(api: GetRhythmFrameDescriptionApi) {
     rhythmResolution: 12,
     rhythmPhase: 0,
     subStructure: {
-      structureType: "terminal",
+      structureType: "interposed",
       rhythmDensity: 7,
       rhythmOrientation: 0,
+      rhythmPhase: 0,
+      subStructure: {
+        structureType: "terminal",
+        rhythmDensity: 3,
+        rhythmOrientation: 0,
+      },
     },
   };
   const rhythmMap = getRhythmMap({
@@ -58,6 +65,9 @@ async function getRhythmFrameDescription(api: GetRhythmFrameDescriptionApi) {
           somePhasedRhythmStructure: rhythmStructure,
         }),
         rhythmStructure,
+        rhythmComponents: getRhythmComponents({
+          someRhythmStructure: rhythmStructure,
+        }),
         rhythmString: getRhythmString({
           someRhythmMap: rhythmMap,
         }),

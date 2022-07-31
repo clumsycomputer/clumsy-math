@@ -8,10 +8,8 @@ import {
 export type Rhythm = Array<boolean>;
 
 export interface RhythmMap extends Pick<RhythmStructure, "rhythmResolution"> {
-  rhythmPoints: RhythmPoints;
+  rhythmPoints: Array<number>;
 }
-
-export type RhythmPoints = Array<number>;
 
 export type PhasedRhythmStructure = RhythmStructure<{ rhythmPhase: number }>;
 
@@ -45,6 +43,15 @@ export type RhythmStructure<
     rhythmOrientation: number;
   }
 >;
+
+export type InitialRhythmStructure =
+  ExtractInitialStructure<AlignedRhythmStructure>;
+
+export type InterposedRhythmStructure =
+  ExtractInterposedStructure<AlignedRhythmStructure>;
+
+export type TerminalRhythmStructure =
+  ExtractTerminalStructure<AlignedRhythmStructure>;
 
 export type GeneralRhythmStructure = Array<BasicRhythmStructure>;
 

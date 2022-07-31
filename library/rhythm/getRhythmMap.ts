@@ -3,7 +3,6 @@ import {
   BasicRhythmStructure,
   GeneralRhythmStructure,
   RhythmMap,
-  RhythmPoints,
 } from "./models";
 
 export interface GetRhythmMapApi {
@@ -17,7 +16,7 @@ export function getRhythmMap(api: GetRhythmMapApi): RhythmMap {
     : 0;
   return {
     rhythmResolution,
-    rhythmPoints: someGeneralRhythmStructure.reduce<RhythmPoints>(
+    rhythmPoints: someGeneralRhythmStructure.reduce<Array<number>>(
       (baseRhythmPoints, someBasicRhythmStructure) => {
         return getBasicRhythmPoints({
           someBasicRhythmStructure,
@@ -37,12 +36,12 @@ interface GetBasicRhythmPointsApi {
   someBasicRhythmStructure: BasicRhythmStructure;
 }
 
-function getBasicRhythmPoints(api: GetBasicRhythmPointsApi): RhythmPoints {
+function getBasicRhythmPoints(api: GetBasicRhythmPointsApi): Array<number> {
   const { someBasicRhythmStructure } = api;
   return getEuclideanRhythm({
     someEuclideanRhythmStructure: someBasicRhythmStructure,
   })
-    .reduce<RhythmPoints>(
+    .reduce<Array<number>>(
       (unadjustedPointsResult, someRhythmSlot, rhythmSlotIndex) => {
         if (someRhythmSlot === true) {
           unadjustedPointsResult.push(rhythmSlotIndex);
