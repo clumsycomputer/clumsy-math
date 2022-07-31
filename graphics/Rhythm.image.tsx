@@ -1,11 +1,18 @@
 import React from "react";
 import { AnimationModule } from "clumsy-graphics";
 import { Fragment } from "react";
-import { AlignedRhythmStructure } from "../library/rhythm/models";
+import {
+  AlignedRhythmStructure,
+  PhasedRhythmStructure,
+} from "../library/rhythm/models";
 import { getRhythmMap } from "../library/rhythm/getRhythmMap";
 import { getGeneralRhythmStructure } from "../library/rhythm/getGeneralRhythmStructure";
 import { getRhythmString } from "../library/rhythm/getRhythmString";
-import { getAlignedRhythmId } from "../library/rhythm/getRhythmId";
+import {
+  getAlignedRhythmId,
+  getPhasedRhythmId,
+} from "../library/rhythm/getRhythmId";
+import { getRhythmIntervals } from "../library/rhythm/getRhythmIntervals";
 
 const RhythmImageModule: AnimationModule = {
   moduleName: "rhythm",
@@ -29,18 +36,14 @@ interface GetRhythmFrameDescriptionApi {
 }
 
 async function getRhythmFrameDescription(api: GetRhythmFrameDescriptionApi) {
-  const rhythmStructure: AlignedRhythmStructure = {
+  const rhythmStructure: PhasedRhythmStructure = {
     structureType: "initial",
     rhythmResolution: 12,
+    rhythmPhase: 0,
     subStructure: {
-      structureType: "interposed",
+      structureType: "terminal",
       rhythmDensity: 7,
-      rhythmOrientation: 1,
-      subStructure: {
-        structureType: "terminal",
-        rhythmDensity: 3,
-        rhythmOrientation: 1,
-      },
+      rhythmOrientation: 0,
     },
   };
   const rhythmMap = getRhythmMap({
@@ -51,17 +54,20 @@ async function getRhythmFrameDescription(api: GetRhythmFrameDescriptionApi) {
   console.log(
     JSON.stringify(
       {
-        rhythmId: getAlignedRhythmId({
-          someAlignedRhythmStructure: rhythmStructure,
+        rhythmId: getPhasedRhythmId({
+          somePhasedRhythmStructure: rhythmStructure,
         }),
         rhythmStructure,
+        rhythmString: getRhythmString({
+          someRhythmMap: rhythmMap,
+        }),
         rhythmMap: {
           ...rhythmMap,
           rhythmPoints: rhythmMap.rhythmPoints.join(","),
         },
-        rhythmString: getRhythmString({
+        rhythmIntervals: getRhythmIntervals({
           someRhythmMap: rhythmMap,
-        }),
+        }).join(","),
       },
       null,
       2
