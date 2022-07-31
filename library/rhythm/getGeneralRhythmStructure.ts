@@ -39,6 +39,8 @@ export function getGeneralRhythmStructure(
         });
       } else if (someScopedRhythmStructure.structureType === "terminal") {
         // no-op
+      } else {
+        throw new Error("getGeneralRhythmStructure: invalid path");
       }
     },
   });

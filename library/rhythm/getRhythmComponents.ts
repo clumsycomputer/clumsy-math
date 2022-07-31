@@ -19,24 +19,37 @@ export function getRhythmComponents<
   const rhythmStructureRef = getInitialStructureData({
     someRhythmStructure,
   });
-  let rhythmStructureTailRef: any = rhythmStructureRef.subStructure;
+  let rhythmStructureTailRef: InterposedRhythmStructure | null =
+    rhythmStructureRef.subStructure.structureType === "interposed"
+      ? rhythmStructureRef.subStructure
+      : null;
   const rhythmsComponentsResult: Array<SomeRhythmStructure> = [
-    JSON.parse(JSON.stringify(rhythmStructureRef)),
+    getRhythmStructureCopy({
+      someRhythmStructure: rhythmStructureRef,
+    }),
   ];
   iterateRecursiveSpatialStructure({
     someSpatialStructure: someRhythmStructure,
     forEach: (someScopedRhythmStructure) => {
-      if (someScopedRhythmStructure.structureType === "interposed") {
+      if (
+        someScopedRhythmStructure.structureType === "interposed" &&
+        rhythmStructureTailRef !== null
+      ) {
         const nextBaseStructureData = getBaseStructureData({
           someBaseRhythmStructure: someScopedRhythmStructure,
         });
         Object.keys(nextBaseStructureData).forEach((someBaseStructureKey) => {
-          rhythmStructureTailRef[someBaseStructureKey] =
+          rhythmStructureTailRef![someBaseStructureKey] =
             nextBaseStructureData[someBaseStructureKey];
         });
-        rhythmStructureTailRef = rhythmStructureTailRef.subStructure;
+        rhythmStructureTailRef =
+          rhythmStructureTailRef.subStructure.structureType === "interposed"
+            ? rhythmStructureTailRef.subStructure
+            : null;
         rhythmsComponentsResult.push(
-          JSON.parse(JSON.stringify(rhythmStructureRef))
+          getRhythmStructureCopy({
+            someRhythmStructure: rhythmStructureRef,
+          })
         );
       } else if (
         someScopedRhythmStructure.structureType === "initial" ||
@@ -51,6 +64,18 @@ export function getRhythmComponents<
   return rhythmsComponentsResult;
 }
 
+interface GetRhythmStructureCopyApi<
+  SomeRhythmStructure extends RhythmStructure
+> {
+  someRhythmStructure: SomeRhythmStructure;
+}
+function getRhythmStructureCopy<SomeRhythmStructure extends RhythmStructure>(
+  api: GetRhythmStructureCopyApi<SomeRhythmStructure>
+): SomeRhythmStructure {
+  const { someRhythmStructure } = api;
+  return JSON.parse(JSON.stringify(someRhythmStructure));
+}
+
 interface GetInitialStructureDataApi<
   SomeRhythmStructure extends RhythmStructure
 > {
@@ -59,13 +84,11 @@ interface GetInitialStructureDataApi<
 
 function getInitialStructureData<SomeRhythmStructure extends RhythmStructure>(
   api: GetInitialStructureDataApi<SomeRhythmStructure>
-) {
+): SomeRhythmStructure {
   const { someRhythmStructure } = api;
-  return {
-    ...getBaseStructureData({
-      someBaseRhythmStructure: someRhythmStructure,
-    }),
-  };
+  return getBaseStructureData({
+    someBaseRhythmStructure: someRhythmStructure,
+  }) as SomeRhythmStructure;
 }
 
 interface GetBaseStructureDataApi<

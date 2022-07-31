@@ -8,10 +8,7 @@ import {
 import { getRhythmMap } from "../library/rhythm/getRhythmMap";
 import { getGeneralRhythmStructure } from "../library/rhythm/getGeneralRhythmStructure";
 import { getRhythmString } from "../library/rhythm/getRhythmString";
-import {
-  getAlignedRhythmId,
-  getPhasedRhythmId,
-} from "../library/rhythm/getRhythmId";
+import { getPhasedRhythmId } from "../library/rhythm/getRhythmId";
 import { getRhythmIntervals } from "../library/rhythm/getRhythmIntervals";
 import { getRhythmComponents } from "../library/rhythm/getRhythmComponents";
 
@@ -54,9 +51,7 @@ async function getRhythmFrameDescription(api: GetRhythmFrameDescriptionApi) {
     },
   };
   const rhythmMap = getRhythmMap({
-    someGeneralRhythmStructure: getGeneralRhythmStructure({
-      someRhythmStructure: rhythmStructure,
-    }),
+    someRhythmStructure: rhythmStructure,
   });
   console.log(
     JSON.stringify(
