@@ -4,6 +4,8 @@ import { Fragment } from "react";
 import { AlignedRhythmStructure } from "../library/rhythm/models";
 import { getRhythmMap } from "../library/rhythm/getRhythmMap";
 import { getGeneralRhythmStructure } from "../library/rhythm/getGeneralRhythmStructure";
+import { getRhythmString } from "../library/rhythm/getRhythmString";
+import { getAlignedRhythmId } from "../library/rhythm/getRhythmId";
 
 const RhythmImageModule: AnimationModule = {
   moduleName: "rhythm",
@@ -49,11 +51,17 @@ async function getRhythmFrameDescription(api: GetRhythmFrameDescriptionApi) {
   console.log(
     JSON.stringify(
       {
+        rhythmId: getAlignedRhythmId({
+          someAlignedRhythmStructure: rhythmStructure,
+        }),
         rhythmStructure,
         rhythmMap: {
           ...rhythmMap,
           rhythmPoints: rhythmMap.rhythmPoints.join(","),
         },
+        rhythmString: getRhythmString({
+          someRhythmMap: rhythmMap,
+        }),
       },
       null,
       2
