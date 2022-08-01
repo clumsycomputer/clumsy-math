@@ -1,15 +1,14 @@
 {
-  "compilerOptions": {
-    "outDir": "./package",
-    // "noImplicitAny": true,
+  "compilerOptions": {  
     "strict": true,
     "strictNullChecks": true,
-    "noUncheckedIndexedAccess": true,
-    "module": "ES2022",
+    "noUncheckedIndexedAccess": true,    
+    "module": "commonjs",
     "target": "ES2019",
-    "moduleResolution": "node",
+    "moduleResolution": "node",    
+    "outDir": "./package",
     "declaration": true,
-    "declarationDir": "./package/types"
+    "declarationDir": "./package/types",
   },
   "include": ["library/**/*"],
   "exclude": ["node_modules"]
