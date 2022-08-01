@@ -3,6 +3,7 @@ export * from "./getGeneralRhythmStructure";
 export * from "./getRhythmComponents";
 export * from "./getRhythmId";
 export * from "./getRhythmIntervals";
+export * from "./getRhythmLineage";
 export * from "./getRhythmMap";
 export * from "./getRhythmString";
 export * from "./models";
