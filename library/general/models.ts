@@ -83,6 +83,19 @@ export type ExtractTerminalStructure<
   ExtractInterposedStructure<SomeRecursiveSpatialStructure>
 >;
 
+export type ExtractBaseStructure<
+  SomeRecursiveSpatialStructure extends RecursiveSpatialStructure<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    Record<string, unknown>
+  >
+> = SomeRecursiveSpatialStructure extends RecursiveSpatialStructureBase<
+  "initial",
+  BaseSpatialStructureBase<infer BaseStructure, Record<string, unknown>>
+>
+  ? BaseStructure
+  : never;
+
 type ExtractSpatialStructure<
   TargetStructureType extends SomeStructureType,
   SomeSpatialStructure extends RecursiveSpatialStructureBase<

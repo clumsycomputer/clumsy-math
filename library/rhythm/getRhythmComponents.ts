@@ -1,128 +1,132 @@
-import { iterateRecursiveSpatialStructure } from "../general/iterateRecursiveSpatialStructure";
+import { ExtractBaseStructure } from "../general";
+import { getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
 import {
-  InitialRhythmStructure,
-  InterposedRhythmStructure,
+  AlignedRhythmStructure,
+  BasicRhythmStructure,
+  GeneralRhythmStructure,
+  PhasedRhythmStructure,
   RhythmStructure,
-  TerminalRhythmStructure,
 } from "./models";
 
-export interface GetRhythmComponentsApi<
-  SomeRhythmStructure extends RhythmStructure
-> {
-  someRhythmStructure: SomeRhythmStructure;
-}
+export interface GetPhasedRhythmComponentsApi
+  extends Pick<
+    GetRhythmComponentsApi<PhasedRhythmStructure>,
+    "someRhythmStructure"
+  > {}
 
-export function getRhythmComponents<
-  SomeRhythmStructure extends RhythmStructure
->(api: GetRhythmComponentsApi<SomeRhythmStructure>) {
+export function getPhasedRhythmComponents(api: GetPhasedRhythmComponentsApi) {
   const { someRhythmStructure } = api;
-  const rhythmStructureRef = getInitialStructureData({
+  return getRhythmComponents({
     someRhythmStructure,
-  });
-  let rhythmStructureTailRef: any = rhythmStructureRef.subStructure;
-  const rhythmsComponentsResult: Array<SomeRhythmStructure> = [
-    getRhythmStructureCopy({
-      someRhythmStructure: rhythmStructureRef,
+    getBaseStructureData: (someBasicRhythmStructure) => ({
+      rhythmPhase: someBasicRhythmStructure.rhythmPhase,
     }),
-  ];
-  iterateRecursiveSpatialStructure({
-    someSpatialStructure: someRhythmStructure,
-    forEach: (someScopedRhythmStructure) => {
-      if (someScopedRhythmStructure.structureType === "interposed") {
-        const nextBaseStructureData = getBaseStructureData({
-          someBaseRhythmStructure: someScopedRhythmStructure,
-        });
-        Object.keys(nextBaseStructureData).forEach((someBaseStructureKey) => {
-          rhythmStructureTailRef[someBaseStructureKey] = (
-            nextBaseStructureData as Record<string, unknown>
-          )[someBaseStructureKey];
-        });
-        rhythmStructureTailRef = rhythmStructureTailRef.subStructure;
-        rhythmsComponentsResult.push(
-          getRhythmStructureCopy({
-            someRhythmStructure: rhythmStructureRef,
-          })
-        );
-      } else if (
-        someScopedRhythmStructure.structureType === "initial" ||
-        someScopedRhythmStructure.structureType === "terminal"
-      ) {
-        // no-op
-      } else {
-        throw new Error("getRhythmComponents: invalid path");
-      }
+  });
+}
+
+export interface GetAlignedRhythmComponentsApi
+  extends Pick<
+    GetRhythmComponentsApi<AlignedRhythmStructure>,
+    "someRhythmStructure"
+  > {}
+
+export function getAlignedRhythmComponents(api: GetAlignedRhythmComponentsApi) {
+  const { someRhythmStructure } = api;
+  return getRhythmComponents({
+    someRhythmStructure,
+    getBaseStructureData: () => ({}),
+  });
+}
+
+interface GetRhythmComponentsApi<SomeRhythmStructure extends RhythmStructure> {
+  someRhythmStructure: SomeRhythmStructure;
+  getBaseStructureData: (
+    someBasicRhythmStructure: BasicRhythmStructure
+  ) => ExtractBaseStructure<SomeRhythmStructure>;
+}
+
+function getRhythmComponents<SomeRhythmStructure extends RhythmStructure>(
+  api: GetRhythmComponentsApi<SomeRhythmStructure>
+): Array<SomeRhythmStructure> {
+  const { someRhythmStructure, getBaseStructureData } = api;
+  return getGeneralRhythmStructure({
+    someRhythmStructure,
+  }).map((_, sliceIndex, baseGeneralRhythmStructure) =>
+    getComponentStructure({
+      getBaseStructureData,
+      componentRhythmStructures: baseGeneralRhythmStructure.slice(
+        0,
+        sliceIndex + 1
+      ),
+    })
+  );
+}
+
+interface GetComponentStructureApi<SomeRhythmStructure extends RhythmStructure>
+  extends Pick<
+    GetRhythmComponentsApi<SomeRhythmStructure>,
+    "getBaseStructureData"
+  > {
+  componentRhythmStructures: GeneralRhythmStructure;
+}
+
+function getComponentStructure<SomeRhythmStructure extends RhythmStructure>(
+  api: GetComponentStructureApi<SomeRhythmStructure>
+): SomeRhythmStructure {
+  const { componentRhythmStructures, getBaseStructureData } = api;
+  const componentRhythmStructuresReversed = componentRhythmStructures.reverse();
+  const initialComponentStructure = componentRhythmStructuresReversed[0];
+  if (initialComponentStructure === undefined)
+    throw new Error("getComponentStructure: baseRhythmStructures empty");
+  let componentStructureResult: SomeRhythmStructure = {
+    structureType: "initial",
+    rhythmResolution: initialComponentStructure.rhythmResolution,
+    ...getBaseStructureData(initialComponentStructure),
+    subStructure: {
+      structureType: "terminal",
+      rhythmDensity: initialComponentStructure.rhythmDensity,
+      rhythmOrientation: initialComponentStructure.rhythmOrientation,
     },
+  };
+  componentRhythmStructuresReversed.slice(1).forEach((someBasicStructure) => {
+    componentStructureResult = {
+      structureType: "initial",
+      rhythmResolution: someBasicStructure.rhythmResolution,
+      ...getBaseStructureData(someBasicStructure),
+      subStructure: {
+        structureType: "interposed",
+        rhythmDensity: someBasicStructure.rhythmDensity,
+        rhythmOrientation: someBasicStructure.rhythmOrientation,
+        ...getInterposedBaseStructureData({
+          componentStructureResult,
+        }),
+        subStructure: componentStructureResult.subStructure,
+      },
+    };
   });
-  return rhythmsComponentsResult;
+  return componentStructureResult;
 }
 
-interface GetRhythmStructureCopyApi<
+interface GetInterposedBaseStructureDataApi<
   SomeRhythmStructure extends RhythmStructure
 > {
-  someRhythmStructure: SomeRhythmStructure;
-}
-function getRhythmStructureCopy<SomeRhythmStructure extends RhythmStructure>(
-  api: GetRhythmStructureCopyApi<SomeRhythmStructure>
-): SomeRhythmStructure {
-  const { someRhythmStructure } = api;
-  return JSON.parse(JSON.stringify(someRhythmStructure));
+  componentStructureResult: SomeRhythmStructure;
 }
 
-interface GetInitialStructureDataApi<
+function getInterposedBaseStructureData<
   SomeRhythmStructure extends RhythmStructure
+>(
+  api: GetInterposedBaseStructureDataApi<SomeRhythmStructure>
+): Omit<
+  SomeRhythmStructure,
+  "structureType" | "rhythmResolution" | "subStructure"
 > {
-  someRhythmStructure: SomeRhythmStructure;
-}
-
-function getInitialStructureData<SomeRhythmStructure extends RhythmStructure>(
-  api: GetInitialStructureDataApi<SomeRhythmStructure>
-): SomeRhythmStructure {
-  const { someRhythmStructure } = api;
-  return getBaseStructureData({
-    someBaseRhythmStructure: someRhythmStructure,
-  }) as SomeRhythmStructure;
-}
-
-interface GetBaseStructureDataApi<
-  SomeBaseRhythmStructure extends
-    | InitialRhythmStructure
-    | InterposedRhythmStructure
-> {
-  someBaseRhythmStructure: SomeBaseRhythmStructure;
-}
-
-function getBaseStructureData<
-  SomeBaseRhythmStructure extends
-    | InitialRhythmStructure
-    | InterposedRhythmStructure
->(api: GetBaseStructureDataApi<SomeBaseRhythmStructure>) {
-  const { someBaseRhythmStructure } = api;
-  const { subStructure, ...baseStructureData } = someBaseRhythmStructure;
-  return {
-    ...baseStructureData,
-    subStructure: getTerminalStructureData({
-      someSubRhythmStructure: someBaseRhythmStructure.subStructure,
-    }),
-  };
-}
-
-interface GetTerminalStructureDataApi<
-  SomeSubRhythmStructure extends
-    | InterposedRhythmStructure
-    | TerminalRhythmStructure
-> {
-  someSubRhythmStructure: SomeSubRhythmStructure;
-}
-
-function getTerminalStructureData<
-  SomeSubRhythmStructure extends
-    | InterposedRhythmStructure
-    | TerminalRhythmStructure
->(api: GetTerminalStructureDataApi<SomeSubRhythmStructure>) {
-  const { someSubRhythmStructure } = api;
-  return {
-    structureType: "terminal",
-    rhythmDensity: someSubRhythmStructure.rhythmDensity,
-    rhythmOrientation: someSubRhythmStructure.rhythmOrientation,
-  };
+  const { componentStructureResult } = api;
+  const {
+    structureType,
+    rhythmResolution,
+    subStructure,
+    ...interposedBaseStructureData
+  } = componentStructureResult;
+  return interposedBaseStructureData;
 }

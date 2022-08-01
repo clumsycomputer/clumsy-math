@@ -19,34 +19,14 @@ export function getAlignedRhythmLineage(
   const { someAlignedRhythmStructure } = api;
   return getGeneralRhythmStructure({
     someRhythmStructure: someAlignedRhythmStructure,
-  }).map((_, sliceIndex, lineageGeneralRhythmStructure) =>
-    getGroupStructure({
-      sliceIndex,
-      lineageGeneralRhythmStructure,
-    })
-  );
-}
-
-interface GetGroupStructureApi {
-  lineageGeneralRhythmStructure: GeneralRhythmStructure;
-  sliceIndex: number;
-}
-
-function getGroupStructure(
-  api: GetGroupStructureApi
-): AlignedRhythmGroupStructure {
-  const { lineageGeneralRhythmStructure, sliceIndex } = api;
-  return {
+  }).map((_, sliceIndex, baseGeneralRhythmStructure) => ({
     baseStructure: getBaseStructure({
-      baseRhythmStructures: lineageGeneralRhythmStructure.slice(
-        0,
-        sliceIndex + 1
-      ),
+      baseRhythmStructures: baseGeneralRhythmStructure.slice(0, sliceIndex + 1),
     }),
     memberStructure: getMemberStructure({
-      memberRhythmStructures: lineageGeneralRhythmStructure.slice(sliceIndex),
+      memberRhythmStructures: baseGeneralRhythmStructure.slice(sliceIndex),
     }),
-  };
+  }));
 }
 
 interface GetBaseStructureApi {
