@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./package",
+    // "noImplicitAny": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "module": "ES2022",
+    "target": "ES2019",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationDir": "./package/types"
+  },
+  "include": ["library/**/*"],
+  "exclude": ["node_modules"]
+}
