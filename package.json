@@ -1,6 +1,6 @@
 {
   "name": "clumsy-math",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a little library of helpful math utensils for making art or doing whatever",
   "main": "./package/index.js",
   "types": "./package/types/index.js",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "typescript": "^4.7.4"
-  }, 
+  },
   "scripts": {
     "buildPackage": "tsc"
   },

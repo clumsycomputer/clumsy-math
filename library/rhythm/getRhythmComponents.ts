@@ -19,10 +19,7 @@ export function getRhythmComponents<
   const rhythmStructureRef = getInitialStructureData({
     someRhythmStructure,
   });
-  let rhythmStructureTailRef: InterposedRhythmStructure | null =
-    rhythmStructureRef.subStructure.structureType === "interposed"
-      ? rhythmStructureRef.subStructure
-      : null;
+  let rhythmStructureTailRef: any = rhythmStructureRef.subStructure;
   const rhythmsComponentsResult: Array<SomeRhythmStructure> = [
     getRhythmStructureCopy({
       someRhythmStructure: rhythmStructureRef,
@@ -31,24 +28,16 @@ export function getRhythmComponents<
   iterateRecursiveSpatialStructure({
     someSpatialStructure: someRhythmStructure,
     forEach: (someScopedRhythmStructure) => {
-      if (
-        someScopedRhythmStructure.structureType === "interposed" &&
-        rhythmStructureTailRef !== null
-      ) {
+      if (someScopedRhythmStructure.structureType === "interposed") {
         const nextBaseStructureData = getBaseStructureData({
           someBaseRhythmStructure: someScopedRhythmStructure,
         });
         Object.keys(nextBaseStructureData).forEach((someBaseStructureKey) => {
-          (rhythmStructureTailRef as Record<string, unknown>)[
-            someBaseStructureKey
-          ] = (nextBaseStructureData as Record<string, unknown>)[
-            someBaseStructureKey
-          ];
+          rhythmStructureTailRef[someBaseStructureKey] = (
+            nextBaseStructureData as Record<string, unknown>
+          )[someBaseStructureKey];
         });
-        rhythmStructureTailRef =
-          rhythmStructureTailRef.subStructure.structureType === "interposed"
-            ? rhythmStructureTailRef.subStructure
-            : null;
+        rhythmStructureTailRef = rhythmStructureTailRef.subStructure;
         rhythmsComponentsResult.push(
           getRhythmStructureCopy({
             someRhythmStructure: rhythmStructureRef,
