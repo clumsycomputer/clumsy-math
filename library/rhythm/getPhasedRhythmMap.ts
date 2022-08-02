@@ -1,3 +1,5 @@
+import { RhythmMap } from "./models";
+
 export interface GetPhasedRhythmMapApi {
   someRhythmMap: RhythmMap;
   rhythmPhase: number;

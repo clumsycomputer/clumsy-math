@@ -1,3 +1,4 @@
+export * from "./getAlignedRhythmGroupId";
 export * from "./getAlignedRhythmLineage";
 export * from "./getEuclideanRhythm";
 export * from "./getGeneralRhythmStructure";
