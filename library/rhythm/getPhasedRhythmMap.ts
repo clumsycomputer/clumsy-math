@@ -1,11 +1,21 @@
 import { RhythmMap } from "./models";
 
-export interface GetPhasedRhythmMapApi {
+export function getPhasedRhythmMap(
+  someRhythmMap: RhythmMap,
+  rhythmPhase: number
+) {
+  return _getPhasedRhythmMap({
+    someRhythmMap,
+    rhythmPhase,
+  });
+}
+
+export interface _GetPhasedRhythmMapApi {
   someRhythmMap: RhythmMap;
   rhythmPhase: number;
 }
 
-export function getPhasedRhythmMap(api: GetPhasedRhythmMapApi): RhythmMap {
+export function _getPhasedRhythmMap(api: _GetPhasedRhythmMapApi): RhythmMap {
   const { someRhythmMap, rhythmPhase } = api;
   return {
     ...someRhythmMap,

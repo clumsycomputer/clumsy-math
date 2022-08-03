@@ -1,5 +1,5 @@
 import { ExtractBaseStructure } from "../general";
-import { getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
+import { _getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
 import {
   AlignedRhythmStructure,
   BasicRhythmStructure,
@@ -8,32 +8,48 @@ import {
   RhythmStructure,
 } from "./models";
 
-export interface GetPhasedRhythmComponentsApi
-  extends Pick<
-    GetRhythmComponentsApi<PhasedRhythmStructure>,
-    "someRhythmStructure"
-  > {}
+export function getPhasedRhythmComponents(
+  somePhasedRhythmStructure: PhasedRhythmStructure
+) {
+  return _getPhasedRhythmComponents({
+    somePhasedRhythmStructure,
+  });
+}
 
-export function getPhasedRhythmComponents(api: GetPhasedRhythmComponentsApi) {
-  const { someRhythmStructure } = api;
+export interface _GetPhasedRhythmComponentsApi {
+  somePhasedRhythmStructure: PhasedRhythmStructure;
+}
+
+export function _getPhasedRhythmComponents(
+  api: _GetPhasedRhythmComponentsApi
+): Array<PhasedRhythmStructure> {
+  const { somePhasedRhythmStructure } = api;
   return getRhythmComponents({
-    someRhythmStructure,
+    someRhythmStructure: somePhasedRhythmStructure,
     getBaseStructureData: (someBasicRhythmStructure) => ({
       rhythmPhase: someBasicRhythmStructure.rhythmPhase,
     }),
   });
 }
 
-export interface GetAlignedRhythmComponentsApi
-  extends Pick<
-    GetRhythmComponentsApi<AlignedRhythmStructure>,
-    "someRhythmStructure"
-  > {}
+export function getAlignedRhythmComponents(
+  someAlignedRhythmStructure: AlignedRhythmStructure
+) {
+  return _getAlignedRhythmComponents({
+    someAlignedRhythmStructure,
+  });
+}
 
-export function getAlignedRhythmComponents(api: GetAlignedRhythmComponentsApi) {
-  const { someRhythmStructure } = api;
+export interface _GetAlignedRhythmComponentsApi {
+  someAlignedRhythmStructure: AlignedRhythmStructure;
+}
+
+export function _getAlignedRhythmComponents(
+  api: _GetAlignedRhythmComponentsApi
+): Array<AlignedRhythmStructure> {
+  const { someAlignedRhythmStructure } = api;
   return getRhythmComponents({
-    someRhythmStructure,
+    someRhythmStructure: someAlignedRhythmStructure,
     getBaseStructureData: () => ({}),
   });
 }
@@ -49,7 +65,7 @@ function getRhythmComponents<SomeRhythmStructure extends RhythmStructure>(
   api: GetRhythmComponentsApi<SomeRhythmStructure>
 ): Array<SomeRhythmStructure> {
   const { someRhythmStructure, getBaseStructureData } = api;
-  return getGeneralRhythmStructure({
+  return _getGeneralRhythmStructure({
     someRhythmStructure,
   }).map((_, sliceIndex, baseGeneralRhythmStructure) =>
     getComponentStructure({

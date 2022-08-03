@@ -5,12 +5,20 @@ import {
 import { ExtractTerminalStructure } from "../general/models";
 import { GeneralRhythmStructure, RhythmStructure } from "./models";
 
-export interface GetGeneralRhythmStructureApi {
+export function getGeneralRhythmStructure(
+  someRhythmStructure: RhythmStructure
+) {
+  return _getGeneralRhythmStructure({
+    someRhythmStructure,
+  });
+}
+
+export interface _GetGeneralRhythmStructureApi {
   someRhythmStructure: RhythmStructure;
 }
 
-export function getGeneralRhythmStructure(
-  api: GetGeneralRhythmStructureApi
+export function _getGeneralRhythmStructure(
+  api: _GetGeneralRhythmStructureApi
 ): GeneralRhythmStructure {
   const { someRhythmStructure } = api;
   const generalRhythmStructureResult: GeneralRhythmStructure = [];

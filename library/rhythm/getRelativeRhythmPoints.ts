@@ -1,11 +1,17 @@
 import { RhythmMap } from "./models";
 
-export interface GetRelativeRhythmPointsApi {
+export function getRelativeRhythmPoints(someRhythmMap: RhythmMap) {
+  return _getRelativeRhythmPoints({
+    someRhythmMap,
+  });
+}
+
+export interface _GetRelativeRhythmPointsApi {
   someRhythmMap: RhythmMap;
 }
 
-export function getRelativeRhythmPoints(
-  api: GetRelativeRhythmPointsApi
+export function _getRelativeRhythmPoints(
+  api: _GetRelativeRhythmPointsApi
 ): Array<number> {
   const { someRhythmMap } = api;
   return someRhythmMap.rhythmPoints.map(

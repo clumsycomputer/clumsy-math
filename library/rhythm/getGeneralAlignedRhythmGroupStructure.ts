@@ -3,12 +3,12 @@ import {
   GeneralAlignedRhythmGroupStructure,
 } from "./models";
 
-export interface GetGeneralAlignedRhythmGroupStructureApi {
+export interface _GetGeneralAlignedRhythmGroupStructureApi {
   someAlignedRhythmGroupStructure: AlignedRhythmGroupStructure;
 }
 
-export function getGeneralAlignedRhythmGroupStructure(
-  api: GetGeneralAlignedRhythmGroupStructureApi
+export function _getGeneralAlignedRhythmGroupStructure(
+  api: _GetGeneralAlignedRhythmGroupStructureApi
 ): GeneralAlignedRhythmGroupStructure {
   const { someAlignedRhythmGroupStructure } = api;
   const baseStructureResult: GeneralAlignedRhythmGroupStructure["baseStructure"] =

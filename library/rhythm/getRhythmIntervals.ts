@@ -1,10 +1,18 @@
 import { RhythmMap } from "./models";
 
-export interface GetRhythmIntervalsApi {
+export function getRhythmIntervals(someRhythmMap: RhythmMap) {
+  return _getRhythmIntervals({
+    someRhythmMap,
+  });
+}
+
+export interface _GetRhythmIntervalsApi {
   someRhythmMap: RhythmMap;
 }
 
-export function getRhythmIntervals(api: GetRhythmIntervalsApi): Array<number> {
+export function _getRhythmIntervals(
+  api: _GetRhythmIntervalsApi
+): Array<number> {
   const { someRhythmMap } = api;
   return someRhythmMap.rhythmPoints.map((someRhythmPoint, rhythmPointIndex) => {
     const nextRhythmPoint =

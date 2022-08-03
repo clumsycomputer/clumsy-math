@@ -1,16 +1,22 @@
-import { getEuclideanRhythm } from "./getEuclideanRhythm";
-import { getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
+import { _getEuclideanRhythm } from "./getEuclideanRhythm";
+import { _getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
 import { BasicRhythmStructure, RhythmMap, RhythmStructure } from "./models";
 
-export interface GetRhythmMapApi {
+export function getRhythmMap(someRhythmStructure: RhythmStructure) {
+  return _getRhythmMap({
+    someRhythmStructure,
+  });
+}
+
+export interface _GetRhythmMapApi {
   someRhythmStructure: RhythmStructure;
 }
 
-export function getRhythmMap(api: GetRhythmMapApi): RhythmMap {
+export function _getRhythmMap(api: _GetRhythmMapApi): RhythmMap {
   const { someRhythmStructure } = api;
   return {
     rhythmResolution: someRhythmStructure.rhythmResolution,
-    rhythmPoints: getGeneralRhythmStructure({
+    rhythmPoints: _getGeneralRhythmStructure({
       someRhythmStructure,
     }).reduce<Array<number>>(
       (baseRhythmPoints, someBasicRhythmStructure) => {
@@ -34,7 +40,7 @@ interface GetBasicRhythmPointsApi {
 
 function getBasicRhythmPoints(api: GetBasicRhythmPointsApi): Array<number> {
   const { someBasicRhythmStructure } = api;
-  return getEuclideanRhythm({
+  return _getEuclideanRhythm({
     someEuclideanRhythmStructure: someBasicRhythmStructure,
   })
     .reduce<Array<number>>(

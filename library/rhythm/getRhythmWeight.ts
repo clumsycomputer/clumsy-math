@@ -1,11 +1,21 @@
 import { RhythmMap } from "./models";
 
-export interface GetRhythmWeightApi {
+export function getRhythmWeight(
+  someRhythmMap: RhythmMap,
+  slotWeights: Array<number>
+) {
+  return _getRhythmWeight({
+    someRhythmMap,
+    slotWeights,
+  });
+}
+
+export interface _GetRhythmWeightApi {
   someRhythmMap: RhythmMap;
   slotWeights: Array<number>;
 }
 
-export function getRhythmWeight(api: GetRhythmWeightApi) {
+export function _getRhythmWeight(api: _GetRhythmWeightApi) {
   const { someRhythmMap, slotWeights } = api;
   return someRhythmMap.rhythmPoints.reduce(
     (rhythmWeightResult, someRhythmPoint) => {

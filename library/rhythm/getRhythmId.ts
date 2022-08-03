@@ -8,11 +8,19 @@ import {
   RhythmStructure,
 } from "./models";
 
-export interface GetPhasedRhythmIdApi {
+export function getPhasedRhythmId(
+  somePhasedRhythmStructure: PhasedRhythmStructure
+) {
+  return _getPhasedRhythmId({
+    somePhasedRhythmStructure,
+  });
+}
+
+export interface _GetPhasedRhythmIdApi {
   somePhasedRhythmStructure: PhasedRhythmStructure;
 }
 
-export function getPhasedRhythmId(api: GetPhasedRhythmIdApi): string {
+export function _getPhasedRhythmId(api: _GetPhasedRhythmIdApi): string {
   const { somePhasedRhythmStructure } = api;
   return getRhythmId({
     someRhythmStructure: somePhasedRhythmStructure,
@@ -31,11 +39,19 @@ export function getPhasedRhythmId(api: GetPhasedRhythmIdApi): string {
   });
 }
 
-export interface GetAlignedRhythmIdApi {
+export function getAlignedRhythmId(
+  someAlignedRhythmStructure: AlignedRhythmStructure
+) {
+  return _getAlignedRhythmId({
+    someAlignedRhythmStructure,
+  });
+}
+
+export interface _GetAlignedRhythmIdApi {
   someAlignedRhythmStructure: AlignedRhythmStructure;
 }
 
-export function getAlignedRhythmId(api: GetAlignedRhythmIdApi): string {
+export function _getAlignedRhythmId(api: _GetAlignedRhythmIdApi): string {
   const { someAlignedRhythmStructure } = api;
   return getRhythmId({
     someRhythmStructure: someAlignedRhythmStructure,

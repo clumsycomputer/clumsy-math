@@ -1,23 +1,31 @@
-import { getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
+import { _getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
 import {
-  AlignedRhythmStructure,
-  AlignedRhythmGroupStructure,
-  AlignedRhythmGroupMemberStructure,
-  GeneralRhythmStructure,
-  TerminalAlignedRhythmGroupMemberStructure,
-  InterposedAlignedRhythmGroupMemberStructure,
   AlignedRhythmGroupBaseStructure,
+  AlignedRhythmGroupMemberStructure,
+  AlignedRhythmGroupStructure,
+  AlignedRhythmStructure,
+  GeneralRhythmStructure,
+  InterposedAlignedRhythmGroupMemberStructure,
+  TerminalAlignedRhythmGroupMemberStructure,
 } from "./models";
 
-export interface GetAlignedRhythmLineageApi {
+export function getAlignedRhythmLineage(
+  someAlignedRhythmStructure: AlignedRhythmStructure
+) {
+  return _getAlignedRhythmLineage({
+    someAlignedRhythmStructure,
+  });
+}
+
+export interface _GetAlignedRhythmLineageApi {
   someAlignedRhythmStructure: AlignedRhythmStructure;
 }
 
-export function getAlignedRhythmLineage(
-  api: GetAlignedRhythmLineageApi
+export function _getAlignedRhythmLineage(
+  api: _GetAlignedRhythmLineageApi
 ): Array<AlignedRhythmGroupStructure> {
   const { someAlignedRhythmStructure } = api;
-  return getGeneralRhythmStructure({
+  return _getGeneralRhythmStructure({
     someRhythmStructure: someAlignedRhythmStructure,
   }).map((_, sliceIndex, baseGeneralRhythmStructure) => ({
     baseStructure: getBaseStructure({

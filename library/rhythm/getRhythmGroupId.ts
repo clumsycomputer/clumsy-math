@@ -1,14 +1,22 @@
 import { AlignedRhythmGroupStructure } from "./models";
 
-export interface GetAlignedRhythmGroupIdApi {
-  someAlignedRhythmGroup: AlignedRhythmGroupStructure;
+export function getRhythmGroupId(
+  someAlignedRhythmGroupStructure: AlignedRhythmGroupStructure
+) {
+  return _getRhythmGroupId({
+    someAlignedRhythmGroupStructure,
+  });
 }
 
-export function getAlignedRhythmGroupId(api: GetAlignedRhythmGroupIdApi) {
-  const { someAlignedRhythmGroup } = api;
+export interface _GetRhythmGroupIdApi {
+  someAlignedRhythmGroupStructure: AlignedRhythmGroupStructure;
+}
+
+export function _getRhythmGroupId(api: _GetRhythmGroupIdApi) {
+  const { someAlignedRhythmGroupStructure } = api;
   let alignedRhythmGroupId = "alignedgroup";
   iterateBaseStructure({
-    someScopedBaseStructure: someAlignedRhythmGroup.baseStructure,
+    someScopedBaseStructure: someAlignedRhythmGroupStructure.baseStructure,
     forEach: (someScopedBaseStructure) => {
       if (someScopedBaseStructure.structureType === "initial") {
         alignedRhythmGroupId = `${alignedRhythmGroupId}___${someScopedBaseStructure.rhythmResolution}`;
@@ -19,7 +27,7 @@ export function getAlignedRhythmGroupId(api: GetAlignedRhythmGroupIdApi) {
   });
   alignedRhythmGroupId = `${alignedRhythmGroupId}_`;
   iterateMemberStructure({
-    someScopedMemberStructure: someAlignedRhythmGroup.memberStructure,
+    someScopedMemberStructure: someAlignedRhythmGroupStructure.memberStructure,
     forEach: (someScopedMemberStructure) => {
       alignedRhythmGroupId = `${alignedRhythmGroupId}__${someScopedMemberStructure.rhythmDensity}`;
     },
