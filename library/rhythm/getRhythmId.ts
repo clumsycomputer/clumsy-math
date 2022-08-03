@@ -1,6 +1,6 @@
 import {
-  iterateRecursiveSpatialStructure,
-  IterateRecursiveSpatialStructureApi,
+  _iterateRecursiveSpatialStructure,
+  _IterateRecursiveSpatialStructureApi,
 } from "../general/iterateRecursiveSpatialStructure";
 import {
   AlignedRhythmStructure,
@@ -76,7 +76,7 @@ interface GetRhythmIdApi<SomeRhythmStructure extends RhythmStructure> {
   typeId: string;
   getStructureId: (
     someRhythmStructure: Parameters<
-      IterateRecursiveSpatialStructureApi<SomeRhythmStructure>["forEach"]
+      _IterateRecursiveSpatialStructureApi<SomeRhythmStructure>["forEach"]
     >[0]
   ) => string;
 }
@@ -86,7 +86,7 @@ function getRhythmId<SomeRhythmStructure extends RhythmStructure>(
 ) {
   const { typeId, someRhythmStructure, getStructureId } = api;
   let rhythmIdResult = `${typeId}__`;
-  iterateRecursiveSpatialStructure({
+  _iterateRecursiveSpatialStructure({
     someSpatialStructure: someRhythmStructure,
     forEach: (someRhythmStructure) => {
       const structureSpacer =

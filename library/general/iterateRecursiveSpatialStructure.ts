@@ -1,6 +1,22 @@
 import { RecursiveSpatialStructure } from "./models";
 
-export interface IterateRecursiveSpatialStructureApi<
+export function iterateRecursiveSpatialStructure<
+  SomeRecursiveSpatialStructure extends RecursiveSpatialStructure<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    Record<string, unknown>
+  >
+>(
+  someSpatialStructure: _IterateRecursiveSpatialStructureApi<SomeRecursiveSpatialStructure>["someSpatialStructure"],
+  forEach: _IterateRecursiveSpatialStructureApi<SomeRecursiveSpatialStructure>["forEach"]
+) {
+  return _iterateRecursiveSpatialStructure({
+    someSpatialStructure,
+    forEach,
+  });
+}
+
+export interface _IterateRecursiveSpatialStructureApi<
   SomeRecursiveSpatialStructure extends RecursiveSpatialStructure<
     Record<string, unknown>,
     Record<string, unknown>,
@@ -17,20 +33,20 @@ export interface IterateRecursiveSpatialStructureApi<
   ) => void;
 }
 
-export function iterateRecursiveSpatialStructure<
+export function _iterateRecursiveSpatialStructure<
   SomeRecursiveSpatialStructure extends RecursiveSpatialStructure<
     Record<string, unknown>,
     Record<string, unknown>,
     Record<string, unknown>
   >
->(api: IterateRecursiveSpatialStructureApi<SomeRecursiveSpatialStructure>) {
+>(api: _IterateRecursiveSpatialStructureApi<SomeRecursiveSpatialStructure>) {
   const { forEach, someSpatialStructure } = api;
   forEach(someSpatialStructure);
   if (
     someSpatialStructure.structureType === "initial" ||
     someSpatialStructure.structureType === "interposed"
   ) {
-    iterateRecursiveSpatialStructure({
+    _iterateRecursiveSpatialStructure({
       forEach,
       someSpatialStructure: someSpatialStructure.subStructure,
     });
