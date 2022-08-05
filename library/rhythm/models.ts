@@ -69,11 +69,10 @@ export type EuclideanRhythmStructure = Pick<
   "rhythmResolution" | "rhythmDensity"
 >;
 
-export interface AlignedRhythmGroupStructure
-  extends AlignedRhythmGroupStructureBase<
-    AlignedRhythmGroupBaseStructure,
-    AlignedRhythmGroupMemberStructure
-  > {}
+export interface AlignedRhythmGroupStructure {
+  baseStructure: AlignedRhythmGroupBaseStructure;
+  memberStructure: AlignedRhythmGroupMemberStructure;
+}
 
 export type AlignedRhythmGroupBaseStructure = Pick<
   AlignedRhythmStructure,
@@ -106,31 +105,3 @@ export type TerminalAlignedRhythmGroupMemberStructure = Pick<
   AlignedTerminalRhythmStructure,
   "structureType" | "rhythmDensity"
 >;
-
-export interface GeneralAlignedRhythmGroupStructure
-  extends AlignedRhythmGroupStructureBase<
-    GeneralAlignedRhythmGroupBaseStructure,
-    GeneralAlignedRhythmGroupMemberStructure
-  > {}
-
-export type GeneralAlignedRhythmGroupBaseStructure = Array<
-  Pick<AlignedRhythmGroupBaseStructure, "rhythmResolution"> &
-    Pick<
-      InterposedAlignedRhythmGroupBaseStructure,
-      "rhythmDensity" | "rhythmOrientation"
-    >
->;
-
-export type GeneralAlignedRhythmGroupMemberStructure = Array<
-  Pick<AlignedRhythmGroupBaseStructure, "rhythmResolution"> &
-    Pick<
-      | InterposedAlignedRhythmGroupMemberStructure
-      | TerminalAlignedRhythmGroupMemberStructure,
-      "rhythmDensity"
-    >
->;
-
-interface AlignedRhythmGroupStructureBase<BaseStructure, MemberStructure> {
-  baseStructure: BaseStructure;
-  memberStructure: MemberStructure;
-}

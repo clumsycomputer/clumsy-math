@@ -14,17 +14,12 @@ export interface _GetEuclideanRhythmApi {
 
 export function _getEuclideanRhythm(api: _GetEuclideanRhythmApi): Rhythm {
   const { someEuclideanRhythmStructure } = api;
-  const euclideanRhythmBase = getEuclideanRhythmBase({
-    lhsCount: someEuclideanRhythmStructure.rhythmDensity,
-    rhsCount:
-      someEuclideanRhythmStructure.rhythmResolution -
-      someEuclideanRhythmStructure.rhythmResolution,
-    lhsRhythm: [true],
-    rhsRhythm: [false],
+  const baseEuclideanRhythm = _getBaseEuclideanRhythm({
+    someEuclideanRhythmStructure,
   });
   const rhythmFrequency =
-    someEuclideanRhythmStructure.rhythmResolution / euclideanRhythmBase.length;
-  return new Array(rhythmFrequency).fill(euclideanRhythmBase).flat();
+    someEuclideanRhythmStructure.rhythmResolution / baseEuclideanRhythm.length;
+  return new Array(rhythmFrequency).fill(baseEuclideanRhythm).flat();
 }
 
 export function getBaseEuclideanRhythm(
