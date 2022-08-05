@@ -1,6 +1,6 @@
 import {
-  iterateRecursiveSpatialStructure,
-  IterateRecursiveSpatialStructureApi,
+  _iterateRecursiveSpatialStructure,
+  _IterateRecursiveSpatialStructureApi,
 } from "../general/iterateRecursiveSpatialStructure";
 import {
   AlignedRhythmStructure,
@@ -8,15 +8,23 @@ import {
   RhythmStructure,
 } from "./models";
 
-export interface GetPhasedRhythmIdApi {
+export function getPhasedRhythmId(
+  somePhasedRhythmStructure: PhasedRhythmStructure
+) {
+  return _getPhasedRhythmId({
+    somePhasedRhythmStructure,
+  });
+}
+
+export interface _GetPhasedRhythmIdApi {
   somePhasedRhythmStructure: PhasedRhythmStructure;
 }
 
-export function getPhasedRhythmId(api: GetPhasedRhythmIdApi): string {
+export function _getPhasedRhythmId(api: _GetPhasedRhythmIdApi): string {
   const { somePhasedRhythmStructure } = api;
   return getRhythmId({
     someRhythmStructure: somePhasedRhythmStructure,
-    typeId: "phasedrhythm",
+    typeId: "phased",
     getStructureId: (someRhythmStructure) => {
       if (someRhythmStructure.structureType === "initial") {
         return `${someRhythmStructure.rhythmResolution}_${someRhythmStructure.rhythmPhase}`;
@@ -31,15 +39,23 @@ export function getPhasedRhythmId(api: GetPhasedRhythmIdApi): string {
   });
 }
 
-export interface GetAlignedRhythmIdApi {
+export function getAlignedRhythmId(
+  someAlignedRhythmStructure: AlignedRhythmStructure
+) {
+  return _getAlignedRhythmId({
+    someAlignedRhythmStructure,
+  });
+}
+
+export interface _GetAlignedRhythmIdApi {
   someAlignedRhythmStructure: AlignedRhythmStructure;
 }
 
-export function getAlignedRhythmId(api: GetAlignedRhythmIdApi): string {
+export function _getAlignedRhythmId(api: _GetAlignedRhythmIdApi): string {
   const { someAlignedRhythmStructure } = api;
   return getRhythmId({
     someRhythmStructure: someAlignedRhythmStructure,
-    typeId: "alignedrhythm",
+    typeId: "aligned",
     getStructureId: (someRhythmStructure) => {
       if (someRhythmStructure.structureType === "initial") {
         return `${someRhythmStructure.rhythmResolution}`;
@@ -60,7 +76,7 @@ interface GetRhythmIdApi<SomeRhythmStructure extends RhythmStructure> {
   typeId: string;
   getStructureId: (
     someRhythmStructure: Parameters<
-      IterateRecursiveSpatialStructureApi<SomeRhythmStructure>["forEach"]
+      _IterateRecursiveSpatialStructureApi<SomeRhythmStructure>["forEach"]
     >[0]
   ) => string;
 }
@@ -70,7 +86,7 @@ function getRhythmId<SomeRhythmStructure extends RhythmStructure>(
 ) {
   const { typeId, someRhythmStructure, getStructureId } = api;
   let rhythmIdResult = `${typeId}__`;
-  iterateRecursiveSpatialStructure({
+  _iterateRecursiveSpatialStructure({
     someSpatialStructure: someRhythmStructure,
     forEach: (someRhythmStructure) => {
       const structureSpacer =

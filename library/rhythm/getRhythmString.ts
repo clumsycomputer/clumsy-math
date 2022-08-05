@@ -1,10 +1,16 @@
 import { RhythmMap } from "./models";
 
-export interface GetRhythmStringApi {
+export function getRhythmString(someRhythmMap: RhythmMap) {
+  return _getRhythmString({
+    someRhythmMap,
+  });
+}
+
+export interface _GetRhythmStringApi {
   someRhythmMap: RhythmMap;
 }
 
-export function getRhythmString(api: GetRhythmStringApi): string {
+export function _getRhythmString(api: _GetRhythmStringApi): string {
   const { someRhythmMap } = api;
   return someRhythmMap.rhythmPoints
     .reduce((rhythmStringResult, someRhythmPoint) => {

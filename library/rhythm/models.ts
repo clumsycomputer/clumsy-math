@@ -16,13 +16,15 @@ export type PhasedRhythmStructure = RhythmStructure<{ rhythmPhase: number }>;
 export type InitialPhasedRhythmStructure =
   ExtractInitialStructure<PhasedRhythmStructure>;
 
-export type InterposedPhaseRhythmStructure =
+export type InterposedPhasedRhythmStructure =
   ExtractInterposedStructure<PhasedRhythmStructure>;
 
-export type TerminalPhaseRhythmStructure =
+export type TerminalPhasedRhythmStructure =
   ExtractTerminalStructure<PhasedRhythmStructure>;
 
-export type AlignedRhythmStructure = RhythmStructure;
+export type AlignedRhythmStructure = RhythmStructure<{
+  rhythmPhase?: undefined;
+}>;
 
 export type InitialAlignedRhythmStructure =
   ExtractInitialStructure<AlignedRhythmStructure>;
@@ -60,11 +62,48 @@ export type BasicRhythmStructure = Pick<
   "rhythmResolution"
 > &
   Pick<
-    InterposedPhaseRhythmStructure,
+    InterposedPhasedRhythmStructure,
     "rhythmDensity" | "rhythmOrientation" | "rhythmPhase"
   >;
 
 export type EuclideanRhythmStructure = Pick<
   BasicRhythmStructure,
   "rhythmResolution" | "rhythmDensity"
+>;
+
+export interface RhythmGroupStructure {
+  baseStructure: RhythmGroupBaseStructure;
+  memberStructure: RhythmGroupMemberStructure;
+}
+
+export type RhythmGroupBaseStructure = Pick<
+  AlignedRhythmStructure,
+  "structureType" | "rhythmResolution"
+> & {
+  subStructure?: InterposedRhythmGroupBaseStructure;
+};
+
+export type InterposedRhythmGroupBaseStructure = Pick<
+  InterposedRhythmStructure,
+  "structureType" | "rhythmDensity" | "rhythmOrientation"
+> & {
+  subStructure?: InterposedRhythmGroupBaseStructure;
+};
+
+export type RhythmGroupMemberStructure =
+  | InterposedRhythmGroupMemberStructure
+  | TerminalRhythmGroupMemberStructure;
+
+export type InterposedRhythmGroupMemberStructure = Pick<
+  InterposedAlignedRhythmStructure,
+  "structureType" | "rhythmDensity"
+> & {
+  subStructure:
+    | InterposedRhythmGroupMemberStructure
+    | TerminalRhythmGroupMemberStructure;
+};
+
+export type TerminalRhythmGroupMemberStructure = Pick<
+  TerminalAlignedRhythmStructure,
+  "structureType" | "rhythmDensity"
 >;

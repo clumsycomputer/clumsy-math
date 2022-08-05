@@ -1,20 +1,28 @@
 import {
-  iterateRecursiveSpatialStructure,
-  IterateRecursiveSpatialStructureApi,
+  _iterateRecursiveSpatialStructure,
+  _IterateRecursiveSpatialStructureApi,
 } from "../general/iterateRecursiveSpatialStructure";
 import { ExtractTerminalStructure } from "../general/models";
 import { GeneralRhythmStructure, RhythmStructure } from "./models";
 
-export interface GetGeneralRhythmStructureApi {
+export function getGeneralRhythmStructure(
+  someRhythmStructure: RhythmStructure
+) {
+  return _getGeneralRhythmStructure({
+    someRhythmStructure,
+  });
+}
+
+export interface _GetGeneralRhythmStructureApi {
   someRhythmStructure: RhythmStructure;
 }
 
-export function getGeneralRhythmStructure(
-  api: GetGeneralRhythmStructureApi
+export function _getGeneralRhythmStructure(
+  api: _GetGeneralRhythmStructureApi
 ): GeneralRhythmStructure {
   const { someRhythmStructure } = api;
   const generalRhythmStructureResult: GeneralRhythmStructure = [];
-  iterateRecursiveSpatialStructure({
+  _iterateRecursiveSpatialStructure({
     someSpatialStructure: someRhythmStructure,
     forEach: (someScopedRhythmStructure) => {
       if (someScopedRhythmStructure.structureType === "initial") {
@@ -50,7 +58,7 @@ export function getGeneralRhythmStructure(
 interface GetRhythmPhaseApi {
   someScopedRhythmStructure: Exclude<
     Parameters<
-      IterateRecursiveSpatialStructureApi<RhythmStructure>["forEach"]
+      _IterateRecursiveSpatialStructureApi<RhythmStructure>["forEach"]
     >[0],
     ExtractTerminalStructure<RhythmStructure>
   >;
