@@ -1,4 +1,3 @@
-export * from "./getAlignedRhythmLineage";
 export * from "./getEuclideanRhythm";
 export * from "./getGeneralRhythmStructure";
 export * from "./getPhasedRhythmMap";
@@ -8,6 +7,7 @@ export * from "./getRhythmGroupId";
 export * from "./getRhythmGroupMembers";
 export * from "./getRhythmId";
 export * from "./getRhythmIntervals";
+export * from "./getRhythmLineage";
 export * from "./getRhythmMap";
 export * from "./getRhythmPointWeights";
 export * from "./getRhythmSlotWeights";

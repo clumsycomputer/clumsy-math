@@ -1,47 +1,44 @@
-import { AlignedRhythmGroupStructure } from "./models";
+import { RhythmGroupStructure } from "./models";
 
 export function getRhythmGroupId(
-  someAlignedRhythmGroupStructure: AlignedRhythmGroupStructure
+  someRhythmGroupStructure: RhythmGroupStructure
 ) {
   return _getRhythmGroupId({
-    someAlignedRhythmGroupStructure,
+    someRhythmGroupStructure,
   });
 }
 
 export interface _GetRhythmGroupIdApi {
-  someAlignedRhythmGroupStructure: AlignedRhythmGroupStructure;
+  someRhythmGroupStructure: RhythmGroupStructure;
 }
 
 export function _getRhythmGroupId(api: _GetRhythmGroupIdApi) {
-  const { someAlignedRhythmGroupStructure } = api;
-  let alignedRhythmGroupId = "alignedgroup";
+  const { someRhythmGroupStructure } = api;
+  let rhythmGroupId = "group";
   iterateBaseStructure({
-    someScopedBaseStructure: someAlignedRhythmGroupStructure.baseStructure,
+    someScopedBaseStructure: someRhythmGroupStructure.baseStructure,
     forEach: (someScopedBaseStructure) => {
       if (someScopedBaseStructure.structureType === "initial") {
-        alignedRhythmGroupId = `${alignedRhythmGroupId}___${someScopedBaseStructure.rhythmResolution}`;
+        rhythmGroupId = `${rhythmGroupId}___${someScopedBaseStructure.rhythmResolution}`;
       } else if (someScopedBaseStructure.structureType === "interposed") {
-        alignedRhythmGroupId = `${alignedRhythmGroupId}__${someScopedBaseStructure.rhythmDensity}_${someScopedBaseStructure.rhythmOrientation}`;
+        rhythmGroupId = `${rhythmGroupId}__${someScopedBaseStructure.rhythmDensity}_${someScopedBaseStructure.rhythmOrientation}`;
       }
     },
   });
-  alignedRhythmGroupId = `${alignedRhythmGroupId}_`;
+  rhythmGroupId = `${rhythmGroupId}_`;
   iterateMemberStructure({
-    someScopedMemberStructure: someAlignedRhythmGroupStructure.memberStructure,
+    someScopedMemberStructure: someRhythmGroupStructure.memberStructure,
     forEach: (someScopedMemberStructure) => {
-      alignedRhythmGroupId = `${alignedRhythmGroupId}__${someScopedMemberStructure.rhythmDensity}`;
+      rhythmGroupId = `${rhythmGroupId}__${someScopedMemberStructure.rhythmDensity}`;
     },
   });
-  return alignedRhythmGroupId;
+  return rhythmGroupId;
 }
 
 interface IterateBaseStructureApi<
   SomeScopedBaseStructure =
-    | AlignedRhythmGroupStructure["baseStructure"]
-    | Exclude<
-        AlignedRhythmGroupStructure["baseStructure"]["subStructure"],
-        undefined
-      >
+    | RhythmGroupStructure["baseStructure"]
+    | Exclude<RhythmGroupStructure["baseStructure"]["subStructure"], undefined>
 > {
   someScopedBaseStructure: SomeScopedBaseStructure;
   forEach: (someScopedBaseStructure: SomeScopedBaseStructure) => void;
@@ -59,9 +56,9 @@ function iterateBaseStructure(api: IterateBaseStructureApi) {
 }
 
 interface IterateMemberStructureApi {
-  someScopedMemberStructure: AlignedRhythmGroupStructure["memberStructure"];
+  someScopedMemberStructure: RhythmGroupStructure["memberStructure"];
   forEach: (
-    someScopedMemberStructure: AlignedRhythmGroupStructure["memberStructure"]
+    someScopedMemberStructure: RhythmGroupStructure["memberStructure"]
   ) => void;
 }
 

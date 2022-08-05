@@ -24,7 +24,7 @@ export function _getPhasedRhythmId(api: _GetPhasedRhythmIdApi): string {
   const { somePhasedRhythmStructure } = api;
   return getRhythmId({
     someRhythmStructure: somePhasedRhythmStructure,
-    typeId: "phasedrhythm",
+    typeId: "phased",
     getStructureId: (someRhythmStructure) => {
       if (someRhythmStructure.structureType === "initial") {
         return `${someRhythmStructure.rhythmResolution}_${someRhythmStructure.rhythmPhase}`;
@@ -55,7 +55,7 @@ export function _getAlignedRhythmId(api: _GetAlignedRhythmIdApi): string {
   const { someAlignedRhythmStructure } = api;
   return getRhythmId({
     someRhythmStructure: someAlignedRhythmStructure,
-    typeId: "alignedrhythm",
+    typeId: "aligned",
     getStructureId: (someRhythmStructure) => {
       if (someRhythmStructure.structureType === "initial") {
         return `${someRhythmStructure.rhythmResolution}`;

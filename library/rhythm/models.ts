@@ -13,24 +13,26 @@ export interface RhythmMap extends Pick<RhythmStructure, "rhythmResolution"> {
 
 export type PhasedRhythmStructure = RhythmStructure<{ rhythmPhase: number }>;
 
-export type PhasedInitialRhythmStructure =
+export type InitialPhasedRhythmStructure =
   ExtractInitialStructure<PhasedRhythmStructure>;
 
-export type PhasedInterposedRhythmStructure =
+export type InterposedPhasedRhythmStructure =
   ExtractInterposedStructure<PhasedRhythmStructure>;
 
-export type PhasedTerminalRhythmStructure =
+export type TerminalPhasedRhythmStructure =
   ExtractTerminalStructure<PhasedRhythmStructure>;
 
-export type AlignedRhythmStructure = RhythmStructure;
+export type AlignedRhythmStructure = RhythmStructure<{
+  rhythmPhase?: undefined;
+}>;
 
-export type AlignedInitialRhythmStructure =
+export type InitialAlignedRhythmStructure =
   ExtractInitialStructure<AlignedRhythmStructure>;
 
-export type AlignedInterposedRhythmStructure =
+export type InterposedAlignedRhythmStructure =
   ExtractInterposedStructure<AlignedRhythmStructure>;
 
-export type AlignedTerminalRhythmStructure =
+export type TerminalAlignedRhythmStructure =
   ExtractTerminalStructure<AlignedRhythmStructure>;
 
 export type RhythmStructure<
@@ -56,11 +58,11 @@ export type TerminalRhythmStructure =
 export type GeneralRhythmStructure = Array<BasicRhythmStructure>;
 
 export type BasicRhythmStructure = Pick<
-  PhasedInitialRhythmStructure,
+  InitialPhasedRhythmStructure,
   "rhythmResolution"
 > &
   Pick<
-    PhasedInterposedRhythmStructure,
+    InterposedPhasedRhythmStructure,
     "rhythmDensity" | "rhythmOrientation" | "rhythmPhase"
   >;
 
@@ -69,39 +71,39 @@ export type EuclideanRhythmStructure = Pick<
   "rhythmResolution" | "rhythmDensity"
 >;
 
-export interface AlignedRhythmGroupStructure {
-  baseStructure: AlignedRhythmGroupBaseStructure;
-  memberStructure: AlignedRhythmGroupMemberStructure;
+export interface RhythmGroupStructure {
+  baseStructure: RhythmGroupBaseStructure;
+  memberStructure: RhythmGroupMemberStructure;
 }
 
-export type AlignedRhythmGroupBaseStructure = Pick<
+export type RhythmGroupBaseStructure = Pick<
   AlignedRhythmStructure,
   "structureType" | "rhythmResolution"
 > & {
-  subStructure?: InterposedAlignedRhythmGroupBaseStructure;
+  subStructure?: InterposedRhythmGroupBaseStructure;
 };
 
-export type InterposedAlignedRhythmGroupBaseStructure = Pick<
-  AlignedInterposedRhythmStructure,
+export type InterposedRhythmGroupBaseStructure = Pick<
+  InterposedRhythmStructure,
   "structureType" | "rhythmDensity" | "rhythmOrientation"
 > & {
-  subStructure?: InterposedAlignedRhythmGroupBaseStructure;
+  subStructure?: InterposedRhythmGroupBaseStructure;
 };
 
-export type AlignedRhythmGroupMemberStructure =
-  | InterposedAlignedRhythmGroupMemberStructure
-  | TerminalAlignedRhythmGroupMemberStructure;
+export type RhythmGroupMemberStructure =
+  | InterposedRhythmGroupMemberStructure
+  | TerminalRhythmGroupMemberStructure;
 
-export type InterposedAlignedRhythmGroupMemberStructure = Pick<
-  AlignedInterposedRhythmStructure,
+export type InterposedRhythmGroupMemberStructure = Pick<
+  InterposedAlignedRhythmStructure,
   "structureType" | "rhythmDensity"
 > & {
   subStructure:
-    | InterposedAlignedRhythmGroupMemberStructure
-    | TerminalAlignedRhythmGroupMemberStructure;
+    | InterposedRhythmGroupMemberStructure
+    | TerminalRhythmGroupMemberStructure;
 };
 
-export type TerminalAlignedRhythmGroupMemberStructure = Pick<
-  AlignedTerminalRhythmStructure,
+export type TerminalRhythmGroupMemberStructure = Pick<
+  TerminalAlignedRhythmStructure,
   "structureType" | "rhythmDensity"
 >;

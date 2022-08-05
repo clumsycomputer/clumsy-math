@@ -1,12 +1,12 @@
 import {
-  AlignedRhythmGroupMemberStructure,
-  AlignedRhythmGroupStructure,
+  RhythmGroupMemberStructure,
+  RhythmGroupStructure,
   AlignedRhythmStructure,
   GeneralRhythmStructure,
 } from "./models";
 
 export function getRhythmGroupMembers(
-  someRhythmGroupStructure: AlignedRhythmGroupStructure
+  someRhythmGroupStructure: RhythmGroupStructure
 ) {
   return _getRhythmGroupMembers({
     someRhythmGroupStructure,
@@ -14,7 +14,7 @@ export function getRhythmGroupMembers(
 }
 
 export interface _GetRhythmGroupMembersApi {
-  someRhythmGroupStructure: AlignedRhythmGroupStructure;
+  someRhythmGroupStructure: RhythmGroupStructure;
 }
 
 export function _getRhythmGroupMembers(
@@ -35,11 +35,8 @@ export function _getRhythmGroupMembers(
 interface GetMemberStackBaseApi {
   memberStackResult: GeneralRhythmStructure;
   someScopedBaseStructure:
-    | AlignedRhythmGroupStructure["baseStructure"]
-    | Exclude<
-        AlignedRhythmGroupStructure["baseStructure"]["subStructure"],
-        undefined
-      >;
+    | RhythmGroupStructure["baseStructure"]
+    | Exclude<RhythmGroupStructure["baseStructure"]["subStructure"], undefined>;
 }
 
 function getMemberStackBase(
@@ -86,9 +83,9 @@ function getMemberStackBase(
 }
 
 interface GetMembersApi {
-  someRhythmGroupStructure: AlignedRhythmGroupStructure;
+  someRhythmGroupStructure: RhythmGroupStructure;
   rhythmGroupMembersResult: Array<AlignedRhythmStructure>;
-  someScopedMemberStructure: AlignedRhythmGroupMemberStructure | null;
+  someScopedMemberStructure: RhythmGroupMemberStructure | null;
   memberStack: GeneralRhythmStructure;
 }
 
@@ -148,7 +145,7 @@ function getMemberStructure(
   const memberStackReversed = memberStack.reverse();
   const initialBasicStructure = memberStackReversed[0];
   if (initialBasicStructure === undefined)
-    throw new Error("getMemberStructure: memberStack empyt");
+    throw new Error("getMemberStructure: memberStack empty");
   const initialStructureResult: AlignedRhythmStructure = {
     structureType: "initial",
     rhythmResolution: initialBasicStructure.rhythmResolution,

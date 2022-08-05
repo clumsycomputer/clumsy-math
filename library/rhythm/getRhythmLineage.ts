@@ -1,29 +1,29 @@
 import { _getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
 import {
-  AlignedRhythmGroupBaseStructure,
-  AlignedRhythmGroupMemberStructure,
-  AlignedRhythmGroupStructure,
   AlignedRhythmStructure,
   GeneralRhythmStructure,
-  InterposedAlignedRhythmGroupMemberStructure,
-  TerminalAlignedRhythmGroupMemberStructure,
+  InterposedRhythmGroupMemberStructure,
+  RhythmGroupBaseStructure,
+  RhythmGroupMemberStructure,
+  RhythmGroupStructure,
+  TerminalRhythmGroupMemberStructure,
 } from "./models";
 
-export function getAlignedRhythmLineage(
+export function getRhythmLineage(
   someAlignedRhythmStructure: AlignedRhythmStructure
 ) {
-  return _getAlignedRhythmLineage({
+  return _getRhythmLineage({
     someAlignedRhythmStructure,
   });
 }
 
-export interface _GetAlignedRhythmLineageApi {
+export interface _GetRhythmLineageApi {
   someAlignedRhythmStructure: AlignedRhythmStructure;
 }
 
-export function _getAlignedRhythmLineage(
-  api: _GetAlignedRhythmLineageApi
-): Array<AlignedRhythmGroupStructure> {
+export function _getRhythmLineage(
+  api: _GetRhythmLineageApi
+): Array<RhythmGroupStructure> {
   const { someAlignedRhythmStructure } = api;
   return _getGeneralRhythmStructure({
     someRhythmStructure: someAlignedRhythmStructure,
@@ -41,15 +41,13 @@ interface GetBaseStructureApi {
   baseRhythmStructures: GeneralRhythmStructure;
 }
 
-function getBaseStructure(
-  api: GetBaseStructureApi
-): AlignedRhythmGroupBaseStructure {
+function getBaseStructure(api: GetBaseStructureApi): RhythmGroupBaseStructure {
   const { baseRhythmStructures } = api;
   const baseRhythmStructuresReversed = baseRhythmStructures.reverse();
   const initialBaseStructure = baseRhythmStructuresReversed[0];
   if (initialBaseStructure === undefined)
     throw new Error("getBaseStructure: baseRhythmStructures empty");
-  let baseStructureResult: AlignedRhythmGroupBaseStructure = {
+  let baseStructureResult: RhythmGroupBaseStructure = {
     structureType: "initial",
     rhythmResolution: initialBaseStructure.rhythmResolution,
   };
@@ -74,24 +72,24 @@ interface GetMemberStructureApi {
 
 function getMemberStructure(
   api: GetMemberStructureApi
-): AlignedRhythmGroupMemberStructure {
+): RhythmGroupMemberStructure {
   const { memberRhythmStructures } = api;
   const initialMemberStructure = memberRhythmStructures[0];
   if (initialMemberStructure === undefined)
     throw new Error("getMemberStructure: memberRhythmStructures empty");
-  let memberStructureTailRef: TerminalAlignedRhythmGroupMemberStructure = {
+  let memberStructureTailRef: TerminalRhythmGroupMemberStructure = {
     structureType: "terminal",
     rhythmDensity: initialMemberStructure.rhythmDensity,
   };
-  const memberStructureResult: AlignedRhythmGroupMemberStructure =
+  const memberStructureResult: RhythmGroupMemberStructure =
     memberStructureTailRef;
   memberRhythmStructures.slice(1).forEach((someBasicStructure) => {
-    const nextTerminalStructure: TerminalAlignedRhythmGroupMemberStructure = {
+    const nextTerminalStructure: TerminalRhythmGroupMemberStructure = {
       structureType: "terminal",
       rhythmDensity: someBasicStructure.rhythmDensity,
     };
     const nextInterposedStructure =
-      memberStructureTailRef as unknown as InterposedAlignedRhythmGroupMemberStructure;
+      memberStructureTailRef as unknown as InterposedRhythmGroupMemberStructure;
     nextInterposedStructure.structureType = "interposed";
     nextInterposedStructure.subStructure = nextTerminalStructure;
     memberStructureTailRef = nextTerminalStructure;
