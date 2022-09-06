@@ -1,6 +1,6 @@
 {
   "name": "clumsy-math",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "a little library of helpful math utensils",
   "main": "./package/index.js",
   "types": "./package/types/index.js",
