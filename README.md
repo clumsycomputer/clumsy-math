@@ -6,7 +6,7 @@ a little library of helpful math utensils 🙂
 
 ###### Rhythm
 
-> the concept of a rhythm as a discrete sequence / cycle of booleans
+> the concept of rhythm as a discrete sequence / cycle of booleans
 
 ```typescript
 const rhythm: Rhythm = [true, false, true, false];
@@ -26,10 +26,6 @@ const rhythmMap: RhythmMap = {
 ###### RhythmStructure
 
 > an extendable [_RecursiveSpatialStructure_](#recursivespatialstructure) that encodes the concept of layered euclidean rhythms and serves as the foundation for both [_AlignedRhythmStructure_](#alignedrhythmstructure) and [_PhasedRhythmStructure_](#phasedrhythmstructure)
-
-```typescript
-
-```
 
 ###### AlignedRhythmStructure
 
@@ -77,7 +73,7 @@ const phasedRhythmStructure: PhasedRhythmStructure = {
 
 ###### GeneralRhythmStructure
 
-> a generalized more flexible encoding that encompasses aligned and phased rhythm structures for simplifying computations
+> a generalized more flexible encoding that encompasses [_AlignedRhythmStructure_](#alignedrhythmstructure) and [_PhasedRhythmStructure_](#phasedrhythmstructure) for simplifying computations
 
 ```typescript
 const generalRhythmStructure: GeneralRhythmStructure = [
@@ -122,26 +118,41 @@ const euclideanRhythm: EuclideanRhythmStructure = {
 
 ###### RhythmGroupStructure
 
->
+> a compact encoding for a set of related [_AlignedRhythmStructure_](#alignedrhythmstructure)
 
 ```typescript
-
+const rhythmGroupStructure: RhythmGroupStructure = {
+  baseStructure: {
+    structureType: "initial",
+    rhythmResolution: 5,
+  },
+  memberStructure: {
+    structureType: "terminal",
+    rhythmDensity: 3,
+  },
+};
 ```
 
 ###### RhythmGroupBaseStructure
 
->
+> the invariant portion of [_RhythmGroupStructure_](#rhythmgroupstructure)
 
 ```typescript
-
+const rhythmGroupBaseStructure: RhythmGroupBaseStructure = {
+  structureType: "initial",
+  rhythmResolution: 5,
+};
 ```
 
 ###### RhythmGroupMemberStructure
 
->
+> the variant portion of [_RhythmGroupStructure_](#rhythmgroupstructure)
 
 ```typescript
-
+const rhythmGroupMemberStructure: RhythmGroupMemberStructure = {
+  structureType: "terminal",
+  rhythmDensity: 3,
+};
 ```
 
 ## rhythm _(functions)_
