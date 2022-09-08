@@ -211,10 +211,15 @@ const generalRhythmStructure = getGeneralRhythmStructure({
 
 ```typescript
 const phasedRhythmMap = getPhasedRhythmMap(
-  {
+  getRhythmMap({
+    structureType: "initial",
     rhythmResolution: 5,
-    rhythmPoints: [0, 1, 3],
-  },
+    subStructure: {
+      structureType: "terminal",
+      rhythmDensity: 3,
+      rhythmOrientation: 0,
+    },
+  }),
   -1
 );
 // phasedRhythmMap ===
@@ -229,10 +234,17 @@ const phasedRhythmMap = getPhasedRhythmMap(
 > normalizes rhythm points to values within 0 and 1 of given [_RhythmMap_](#rhythmmap)
 
 ```typescript
-const relativeRhythmPoints = getRelativeRhythmPoints({
-  rhythmResolution: 5,
-  rhythmPoints: [0, 1, 3],
-});
+const relativeRhythmPoints = getRelativeRhythmPoints(
+  getRhythmMap({
+    structureType: "initial",
+    rhythmResolution: 5,
+    subStructure: {
+      structureType: "terminal",
+      rhythmDensity: 3,
+      rhythmOrientation: 0,
+    },
+  })
+);
 // relativeRhythmPoints === [0, 0.2, 0.6];
 ```
 
@@ -349,10 +361,17 @@ const phasedRhythmId = getPhasedRhythmId({
 > computes the length between rhythm points of given [_RhythmMap_](#rhythmmap)
 
 ```typescript
-const rhythmIntervals = getRhythmIntervals({
-  rhythmResolution: 5,
-  rhythmPoints: [0, 1, 3],
-});
+const rhythmIntervals = getRhythmIntervals(
+  getRhythmMap({
+    structureType: "initial",
+    rhythmResolution: 5,
+    subStructure: {
+      structureType: "terminal",
+      rhythmDensity: 3,
+      rhythmOrientation: 0,
+    },
+  })
+);
 // rhythmIntervals = [1,2,2]
 ```
 
@@ -390,11 +409,27 @@ const rhythmMap = getRhythmMap({
 
 ```typescript
 const rhythmPointWeights = getRhythmPointWeights(
-  {
+  getRhythmMap({
+    structureType: "initial",
     rhythmResolution: 5,
-    rhythmPoints: [0, 1, 3],
-  },
-  [3, 1, 2, 2, 1]
+    subStructure: {
+      structureType: "terminal",
+      rhythmDensity: 3,
+      rhythmOrientation: 0,
+    },
+  }),
+  getRhythmSlotWeights(
+    getRhythmGroupMembers({
+      baseStructure: {
+        structureType: "initial",
+        rhythmResolution: 5,
+      },
+      memberStructure: {
+        structureType: "terminal",
+        rhythmDensity: 3,
+      },
+    }).map(getRhythmMap)
+  )
 );
 // rhythmPointWeights === [3, 1, 2];
 ```
@@ -424,10 +459,17 @@ const rhythmSlotWeights = getRhythmSlotWeights(
 > transforms a [_RhythmMap_](#rhythmmap) into a string of 1's and 0's
 
 ```typescript
-const rhythmString = getRhythmString({
-  rhythmResolution: 5,
-  rhythmPoints: [0, 1, 3],
-});
+const rhythmString = getRhythmString(
+  getRhythmMap({
+    structureType: "initial",
+    rhythmResolution: 5,
+    subStructure: {
+      structureType: "terminal",
+      rhythmDensity: 3,
+      rhythmOrientation: 0,
+    },
+  })
+);
 // rhythmString === "11010"
 ```
 
@@ -437,11 +479,27 @@ const rhythmString = getRhythmString({
 
 ```typescript
 const rhythmWeight = getRhythmWeight(
-  {
+  getRhythmMap({
+    structureType: "initial",
     rhythmResolution: 5,
-    rhythmPoints: [0, 1, 3],
-  },
-  [3, 1, 2, 2, 1]
+    subStructure: {
+      structureType: "terminal",
+      rhythmDensity: 3,
+      rhythmOrientation: 0,
+    },
+  }),
+  getRhythmSlotWeights(
+    getRhythmGroupMembers({
+      baseStructure: {
+        structureType: "initial",
+        rhythmResolution: 5,
+      },
+      memberStructure: {
+        structureType: "terminal",
+        rhythmDensity: 3,
+      },
+    }).map(getRhythmMap)
+  )
 );
 // rhythmWeight === 6
 ```
