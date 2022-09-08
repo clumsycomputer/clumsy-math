@@ -6,7 +6,7 @@ a little library of helpful math utensils 🙂
 
 ###### Rhythm
 
-> an array / sequence of booleans
+> the concept of a rhythm as a discrete sequence / cycle of booleans
 
 ```typescript
 const rhythm: Rhythm = [true, false, true, false];
@@ -14,7 +14,7 @@ const rhythm: Rhythm = [true, false, true, false];
 
 ###### RhythmMap
 
-> the defacto encoding for [_rhythm_](#rhythm)
+> the defacto encoding for [_Rhythm_](#rhythm)
 
 ```typescript
 const rhythmMap: RhythmMap = {
@@ -25,7 +25,7 @@ const rhythmMap: RhythmMap = {
 
 ###### RhythmStructure
 
-> an extendable [_recursive spatial structure_](#recursivespatialstructure) that encodes the concept of layered euclidean rhythms and serves as the foundation for [_aligned_](#alignedrhythmstructure) and [_phased_](#phasedrhythmstructure) rhythm structures
+> an extendable [_RecursiveSpatialStructure_](#recursivespatialstructure) that encodes the concept of layered euclidean rhythms and serves as the foundation for both [_AlignedRhythmStructure_](#alignedrhythmstructure) and [_PhasedRhythmStructure_](#phasedrhythmstructure)
 
 ```typescript
 
@@ -33,7 +33,7 @@ const rhythmMap: RhythmMap = {
 
 ###### AlignedRhythmStructure
 
-> mostly an alias for [_rhythm structure_](#rhythmstructure) which serves to highlight the difference between itself and [_phased rhythm structure_](#phasedrhythmstructure)
+> mostly an alias for [_RhythmStructure_](#rhythmstructure) which serves to highlight the difference between itself and [_PhasedRhythmStructure_](#phasedrhythmstructure)
 
 ```typescript
 const alignedRhythmStructure: AlignedRhythmStructure = {
@@ -54,7 +54,7 @@ const alignedRhythmStructure: AlignedRhythmStructure = {
 
 ###### PhasedRhythmStructure
 
-> a [_rhythm structure_](#rhythmstructure) with the additional concept of layers being phased
+> a [_RhythmStructure_](#rhythmstructure) with the additional concept of layers being phased
 
 ```typescript
 const phasedRhythmStructure: PhasedRhythmStructure = {
@@ -148,7 +148,7 @@ const euclideanRhythm: EuclideanRhythmStructure = {
 
 #### getEuclideanRhythm
 
-> computes the euclidean [_rhythm_](#rhythm) of the given [_euclidean rhythm structure_](#euclideanrhythmstructure)
+> computes the euclidean [_Rhythm_](#rhythm) of the given [_EuclideanRhythmStructure_](#euclideanrhythmstructure)
 
 ```typescript
 const euclideanRhythm = getEuclideanRhythm({
@@ -160,7 +160,7 @@ const euclideanRhythm = getEuclideanRhythm({
 
 ###### getGeneralRhythmStructure
 
-> computes the [_general rhythm structure_](#generalrhythmstructure) of the given [_rhythm structure_](#rhythmstructure)
+> computes the [_GeneralRhythmStructure_](#generalrhythmstructure) of the given [_RhythmStructure_](#rhythmstructure)
 
 ```typescript
 const generalRhythmStructure = getGeneralRhythmStructure({
@@ -236,42 +236,42 @@ const generalRhythmStructure = getGeneralRhythmStructure({
 
 ###### getAlignedRhythmId
 
-> computes the deterministic string encoding of the given [_aligned rhythm structure_](#alignedrhythmstructure)
+> computes the deterministic string encoding of the given [_AlignedRhythmStructure_](#alignedrhythmstructure)
 
 ```typescript
 const alignedRhythmId = getAlignedRhythmId({
-  structureType: 'initial',
+  structureType: "initial",
   rhythmResolution: 5,
   subStructure: {
-    structureType: 'terminal'
+    structureType: "terminal",
     rhythmDensity: 3,
-    rhythmOrientation: 0
-  }
-})
+    rhythmOrientation: 0,
+  },
+});
 // alignedRhythmId === "aligned__5__3_0"
 ```
 
 ###### getPhasedRhythmId
 
-> computes the deterministic string encoding of the given [_phased rhythm structure_](#phasedrhythmstructure)
+> computes the deterministic string encoding of the given [_PhasedRhythmStructure_](#phasedrhythmstructure)
 
 ```typescript
 const phasedRhythmId = getPhasedRhythmId({
-  structureType: 'initial',
+  structureType: "initial",
   rhythmResolution: 5,
   rhythmPhase: 0,
   subStructure: {
-    structureType: 'terminal'
+    structureType: "terminal",
     rhythmDensity: 3,
-    rhythmOrientation: 0
-  }
-})
+    rhythmOrientation: 0,
+  },
+});
 // phasedRhythmId === "phased__5_0__3_0"
 ```
 
 ###### getRhythmIntervals
 
-> computes the length between rhythm points of the given [_rhythm map_](#rhythmmap)
+> computes the length between rhythm points of the given [_RhythmMap_](#rhythmmap)
 
 ```typescript
 const rhythmIntervals = getRhythmIntervals({
@@ -291,7 +291,7 @@ const rhythmIntervals = getRhythmIntervals({
 
 ###### getRhythmMap
 
-> computes the [_rhythm map_](#rhythmmap) of the given [_rhythm structure_](#rhythmstructure)
+> computes the [_RhythmMap_](#rhythmmap) of the given [_RhythmStructure_](#rhythmstructure)
 
 ```typescript
 const rhythmMap = getRhythmMap({
@@ -327,7 +327,7 @@ const rhythmMap = getRhythmMap({
 
 ###### getRhythmString
 
-> transforms a [_rhythm map_](#rhythmmap) into a string of 1's and 0's
+> transforms a [_RhythmMap_](#rhythmmap) into a string of 1's and 0's
 
 ```typescript
 const rhythmString = getRhythmString({
@@ -438,3 +438,9 @@ const rhythmString = getRhythmString({
 ## general _(models)_
 
 ###### RecursiveSpatialStructure
+
+>
+
+```typescript
+
+```
