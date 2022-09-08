@@ -248,12 +248,103 @@ const relativeRhythmPoints = getRelativeRhythmPoints(
 // relativeRhythmPoints === [0, 0.2, 0.6];
 ```
 
-###### getRhythmComponents
+###### getPhasedRhythmComponents
 
->
+> computes each layer's corresponding [_PhasedRhythmStructure_](#phasedrhythmstructure) of given [_PhasedRhythmStructure_](#phasedrhythmstructure)
 
 ```typescript
+const phasedRhythmComponents = getPhasedRhythmComponents({
+  structureType: "initial",
+  rhythmResolution: 7,
+  rhythmPhase: 0,
+  subStructure: {
+    structureType: "interposed",
+    rhythmDensity: 5,
+    rhythmOrientation: 0,
+    rhythmPhase: 0,
+    subStructure: {
+      structureType: "terminal",
+      rhythmDensity: 3,
+      rhythmOrientation: 0,
+    },
+  },
+});
+// phasedRhythmComponents ===
+//   [
+//     {
+//       structureType: "initial",
+//       rhythmResolution: 7,
+//       rhythmPhase: 0,
+//       subStructure: {
+//         structureType: "terminal",
+//         rhythmDensity: 5,
+//         rhythmOrientation: 0,
+//       },
+//     },
+//     {
+//       structureType: "initial",
+//       rhythmResolution: 7,
+//       rhythmPhase: 0,
+//       subStructure: {
+//         structureType: "interposed",
+//         rhythmDensity: 5,
+//         rhythmOrientation: 0,
+//         rhythmPhase: 0,
+//         subStructure: {
+//           structureType: "terminal",
+//           rhythmDensity: 3,
+//           rhythmOrientation: 0,
+//         },
+//       },
+//     },
+//   ];
+```
 
+###### getAlignedRhythmComponents
+
+> computes each layer's corresponding [_AlignedRhythmStructure_](#alignedrhythmstructure) of given [_AlignedRhythmStrucutre_](#alignedrhythmstructure)
+
+```typescript
+const alignedRhythmComponents = getAlignedRhythmComponents({
+  structureType: "initial",
+  rhythmResolution: 7,
+  subStructure: {
+    structureType: "interposed",
+    rhythmDensity: 5,
+    rhythmOrientation: 0,
+    subStructure: {
+      structureType: "terminal",
+      rhythmDensity: 3,
+      rhythmOrientation: 0,
+    },
+  },
+});
+// alignedRhythmComponents ===
+//   [
+//     {
+//       structureType: "initial",
+//       rhythmResolution: 7,
+//       subStructure: {
+//         structureType: "terminal",
+//         rhythmDensity: 5,
+//         rhythmOrientation: 0,
+//       },
+//     },
+//     {
+//       structureType: "initial",
+//       rhythmResolution: 7,
+//       subStructure: {
+//         structureType: "interposed",
+//         rhythmDensity: 5,
+//         rhythmOrientation: 0,
+//         subStructure: {
+//           structureType: "terminal",
+//           rhythmDensity: 3,
+//           rhythmOrientation: 0,
+//         },
+//       },
+//     },
+//   ];
 ```
 
 ###### getRhythmGroupId
@@ -377,10 +468,55 @@ const rhythmIntervals = getRhythmIntervals(
 
 ###### getRhythmLineage
 
->
+> computes each layer's corresponding [_RhythmGroupStructure_](#rhythmgroupstructure) of given [_RhythmGroupStructure_](#alignedrhythmstructure)
 
 ```typescript
-
+const rhythmLineage = getRhythmLineage({
+  structureType: "initial",
+  rhythmResolution: 7,
+  subStructure: {
+    structureType: "interposed",
+    rhythmDensity: 5,
+    rhythmOrientation: 0,
+    subStructure: {
+      structureType: "terminal",
+      rhythmDensity: 3,
+      rhythmOrientation: 0,
+    },
+  },
+});
+// rhythmLineage ===
+//   [
+//     {
+//       baseStructure: {
+//         structureType: "initial",
+//         rhythmResolution: 7,
+//       },
+//       memberStructure: {
+//         structureType: "interposed",
+//         rhythmDensity: 5,
+//         subStructure: {
+//           structureType: "terminal",
+//           rhythmDensity: 3,
+//         },
+//       },
+//     },
+//     {
+//       baseStructure: {
+//         structureType: "initial",
+//         rhythmResolution: 7,
+//         subStructure: {
+//           structureType: "interposed",
+//           rhythmDensity: 5,
+//           rhythmOrientation: 0,
+//         },
+//       },
+//       memberStructure: {
+//         structureType: "terminal",
+//         rhythmDensity: 3,
+//       },
+//     },
+//   ];
 ```
 
 ###### getRhythmMap
@@ -408,28 +544,20 @@ const rhythmMap = getRhythmMap({
 > maps rhythm points of given [_RhythmMap_](#rhythmmap) to corresponding slot weight values
 
 ```typescript
-const rhythmPointWeights = getRhythmPointWeights(
-  getRhythmMap({
+const rhythmGroupMemberRhythmMaps = getRhythmGroupMembers({
+  baseStructure: {
     structureType: "initial",
     rhythmResolution: 5,
-    subStructure: {
-      structureType: "terminal",
-      rhythmDensity: 3,
-      rhythmOrientation: 0,
-    },
-  }),
-  getRhythmSlotWeights(
-    getRhythmGroupMembers({
-      baseStructure: {
-        structureType: "initial",
-        rhythmResolution: 5,
-      },
-      memberStructure: {
-        structureType: "terminal",
-        rhythmDensity: 3,
-      },
-    }).map(getRhythmMap)
-  )
+  },
+  memberStructure: {
+    structureType: "terminal",
+    rhythmDensity: 3,
+  },
+}).map(getRhythmMap);
+
+const rhythmPointWeights = getRhythmPointWeights(
+  rhythmGroupMemberRhythmMaps[0],
+  getRhythmSlotWeights(rhythmGroupMemberRhythmMaps)
 );
 // rhythmPointWeights === [3, 1, 2];
 ```
@@ -449,7 +577,7 @@ const rhythmSlotWeights = getRhythmSlotWeights(
       structureType: "terminal",
       density: 3,
     },
-  })
+  }).map(getRhythmMap)
 );
 // rhythmSlotWeights === [3, 1, 2, 2, 1];
 ```
@@ -478,28 +606,20 @@ const rhythmString = getRhythmString(
 > computes the rhythm point weight sum of given [_RhythmMap_](#rhythmmap) with corresponding slot weights
 
 ```typescript
-const rhythmWeight = getRhythmWeight(
-  getRhythmMap({
+const rhythmGroupMemberRhythmMaps = getRhythmGroupMembers({
+  baseStructure: {
     structureType: "initial",
     rhythmResolution: 5,
-    subStructure: {
-      structureType: "terminal",
-      rhythmDensity: 3,
-      rhythmOrientation: 0,
-    },
-  }),
-  getRhythmSlotWeights(
-    getRhythmGroupMembers({
-      baseStructure: {
-        structureType: "initial",
-        rhythmResolution: 5,
-      },
-      memberStructure: {
-        structureType: "terminal",
-        rhythmDensity: 3,
-      },
-    }).map(getRhythmMap)
-  )
+  },
+  memberStructure: {
+    structureType: "terminal",
+    rhythmDensity: 3,
+  },
+}).map(getRhythmMap);
+
+const rhythmWeight = getRhythmWeight(
+  rhythmGroupMemberRhythmMaps[0],
+  getRhythmSlotWeights(rhythmGroupMemberRhythmMaps)
 );
 // rhythmWeight === 6
 ```
