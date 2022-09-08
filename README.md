@@ -118,7 +118,7 @@ const euclideanRhythm: EuclideanRhythmStructure = {
 
 ###### RhythmGroupStructure
 
-> a compact encoding for a set of related [_AlignedRhythmStructure_](#alignedrhythmstructure)
+> a compact encoding for a set of related _[AlignedRhythmStructure](#alignedrhythmstructure)'s_
 
 ```typescript
 const rhythmGroupStructure: RhythmGroupStructure = {
@@ -226,10 +226,14 @@ const phasedRhythmMap = getPhasedRhythmMap(
 
 ###### getRelativeRhythmPoints
 
->
+> normalizes rhythm points to values within 0 and 1 of given [_RhythmMap_](#rhythmmap)
 
 ```typescript
-
+const relativeRhythmPoints = getRelativeRhythmPoints({
+  rhythmResolution: 5,
+  rhythmPoints: [0, 1, 3],
+});
+// relativeRhythmPoints === [0, 0.2, 0.6];
 ```
 
 ###### getRhythmComponents
@@ -382,18 +386,37 @@ const rhythmMap = getRhythmMap({
 
 ###### getRhythmPointWeights
 
->
+> maps rhythm points of given [_RhythmMap_](#rhythmmap) to corresponding slot weight values
 
 ```typescript
-
+const rhythmPointWeights = getRhythmPointWeights(
+  {
+    rhythmResolution: 5,
+    rhythmPoints: [0, 1, 3],
+  },
+  [3, 1, 2, 2, 1]
+);
+// rhythmPointWeights === [3, 1, 2];
 ```
 
 ###### getRhythmSlotWeights
 
->
+> computes the weight / count of rhythm point distribution across the slots of given rhythm group members
 
 ```typescript
-
+const rhythmSlotWeights = getRhythmSlotWeights(
+  getRhythmGroupMembers({
+    baseStructure: {
+      structureType: "initial",
+      rhythmResolution: 5,
+    },
+    memberStructure: {
+      structureType: "terminal",
+      density: 3,
+    },
+  })
+);
+// rhythmSlotWeights === [3, 1, 2, 2, 1];
 ```
 
 ###### getRhythmString
@@ -410,10 +433,17 @@ const rhythmString = getRhythmString({
 
 ###### getRhythmWeight
 
->
+> computes the rhythm point weight sum of given [_RhythmMap_](#rhythmmap) with corresponding slot weights
 
 ```typescript
-
+const rhythmWeight = getRhythmWeight(
+  {
+    rhythmResolution: 5,
+    rhythmPoints: [0, 1, 3],
+  },
+  [3, 1, 2, 2, 1]
+);
+// rhythmWeight === 6
 ```
 
 ## primes _(functions)_
