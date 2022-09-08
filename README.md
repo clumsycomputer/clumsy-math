@@ -159,7 +159,7 @@ const rhythmGroupMemberStructure: RhythmGroupMemberStructure = {
 
 #### getEuclideanRhythm
 
-> computes the euclidean [_Rhythm_](#rhythm) of the given [_EuclideanRhythmStructure_](#euclideanrhythmstructure)
+> computes the euclidean [_Rhythm_](#rhythm) of given [_EuclideanRhythmStructure_](#euclideanrhythmstructure)
 
 ```typescript
 const euclideanRhythm = getEuclideanRhythm({
@@ -171,7 +171,7 @@ const euclideanRhythm = getEuclideanRhythm({
 
 ###### getGeneralRhythmStructure
 
-> computes the [_GeneralRhythmStructure_](#generalrhythmstructure) of the given [_RhythmStructure_](#rhythmstructure)
+> computes the [_GeneralRhythmStructure_](#generalrhythmstructure) of given [_RhythmStructure_](#rhythmstructure)
 
 ```typescript
 const generalRhythmStructure = getGeneralRhythmStructure({
@@ -207,10 +207,21 @@ const generalRhythmStructure = getGeneralRhythmStructure({
 
 ###### getPhasedRhythmMap
 
-> transforms
+> transforms rhythm points of given [_RhythmMap_](#rhythmmap) by given phase
 
 ```typescript
-
+const phasedRhythmMap = getPhasedRhythmMap(
+  {
+    rhythmResolution: 5,
+    rhythmPoints: [0, 1, 3],
+  },
+  -1
+);
+// phasedRhythmMap ===
+//   {
+//     rhythmResolution: 5,
+//     rhythmPoints: [1, 2, 4],
+//   };
 ```
 
 ###### getRelativeRhythmPoints
@@ -231,23 +242,72 @@ const generalRhythmStructure = getGeneralRhythmStructure({
 
 ###### getRhythmGroupId
 
->
+> computes the deterministic string encoding of given [_RhythmGroupStructure_](#rhythmgroupstructure)
 
 ```typescript
-
+const rhythmGroupId = getRhythmGroupId({
+  baseStructure: {
+    structureType: "initial",
+    rhythmResolution: 5,
+  },
+  memberStructure: {
+    structureType: "terminal",
+    rhythmDensity: 3,
+  },
+});
+// rhythmGroupId === "group___5___3";
 ```
 
 ###### getRhythmGroupMembers
 
->
+> computes all [_AlignedRhythmStructure_](#alignedrhythmstructure) of given [_RhythmGroupStructure_](#rhythmgroupstructure)
 
 ```typescript
-
+const rhythmGroupMembers = getRhythmGroupMembers({
+  baseStructure: {
+    structureType: "initial",
+    rhythmResolution: 5,
+  },
+  memberStructure: {
+    structureType: "terminal",
+    rhythmDensity: 3,
+  },
+});
+// rhythmGroupMembers ===
+//   [
+//     {
+//       structureType: "initial",
+//       rhythmResolution: 5,
+//       subStructure: {
+//         structureType: "terminal",
+//         rhythmDensity: 3,
+//         rhythmOrientation: 0,
+//       },
+//     },
+//     {
+//       structureType: "initial",
+//       rhythmResolution: 5,
+//       subStructure: {
+//         structureType: "terminal",
+//         rhythmDensity: 3,
+//         rhythmOrientation: 1,
+//       },
+//     },
+//     {
+//       structureType: "initial",
+//       rhythmResolution: 5,
+//       subStructure: {
+//         structureType: "terminal",
+//         rhythmDensity: 3,
+//         rhythmOrientation: 2,
+//       },
+//     },
+//   ];
 ```
 
 ###### getAlignedRhythmId
 
-> computes the deterministic string encoding of the given [_AlignedRhythmStructure_](#alignedrhythmstructure)
+> computes the deterministic string encoding of given [_AlignedRhythmStructure_](#alignedrhythmstructure)
 
 ```typescript
 const alignedRhythmId = getAlignedRhythmId({
@@ -264,7 +324,7 @@ const alignedRhythmId = getAlignedRhythmId({
 
 ###### getPhasedRhythmId
 
-> computes the deterministic string encoding of the given [_PhasedRhythmStructure_](#phasedrhythmstructure)
+> computes the deterministic string encoding of given [_PhasedRhythmStructure_](#phasedrhythmstructure)
 
 ```typescript
 const phasedRhythmId = getPhasedRhythmId({
@@ -282,7 +342,7 @@ const phasedRhythmId = getPhasedRhythmId({
 
 ###### getRhythmIntervals
 
-> computes the length between rhythm points of the given [_RhythmMap_](#rhythmmap)
+> computes the length between rhythm points of given [_RhythmMap_](#rhythmmap)
 
 ```typescript
 const rhythmIntervals = getRhythmIntervals({
@@ -302,7 +362,7 @@ const rhythmIntervals = getRhythmIntervals({
 
 ###### getRhythmMap
 
-> computes the [_RhythmMap_](#rhythmmap) of the given [_RhythmStructure_](#rhythmstructure)
+> computes the [_RhythmMap_](#rhythmmap) of given [_RhythmStructure_](#rhythmstructure)
 
 ```typescript
 const rhythmMap = getRhythmMap({
