@@ -302,7 +302,7 @@ const phasedRhythmComponents = getPhasedRhythmComponents({
 
 ###### getAlignedRhythmComponents
 
-> computes each layer's corresponding [_AlignedRhythmStructure_](#alignedrhythmstructure) of given [_AlignedRhythmStrucutre_](#alignedrhythmstructure)
+> computes each layer's corresponding [_AlignedRhythmStructure_](#alignedrhythmstructure) of given [_AlignedRhythmStructure_](#alignedrhythmstructure)
 
 ```typescript
 const alignedRhythmComponents = getAlignedRhythmComponents({
@@ -468,7 +468,7 @@ const rhythmIntervals = getRhythmIntervals(
 
 ###### getRhythmLineage
 
-> computes each layer's corresponding [_RhythmGroupStructure_](#rhythmgroupstructure) of given [_RhythmGroupStructure_](#alignedrhythmstructure)
+> computes each layer's corresponding [_RhythmGroupStructure_](#rhythmgroupstructure) of given [_AlignedRhythmStructure_](#alignedrhythmstructure)
 
 ```typescript
 const rhythmLineage = getRhythmLineage({
@@ -628,90 +628,101 @@ const rhythmWeight = getRhythmWeight(
 
 ###### getNearestPrimes
 
->
+> computes the nearest prime below and above given number
 
 ```typescript
-
+const nearestPrimes = getNearestPrimes(10);
+// nearestPrimes === [7, 11]
 ```
 
 ###### getNumberGreaterThanPrime
 
->
+> computes a number greater than the prime of given prime index
 
 ```typescript
-
+const numberGreaterThan7 = getNumberGreaterThanPrime(3);
+// numberGreaterThan7 === 8
 ```
 
 ###### getPrime
 
->
+> computes prime of given prime index
 
 ```typescript
-
+const prime = getPrime(3);
+// prime === 7
 ```
 
 ###### getPrimeContainer
 
->
+> computes prime container of given prime container index
 
 ```typescript
-
+const primeContainer = getPrimeContainer(2);
+// primeContainer === 12
 ```
 
 ###### getPrimeContainers
 
->
+> computes prime containers up to given prime container index
 
 ```typescript
-
+const primeContainers = getPrimeContainers(2);
+// primeContainers = [4, 6, 12]
 ```
 
 ###### getPrimes
 
->
+> computes primes up to given prime index
 
 ```typescript
-
+const primes = getPrimes(3);
+// primes === [2, 3, 5, 7]
 ```
 
-###### getPrimesInRange
+###### getPrimesRangeInclusive
 
->
+> computes primes contained within given minimum number and maximum number
 
 ```typescript
-
+const primesRange = getPrimesRangeInclusive(4, 11);
+// primesRange === [5, 7, 11]
 ```
 
 ###### getPrimesLessThanInclusive
 
->
+> computes primes less than or equal to given number
 
 ```typescript
-
+const primesLessThan12 = getPrimesLessThanInclusive(12);
+// primesLessThan12 = [2, 3, 5, 7, 11]
 ```
 
 ###### getPrimesSlice
 
->
+> computes primes from given minimum prime index to given maximum prime index
 
 ```typescript
-
+const primesSlice = getPrimesSlice(3, 5);
+// primesSlice === [7, 11, 13]
 ```
 
 ###### isPrime
 
->
+> checks if given number is prime
 
 ```typescript
-
+const isFourPrime = isPrime(4);
+// isFourPrime === false
 ```
 
 ###### isPrimeContainer
 
->
+> checks if given number is prime container
 
 ```typescript
-
+const isFourPrimeContainer = isPrimeContainer(4);
+// isFourPrimeContainer === true
 ```
 
 ## general _(models)_
