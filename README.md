@@ -2,100 +2,143 @@
 
 a little library of helpful math utensils 🙂
 
-## rhythm _(models)_
+## rhythm _(concepts)_
+
+###### rhythm
+
+> a discrete sequence/cycle of binary values
+
+```typescript
+const basicRhythm: Rhythm = [true, true, false, true, false];
+```
+
+###### rhythm slot
+
+> the building block of rhythm
+
+```typescript
+const basicRhythm: Rhythm = [true, true, false, true, false];
+const basicRhythmSlotZero = true; // basicRhythm[0]
+const basicRhythmSlotTwo = false; // basicRhythm[2]
+```
+
+###### rhythm point
+
+> the index of a slot whose value is true/1
+
+```typescript
+const basicRhythm: Rhythm = [true, true, false, true, false];
+const basicRhythmPoints = [0, 1, 3];
+```
+
+###### rhythm resolution
+
+> the number of slots that make up a rhythm
+
+```typescript
+const basicRhythm: Rhythm = [true, true, false, true, false];
+const basicRhythmResolution = 5; // basicRhythm.length
+```
+
+###### rhythm density
+
+> the number of points in a rhythm
+
+```typescript
+const basicRhythm: Rhythm = [true, true, false, true, false];
+const basicRhythmPoints = [0, 1, 3];
+const basicRhythmDensity = 3; // basicRhythmPoints.length
+```
+
+###### rhythm phase
+
+> an offset of points relative to a base rhythm
+
+```typescript
+const basicRhythm: Rhythm = [true, true, false, true, false];
+const basicRhythmPhase = -1;
+const phasedBasicRhythm = [false, true, true, false, true];
+```
+
+###### rhythm orientation
+
+> the point index relative to a base rhythm that indicates an adjusted rhythm's anchor/starting point
+
+```typescript
+const basicRhythm: Rhythm = [true, true, false, true, false];
+const basicRhythmOrientation = 1;
+const reorientedBasicRhythm = [true, false, true, false, true];
+```
+
+###### relative rhythm point
+
+> a point whose value is normalized within the range of [0, 1)
+
+```typescript
+const basicRhythm: Rhythm = [true, true, false, true, false];
+const basicRhythmPoints = [0, 1, 3];
+const relativeBasicRhythmPoints = [0, 0.2, 0.6];
+```
+
+###### rhythm interval
+
+> the length/distance between two points measured in slots
+
+```typescript
+const basicRhythm: Rhythm = [true, true, false, true, false];
+const basicRhythmPoints = [0, 1, 3];
+const basicRhythmIntervals = [1, 2, 2];
+```
+
+###### rhythm slot weight
+
+> the number/count of points that exist at a slot in the context of a set of rhythms which all have the same resolution
+
+```typescript
+const basicRhythmZero: Rhythm = [true, true, false, true, false]; // 1, 1, 0, 1, 0
+const basicRhythmOne: Rhythm = [true, false, true, false, true]; // 1, 0, 1, 0, 1
+const basicRhythmTwo: Rhythm = [true, false, true, true, false]; // 1, 0, 1, 1, 0
+const basicRhythmSlotWeights = [3, 1, 2, 2, 1];
+const basicRhythmSlotWeightZero = 3; // basicRhythmSlotWeights[0]
+```
+
+###### rhythm point weight
+
+> a point's corresponding slot weight
+
+```typescript
+const basicRhythmZero: Rhythm = [true, true, false, true, false];
+const basicRhythmOne: Rhythm = [true, false, true, false, true];
+const basicRhythmTwo: Rhythm = [true, false, true, true, false];
+const basicRhythmSlotWeights = [3, 1, 2, 2, 1];
+const basicRhythmZeroPoints = [0, 1, 3];
+const basicRhythmZeroPointsPointTwoWeight = 2; // basicRhythmSlotWeights[basicRhythmPointsZero[2]]
+```
+
+###### rhythm weight
+
+> the sum of a rhythm's point weights
+
+```typescript
+const basicRhythmZero: Rhythm = [true, true, false, true, false];
+const basicRhythmOne: Rhythm = [true, false, true, false, true];
+const basicRhythmTwo: Rhythm = [true, false, true, true, false];
+const basicRhythmSlotWeights = [3, 1, 2, 2, 1];
+const basicRhythmZeroPoints = [0, 1, 3];
+const basicRhythmZeroWeight = 6;
+```
+
+## rhythm _(classifications)_
+
+###### euclidean rhythm - [white paper](http://cgm.cs.mcgill.ca/~godfried/publications/banff.pdf)
+
+###### recursive euclidean rhythm
+
+## rhythm _(encodings)_
 
 ###### Rhythm
 
-> rhythm as a discrete sequence / cycle of booleans
-
-```typescript
-const rhythm: Rhythm = [true, false, true, false];
-// Rhythm === Array<RhythmSlot> === Array<boolean>
-```
-
-###### RhythmSlot
-
-> the building block of _[Rhythm](#rhythm)_
-
-```typescript
-// RhythmSlot === boolean
-```
-
-###### RhythmPoint
-
-> the index of a _[RhythmSlot](#rhythmslot)_ whos value is true
-
-```typescript
-// RhythmPoint === number
-```
-
-###### RhythmResolution
-
-> the number of _[RhythmSlot](#rhythmslot)s_ in a _[Rhythm](#rhythm)_
-
-```typescript
-// RhythmResolution === number
-```
-
-###### RhythmDensity
-
-> the number of _[RhythmPoint](#rhythmpoint)s_ in a _[Rhythm](#rhythm)_
-
-```typescript
-// RhythmDensity === number
-```
-
-###### RhythmPhase
-
-> an offset of _[RhythmPoint](#rhythmpoint)s_ relative to a base _[Rhythm](#rhythm)_
-
-```typescript
-// RhythmPhase === number
-```
-
-###### RhythmOrientation
-
-> the _[RhythmPoint](#rhythmpoint)_ index of a base _[Rhythm](#rhythm)_ from where its anchored
-
-```typescript
-//  RhythmOrientation === number
-```
-
-###### RhythmSlotWeight
-
-> the number / count of _[RhythmPoint](#rhythmpoint)s_ that exist at a _[RhythmSlot](#rhythmslot)_ in the context of a set of _[Rhythm](#rhythm)s_ that all have the same _[RhythmResolution](#rhythmresolution)_
-
-```typescript
-//  RhythmSlotWeight === number
-```
-
-###### RhythmPointWeight
-
-> a _[RhythmPoint](#rhythmpoint)s_ corresponding _[RhythmSlotWeight](#rhythmslotweight)_
-
-```typescript
-//  RhythmPointWeight === number
-```
-
-###### EuclideanRhythm - [White Paper](http://cgm.cs.mcgill.ca/~godfried/publications/banff.pdf)
-
-> a _[Rhythm](#rhythm)_ whos _[RhythmPoint](#rhythmpoint)s_ are evenly distributed across a discrete space
-
-```typescript
-
-```
-
-###### AlignedRhythm
-
->
-
-```typescript
-
-```
-
-###### PhasedRhythm
-
->
+> rhythm as an array of booleans
 
 ```typescript
 
