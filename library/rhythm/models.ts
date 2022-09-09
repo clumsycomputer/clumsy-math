@@ -5,10 +5,20 @@ import {
   RecursiveSpatialStructure,
 } from "../general/models";
 
-export type Rhythm = Array<boolean>;
+export type Rhythm = Array<RhythmSlot>;
+
+export type RhythmSlot = boolean;
+
+export type RhythmPoint = number;
+
+export type EuclideanRhythm = Rhythm;
+
+export type AlignedRhythm = Rhythm;
+
+export type PhasedRhythm = Rhythm;
 
 export interface RhythmMap extends Pick<RhythmStructure, "rhythmResolution"> {
-  rhythmPoints: Array<number>;
+  rhythmPoints: Array<RhythmPoint>;
 }
 
 export type PhasedRhythmStructure = RhythmStructure<{ rhythmPhase: number }>;
