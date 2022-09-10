@@ -14,7 +14,7 @@ const rhythm = [true, true, false, true, false];
 
 ###### rhythm slot
 
-> the building block of rhythm
+> a rhythm's building block
 
 ```typescript
 const rhythm = [true, true, false, true, false];
@@ -112,7 +112,7 @@ const rhythmBbb = [true, false, true, false, true];
 const rhythmCcc = [true, false, true, true, false];
 const rhythmSlotWeights = [3, 1, 2, 2, 1];
 const rhythmAaaPoints = [0, 1, 3];
-const rhythmAaaPointZeroWeight = 3; // rhythmSlotWeights[rhythmPointsAaa[0]]
+const rhythmAaaPointZeroWeight = 3; // rhythmSlotWeights[rhythmAaaPoints[0]]
 ```
 
 ###### rhythm weight
