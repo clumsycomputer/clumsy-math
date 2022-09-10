@@ -9,7 +9,7 @@ a little library of helpful math utensils 🙂
 > a discrete sequence/cycle of binary values
 
 ```typescript
-const basicRhythm: Rhythm = [true, true, false, true, false];
+const rhythm = [true, true, false, true, false];
 ```
 
 ###### rhythm slot
@@ -17,9 +17,9 @@ const basicRhythm: Rhythm = [true, true, false, true, false];
 > the building block of rhythm
 
 ```typescript
-const basicRhythm: Rhythm = [true, true, false, true, false];
-const basicRhythmSlotZero = true; // basicRhythm[0]
-const basicRhythmSlotTwo = false; // basicRhythm[2]
+const rhythm = [true, true, false, true, false];
+const rhythmSlotZero = true; // rhythm[0]
+const rhythmSlotTwo = false; // rhythm[2]
 ```
 
 ###### rhythm point
@@ -27,8 +27,8 @@ const basicRhythmSlotTwo = false; // basicRhythm[2]
 > the index of a slot whose value is true/1
 
 ```typescript
-const basicRhythm: Rhythm = [true, true, false, true, false];
-const basicRhythmPoints = [0, 1, 3];
+const rhythm = [true, true, false, true, false];
+const rhythmPoints = [0, 1, 3];
 ```
 
 ###### rhythm resolution
@@ -36,8 +36,8 @@ const basicRhythmPoints = [0, 1, 3];
 > the number of slots that make up a rhythm
 
 ```typescript
-const basicRhythm: Rhythm = [true, true, false, true, false];
-const basicRhythmResolution = 5; // basicRhythm.length
+const rhythm = [true, true, false, true, false];
+const rhythmResolution = 5; // rhythm.length
 ```
 
 ###### rhythm density
@@ -45,9 +45,9 @@ const basicRhythmResolution = 5; // basicRhythm.length
 > the number of points in a rhythm
 
 ```typescript
-const basicRhythm: Rhythm = [true, true, false, true, false];
-const basicRhythmPoints = [0, 1, 3];
-const basicRhythmDensity = 3; // basicRhythmPoints.length
+const rhythm = [true, true, false, true, false];
+const rhythmPoints = [0, 1, 3];
+const rhythmDensity = 3; // rhythmPoints.length
 ```
 
 ###### rhythm phase
@@ -55,19 +55,19 @@ const basicRhythmDensity = 3; // basicRhythmPoints.length
 > an offset of points relative to a base rhythm
 
 ```typescript
-const basicRhythm: Rhythm = [true, true, false, true, false];
-const basicRhythmPhase = -1;
-const phasedBasicRhythm = [false, true, true, false, true];
+const rhythm = [true, true, false, true, false];
+const rhythmPhase = -1;
+const phasedRhythm = [false, true, true, false, true];
 ```
 
 ###### rhythm orientation
 
-> the point index relative to a base rhythm that indicates an adjusted rhythm's anchor/starting point
+> the point index relative to a base rhythm that indicates a reoriented rhythm's anchor/starting point
 
 ```typescript
-const basicRhythm: Rhythm = [true, true, false, true, false];
-const basicRhythmOrientation = 1;
-const reorientedBasicRhythm = [true, false, true, false, true];
+const rhythm = [true, true, false, true, false];
+const reorientedRhythm = [true, false, true, false, true];
+const reorientedRhythmOrientation = 1;
 ```
 
 ###### relative rhythm point
@@ -75,9 +75,9 @@ const reorientedBasicRhythm = [true, false, true, false, true];
 > a point whose value is normalized within the range of [0, 1)
 
 ```typescript
-const basicRhythm: Rhythm = [true, true, false, true, false];
-const basicRhythmPoints = [0, 1, 3];
-const relativeBasicRhythmPoints = [0, 0.2, 0.6];
+const rhythm = [true, true, false, true, false];
+const rhythmPoints = [0, 1, 3];
+const relativeRhythmPoints = [0, 0.2, 0.6];
 ```
 
 ###### rhythm interval
@@ -85,9 +85,9 @@ const relativeBasicRhythmPoints = [0, 0.2, 0.6];
 > the length/distance between two points measured in slots
 
 ```typescript
-const basicRhythm: Rhythm = [true, true, false, true, false];
-const basicRhythmPoints = [0, 1, 3];
-const basicRhythmIntervals = [1, 2, 2];
+const rhythm = [true, true, false, true, false];
+const rhythmPoints = [0, 1, 3];
+const rhythmIntervals = [1, 2, 2];
 ```
 
 ###### rhythm slot weight
@@ -95,11 +95,11 @@ const basicRhythmIntervals = [1, 2, 2];
 > the number/count of points that exist at a slot in the context of a set of rhythms which all have the same resolution
 
 ```typescript
-const basicRhythmZero: Rhythm = [true, true, false, true, false]; // 1, 1, 0, 1, 0
-const basicRhythmOne: Rhythm = [true, false, true, false, true]; // 1, 0, 1, 0, 1
-const basicRhythmTwo: Rhythm = [true, false, true, true, false]; // 1, 0, 1, 1, 0
-const basicRhythmSlotWeights = [3, 1, 2, 2, 1];
-const basicRhythmSlotWeightZero = 3; // basicRhythmSlotWeights[0]
+const rhythmAaa = [true, true, false, true, false]; // 1, 1, 0, 1, 0
+const rhythmBbb = [true, false, true, false, true]; // 1, 0, 1, 0, 1
+const rhythmCcc = [true, false, true, true, false]; // 1, 0, 1, 1, 0
+const rhythmSlotWeights = [3, 1, 2, 2, 1];
+const rhythmSlotWeightZero = 3; // rhythmSlotWeights[0]
 ```
 
 ###### rhythm point weight
@@ -107,12 +107,12 @@ const basicRhythmSlotWeightZero = 3; // basicRhythmSlotWeights[0]
 > a point's corresponding slot weight
 
 ```typescript
-const basicRhythmZero: Rhythm = [true, true, false, true, false];
-const basicRhythmOne: Rhythm = [true, false, true, false, true];
-const basicRhythmTwo: Rhythm = [true, false, true, true, false];
-const basicRhythmSlotWeights = [3, 1, 2, 2, 1];
-const basicRhythmZeroPoints = [0, 1, 3];
-const basicRhythmZeroPointsPointTwoWeight = 2; // basicRhythmSlotWeights[basicRhythmPointsZero[2]]
+const rhythmAaa = [true, true, false, true, false];
+const rhythmBbb = [true, false, true, false, true];
+const rhythmCcc = [true, false, true, true, false];
+const rhythmSlotWeights = [3, 1, 2, 2, 1];
+const rhythmAaaPoints = [0, 1, 3];
+const rhythmAaaPointZeroWeight = 3; // rhythmSlotWeights[rhythmPointsAaa[0]]
 ```
 
 ###### rhythm weight
@@ -120,12 +120,12 @@ const basicRhythmZeroPointsPointTwoWeight = 2; // basicRhythmSlotWeights[basicRh
 > the sum of a rhythm's point weights
 
 ```typescript
-const basicRhythmZero: Rhythm = [true, true, false, true, false];
-const basicRhythmOne: Rhythm = [true, false, true, false, true];
-const basicRhythmTwo: Rhythm = [true, false, true, true, false];
-const basicRhythmSlotWeights = [3, 1, 2, 2, 1];
-const basicRhythmZeroPoints = [0, 1, 3];
-const basicRhythmZeroWeight = 6;
+const rhythmAaa = [true, true, false, true, false];
+const rhythmBbb = [true, false, true, false, true];
+const rhythmCcc = [true, false, true, true, false];
+const rhythmSlotWeights = [3, 1, 2, 2, 1];
+const rhythmAaaPoints = [0, 1, 3];
+const rhythmAaaWeight = 6;
 ```
 
 ## rhythm _(classifications)_
@@ -141,7 +141,7 @@ const basicRhythmZeroWeight = 6;
 > rhythm as an array of booleans
 
 ```typescript
-
+const rhythm: Rhythm = [true, true, false, true, false];
 ```
 
 ###### RhythmMap
@@ -229,7 +229,7 @@ const generalRhythmStructure: GeneralRhythmStructure = [
 > a generalized encoding for _[EuclideanRhythm](#euclideanrhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf)_
 
 ```typescript
-const basicRhythmStructure: BasicRhythmStructure = {
+const rhythmStructure: BasicRhythmStructure = {
   rhythmResolution: 5,
   rhythmDensity: 3,
   rhythmOrientation: 0,
