@@ -52,7 +52,7 @@ const rhythmDensity = 3; // rhythmPoints.length
 
 ###### rhythm phase
 
-> an offset of points relative to a base rhythm
+> an offset measured in slots applied to points relative to a base rhythm
 
 ```typescript
 const rhythm = [true, true, false, true, false];
@@ -128,11 +128,40 @@ const rhythmAaaPoints = [0, 1, 3];
 const rhythmAaaWeight = 6;
 ```
 
+###### rhythm group
+
+> the combination of recursive euclidean rhythms that share an invariant common base structure and a variant member structure with the same density structure
+
+```typescript
+const groupBaseRhythm = [true, true, false, true, false];
+const memberRhythmBase = [true, true, false];
+const memberBaseRhythmAaa = [true, true, false]; // memberRhythmBase with orientation 0
+const memberBaseRhythmBbb = [true, false, true]; // memberRhythmBase with orientation 1
+const groupMemberRhythmAaa = [true, true, false, false, false]; // 11010 -> 110 === 11000
+const groupMemberRhythmBbb = [true, false, false, true, false]; // 11010 -> 101 === 10010
+```
+
 ## rhythm _(classifications)_
 
 ###### euclidean rhythm - [white paper](http://cgm.cs.mcgill.ca/~godfried/publications/banff.pdf)
 
+> a rhythm who's points are as evenly distributed as possible throughout a discrete space
+
+```typescript
+const rhythmAaa = [true, false, true, false];
+const rhythmBbb = [true, true, false, true, false];
+const rhythmCcc = [true, false, true, false, true];
+```
+
 ###### recursive euclidean rhythm
+
+> a rhythm composed of layered euclidean rhythms where the base rhythm's density/points determines the next rhythm's resolution/space
+
+```typescript
+const baseRhythm = [true, true, false, true, false];
+const terminalRhythm = [true, false, true, false];
+const resultRhythm = [true, false, false, true, false];
+```
 
 ## rhythm _(encodings)_
 
@@ -226,7 +255,7 @@ const generalRhythmStructure: GeneralRhythmStructure = [
 
 ###### BasicRhythmStructure
 
-> a generalized encoding for _[EuclideanRhythm](#euclideanrhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf)_
+> a generalized encoding of euclidean rhythm
 
 ```typescript
 const rhythmStructure: BasicRhythmStructure = {
@@ -239,7 +268,7 @@ const rhythmStructure: BasicRhythmStructure = {
 
 ###### EuclideanRhythmStructure
 
-> a minimal encoding for _[EuclideanRhythm](#euclideanrhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf)_
+> a minimal encoding of euclidean rhythm
 
 ```typescript
 const euclideanRhythm: EuclideanRhythmStructure = {
