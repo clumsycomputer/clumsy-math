@@ -9,15 +9,25 @@ export type Rhythm = Array<RhythmSlot>;
 
 export type RhythmSlot = boolean;
 
-export type RhythmPoint = number;
-
 export type RhythmResolution = number;
 
 export type RhythmDensity = number;
 
+export type RhythmPoint = number;
+
 export type RhythmPhase = number;
 
 export type RhythmOrientation = number;
+
+export type RhythmInterval = number;
+
+export type RelativeRhythmPoint = number;
+
+export type RhythmSlotWeight = number;
+
+export type RhythmPointWeight = number;
+
+export type RhythmWeight = number;
 
 export type EuclideanRhythm = Rhythm;
 
