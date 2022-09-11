@@ -5,7 +5,7 @@ import {
 import {
   AlignedRhythmStructure,
   PhasedRhythmStructure,
-  RhythmStructure,
+  RecursiveRhythmStructure,
 } from "./encodings";
 
 export function getPhasedRhythmId(
@@ -71,7 +71,7 @@ export function _getAlignedRhythmId(api: _GetAlignedRhythmIdApi): string {
   });
 }
 
-interface GetRhythmIdApi<SomeRhythmStructure extends RhythmStructure> {
+interface GetRhythmIdApi<SomeRhythmStructure extends RecursiveRhythmStructure> {
   someRhythmStructure: SomeRhythmStructure;
   typeId: string;
   getStructureId: (
@@ -81,7 +81,7 @@ interface GetRhythmIdApi<SomeRhythmStructure extends RhythmStructure> {
   ) => string;
 }
 
-function getRhythmId<SomeRhythmStructure extends RhythmStructure>(
+function getRhythmId<SomeRhythmStructure extends RecursiveRhythmStructure>(
   api: GetRhythmIdApi<SomeRhythmStructure>
 ) {
   const { typeId, someRhythmStructure, getStructureId } = api;

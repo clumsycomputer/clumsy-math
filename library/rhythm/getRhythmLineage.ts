@@ -1,7 +1,6 @@
 import { _getStackRhythmStructure } from "./getStackRhythmStructure";
 import {
   AlignedRhythmStructure,
-  GeneralRhythmStructure,
   InterposedRhythmGroupMemberStructure,
   RhythmGroupBaseStructure,
   RhythmGroupMemberStructure,

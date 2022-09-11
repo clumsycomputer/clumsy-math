@@ -7,6 +7,8 @@ import {
 
 export type Rhythm = Array<RhythmSlot>;
 
+export type RhythmString = string;
+
 export type RhythmSlot = boolean;
 
 export type RhythmResolution = number;
@@ -35,9 +37,17 @@ export type RecursiveEuclideanRhythm = Rhythm;
 
 export type AlignedRecursiveEuclideanRhythm = RecursiveEuclideanRhythm;
 
+export type AlignedRecursiveEuclideanRhythmId = string;
+
 export type PhasedRecursiveEuclideanRhythm = RecursiveEuclideanRhythm;
 
-export type RhythmGroup = Array<AlignedRecursiveEuclideanRhythm>;
+export type PhasedRecursiveEuclideanRhythmId = string;
+
+export type RhythmGroup = Array<AlignedRhythmStructure>;
+
+export type RhythmGroupId = string;
+
+export type RhythmLineage = Array<RhythmGroupStructure>;
 
 export interface RhythmMap
   extends Pick<RecursiveRhythmStructure, "rhythmResolution"> {

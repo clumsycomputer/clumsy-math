@@ -224,7 +224,17 @@ const resultRhythm = [false, true, false, true, false];
 > rhythm as _Array<[RhythmSlot](#rhythmslot)>_
 
 ```typescript
-const rhythm: Rhythm = [true, true, false, false, false];
+const rhythm: Rhythm = [true, true, false, true, false];
+```
+
+<sup><i>&emsp;[rhythm](#rhythm)</i></sup>
+
+###### RhythmString
+
+> rhythm as binary _string_
+
+```typescript
+const rhythmString: RhythmString = "11010";
 ```
 
 <sup><i>&emsp;[rhythm](#rhythm)</i></sup>
@@ -307,9 +317,21 @@ const rhythm: Rhythm = [true, true, false, false, false];
 
 <sup><i>&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
 
+###### AlignedRecursiveEuclideanRhythmId
+
+> aligned recursive euclidean rhythm as _string_
+
+<sup><i>&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
+
 ###### PhasedRecursiveEuclideanRhythm
 
 > phased recursive euclidean rhythm as _[RecursiveEuclideanRhythm](#recursiveeuclideanrhythm)_
+
+<sup><i>&emsp;[phased recursive euclidean rhythm](#phased-recursive-euclidean-rhythm)</i></sup>
+
+###### PhasedRecursiveEuclideanRhythmId
+
+> phased recursive euclidean rhythm as _string_
 
 <sup><i>&emsp;[phased recursive euclidean rhythm](#phased-recursive-euclidean-rhythm)</i></sup>
 
@@ -318,6 +340,18 @@ const rhythm: Rhythm = [true, true, false, false, false];
 > rhythm group as _Array<[AlignedRecursiveEuclideanRhythm](#alignedrecursiveeuclideanrhythm)>_
 
 <sup><i>&emsp;[rhythm group](#rhythm-group),&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
+
+###### RhythmGroupId
+
+> rhythm group as _string_
+
+<sup><i>&emsp;[rhythm group](#rhythm-group)</i></sup>
+
+###### RhythmGroupLineage
+
+> rhythm group lineage as _Array<[RhythmGroupStructure](#rhythmgroupstructure)>_
+
+<sup><i>&emsp;[rhythm group lineage](#rhythm-group-lineage)</i></sup>
 
 ###### RhythmMap
 
@@ -435,7 +469,9 @@ const stackRhythmStructure: StackRhythmStructure = [
 ];
 ```
 
-<sup><i>&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm),&emsp;[phased recursive euclidean rhythm](#phased-recursive-euclidean-rhythm),&emsp;[GeneralRhythmStructure](#generalrhythmstructure)</i></sup>
+<sup><i>&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm),&emsp;[phased recursive euclidean rhythm](#phased-recursive-euclidean-rhythm)</i></sup>
+
+<sup><i>&emsp;[GeneralRhythmStructure](#generalrhythmstructure)</i></sup>
 
 ###### RhythmGroupStructure
 
@@ -650,7 +686,7 @@ const alignedRhythmComponents = getAlignedRhythmComponents({
 
 ###### getRhythmGroupId
 
-> transforms _[RhythmGroupStructure](#rhythmgroupstructure)_ to unique deterministic _string_
+> transforms _[RhythmGroupStructure](#rhythmgroupstructure)_ to _[RhythmGroupId](#rhythmgroupid)_
 
 ```typescript
 const rhythmGroupId = getRhythmGroupId({
@@ -715,7 +751,7 @@ const rhythmGroupMembers = getRhythmGroupMembers({
 
 ###### getAlignedRhythmId
 
-> transforms _[AlignedRhythmStructure](#alignedrhythmstructure)_ to unique deterministic _string_
+> transforms _[AlignedRhythmStructure](#alignedrhythmstructure)_ to _[AlignedRecursiveEuclideanRhythmId](#alignedrecursiveeuclideanrhythmid)_
 
 ```typescript
 const alignedRhythmId = getAlignedRhythmId({
@@ -732,7 +768,7 @@ const alignedRhythmId = getAlignedRhythmId({
 
 ###### getPhasedRhythmId
 
-> transforms _[PhasedRhythmStructure](#phasedrhythmstructure)_ to unique deterministic _string_
+> transforms _[PhasedRhythmStructure](#phasedrhythmstructure)_ to _[PhasedRecursiveEuclideanRhythmId](#phasedrecursiveeuclideanrhythmid)_
 
 ```typescript
 const phasedRhythmId = getPhasedRhythmId({
@@ -885,7 +921,7 @@ const rhythmSlotWeights = getRhythmSlotWeights(
 
 ###### getRhythmString
 
-> transforms _[RhythmMap](#rhythmmap)_ to binary _string_
+> transforms _[RhythmMap](#rhythmmap)_ to _[RhythmString](#rhythmstring)_
 
 ```typescript
 const rhythmString = getRhythmString(
