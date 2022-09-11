@@ -7,7 +7,7 @@ import {
   RhythmGroupMemberStructure,
   RhythmGroupStructure,
   TerminalRhythmGroupMemberStructure,
-} from "./models";
+} from "./encodings";
 
 export function getRhythmLineage(
   someAlignedRhythmStructure: AlignedRhythmStructure

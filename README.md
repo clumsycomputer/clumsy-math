@@ -22,14 +22,7 @@ const rhythmSlotZero = true; // rhythm[0]
 const rhythmSlotTwo = false; // rhythm[2]
 ```
 
-###### rhythm point
-
-> the index of a slot whose value is true/1
-
-```typescript
-const rhythm = [true, true, false, true, false];
-const rhythmPoints = [0, 1, 3];
-```
+<sup><i>&emsp;[rhythm](#rhythm)</i></sup>
 
 ###### rhythm resolution
 
@@ -39,6 +32,19 @@ const rhythmPoints = [0, 1, 3];
 const rhythm = [true, true, false, true, false];
 const rhythmResolution = 5; // rhythm.length
 ```
+
+<sup><i>&emsp;[rhythm slot](#rhythm-slot)</i></sup>
+
+###### rhythm point
+
+> the index of a slot whose value is true/1
+
+```typescript
+const rhythm = [true, true, false, true, false];
+const rhythmPoints = [0, 1, 3];
+```
+
+<sup><i>&emsp;[rhythm slot](#rhythm-slot)</i></sup>
 
 ###### rhythm density
 
@@ -50,6 +56,8 @@ const rhythmPoints = [0, 1, 3];
 const rhythmDensity = 3; // rhythmPoints.length
 ```
 
+<sup><i>&emsp;[rhythm point](#rhythm-point)</i></sup>
+
 ###### rhythm phase
 
 > an offset measured in slots applied to points relative to a base rhythm
@@ -59,6 +67,8 @@ const rhythm = [true, true, false, true, false];
 const rhythmPhase = -1;
 const phasedRhythm = [false, true, true, false, true];
 ```
+
+<sup><i>&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm slot](#rhythm-slot)</i></sup>
 
 ###### rhythm orientation
 
@@ -80,6 +90,8 @@ const rhythmPoints = [0, 1, 3];
 const relativeRhythmPoints = [0, 0.2, 0.6];
 ```
 
+<sup><i>&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm resolution](#rhythm-resolution)</i></sup>
+
 ###### rhythm interval
 
 > the length/distance between two points measured in slots
@@ -89,6 +101,8 @@ const rhythm = [true, true, false, true, false];
 const rhythmPoints = [0, 1, 3];
 const rhythmIntervals = [1, 2, 2];
 ```
+
+<sup><i>&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm slot](#rhythm-slot)</i></sup>
 
 ###### rhythm slot weight
 
@@ -101,6 +115,8 @@ const rhythmCcc = [true, false, true, true, false]; // 1, 0, 1, 1, 0
 const rhythmSlotWeights = [3, 1, 2, 2, 1];
 const rhythmSlotWeightZero = 3; // rhythmSlotWeights[0]
 ```
+
+<sup><i>&emsp;[rhythm slot](#rhythm-slot),&emsp;[rhythm point](#rhythm-point)</i></sup>
 
 ###### rhythm point weight
 
@@ -115,6 +131,8 @@ const rhythmAaaPoints = [0, 1, 3];
 const rhythmAaaPointZeroWeight = 3; // rhythmSlotWeights[rhythmAaaPoints[0]]
 ```
 
+<sup><i>&emsp;[rhythm slot weight](#rhythm-slot-weight),&emsp;[rhythm point](#rhythm-point)</i></sup>
+
 ###### rhythm weight
 
 > the sum of a rhythm's point weights
@@ -128,9 +146,11 @@ const rhythmAaaPoints = [0, 1, 3];
 const rhythmAaaWeight = 6;
 ```
 
+<sup><i>&emsp;[rhythm point weight](#rhythm-point-weight),&emsp;[rhythm point](#rhythm-point)</i></sup>
+
 ###### rhythm group
 
-> the combination of recursive euclidean rhythms that share an invariant common base structure and a variant member structure with the same density structure
+> a set of recursive euclidean rhythms that share a static base structure and a dynamic member structure where the density structure is the same but orientations are different
 
 ```typescript
 const groupBaseRhythm = [true, true, false, true, false];
@@ -153,6 +173,8 @@ const rhythmBbb = [true, true, false, true, false];
 const rhythmCcc = [true, false, true, false, true];
 ```
 
+<sup><i>&emsp;[rhythm](#rhythm),&emsp;[rhythm point](#rhythm-point)</i></sup>
+
 ###### recursive euclidean rhythm
 
 > a rhythm composed of layered euclidean rhythms where the base rhythm's density/points determines the next rhythm's resolution/space
@@ -162,6 +184,8 @@ const baseRhythm = [true, true, false, true, false];
 const terminalRhythm = [true, false, true, false];
 const resultRhythm = [true, false, false, true, false];
 ```
+
+<sup><i>&emsp;[euclidean rhythm](#euclidean-rhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf),&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm resolution](#rhythm-resolution)</i></sup>
 
 ## rhythm _(encodings)_
 
@@ -173,9 +197,11 @@ const resultRhythm = [true, false, false, true, false];
 const rhythm: Rhythm = [true, true, false, true, false];
 ```
 
+<sup><i>&emsp;[rhythm](#rhythm)</i></sup>
+
 ###### RhythmMap
 
-> the defacto encoding for _[Rhythm](#rhythm)_
+> the defacto encoding for rhythm
 
 ```typescript
 const rhythmMap: RhythmMap = {
@@ -184,13 +210,45 @@ const rhythmMap: RhythmMap = {
 };
 ```
 
+<sup><i>&emsp;[rhythm resolution](#rhythm-resolution),&emsp;[rhythm point](#rhythm-point)</i></sup>
+
+###### SimpleRhythmStructure
+
+> a minimal encoding for euclidean rhythm
+
+```typescript
+const simpleRhythmStructure: SimpleRhythmStructure = {
+  rhythmResolution: 5,
+  rhythmDensity: 3,
+};
+```
+
+<sup><i>&emsp;[euclidean rhythm](#euclidean-rhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf),&emsp;[rhythm resolution](#rhythm-resolution),&emsp;[rhythm density](#rhythm-density)</i></sup>
+
+###### VariableRhythmStructure
+
+> a generalized encoding for euclidean rhythm
+
+```typescript
+const variableRhythmStructure: VariableRhythmStructure = {
+  rhythmResolution: 5,
+  rhythmDensity: 3,
+  rhythmOrientation: 0,
+  rhythmPhase: 0,
+};
+```
+
+<sup><i>&emsp;[euclidean rhythm](#euclidean-rhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf),&emsp;[rhythm resolution](#rhythm-resolution),&emsp;[rhythm density](#rhythm-density),&emsp;[rhythm orientation](#rhythm-orientation),&emsp;[rhythm phase](#rhythm-phase)</i></sup>
+
 ###### RhythmStructure
 
-> an extendable _[RecursiveSpatialStructure](#recursivespatialstructure)_ that encodes the concept of layered euclidean rhythms and serves as the foundation for both _[AlignedRhythmStructure](#alignedrhythmstructure)_ and _[PhasedRhythmStructure](#phasedrhythmstructure)_
+> the foundational encoding for recursive euclidean rhythms
+
+<sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm)</i></sup>
 
 ###### AlignedRhythmStructure
 
-> mostly an alias for _[RhythmStructure](#rhythmstructure)_ which serves to highlight the difference between itself and _[PhasedRhythmStructure](#phasedrhythmstructure)_
+> an alias for rhythm structure that highlights the difference between itself and phased rhythm structure
 
 ```typescript
 const alignedRhythmStructure: AlignedRhythmStructure = {
@@ -211,7 +269,7 @@ const alignedRhythmStructure: AlignedRhythmStructure = {
 
 ###### PhasedRhythmStructure
 
-> a _[RhythmStructure](#rhythmstructure)_ with the additional concept of layers being phased
+> a rhythm structure with the additional concept of layers being phased
 
 ```typescript
 const phasedRhythmStructure: PhasedRhythmStructure = {
@@ -234,7 +292,7 @@ const phasedRhythmStructure: PhasedRhythmStructure = {
 
 ###### GeneralRhythmStructure
 
-> a generalized more flexible encoding that encompasses _[AlignedRhythmStructure](#alignedrhythmstructure)_ and _[PhasedRhythmStructure](#phasedrhythmstructure)_ for simplifying computations
+> a generalized more flexible encoding that encompasses aligned rhythm structure and phased rhythm structure for simplifying computations
 
 ```typescript
 const generalRhythmStructure: GeneralRhythmStructure = [
@@ -251,30 +309,6 @@ const generalRhythmStructure: GeneralRhythmStructure = [
     rhythmPhase: 0,
   },
 ];
-```
-
-###### BasicRhythmStructure
-
-> a generalized encoding of euclidean rhythm
-
-```typescript
-const rhythmStructure: BasicRhythmStructure = {
-  rhythmResolution: 5,
-  rhythmDensity: 3,
-  rhythmOrientation: 0,
-  rhythmPhase: 0,
-};
-```
-
-###### EuclideanRhythmStructure
-
-> a minimal encoding of euclidean rhythm
-
-```typescript
-const euclideanRhythm: EuclideanRhythmStructure = {
-  rhythmResolution: 5,
-  rhythmDensity: 3,
-};
 ```
 
 ###### RhythmGroupStructure
@@ -318,21 +352,21 @@ const rhythmGroupMemberStructure: RhythmGroupMemberStructure = {
 
 ## rhythm _(functions)_
 
-#### getEuclideanRhythm
+#### getSimpleRhythm
 
-> computes the euclidean _[Rhythm](#rhythm)_ of given _[EuclideanRhythmStructure](#euclideanrhythmstructure)_
+> transforms simple rhythm structure to rhythm
 
 ```typescript
-const euclideanRhythm = getEuclideanRhythm({
+const simpleRhythm = getSimpleRhythm({
   rhythmResolution: 5,
   rhythmDensity: 3,
 });
-// euclideanRhythm === [true,true,false,true,false]
+// simpleRhythm === [true,true,false,true,false]
 ```
 
 ###### getGeneralRhythmStructure
 
-> computes the _[GeneralRhythmStructure](#generalrhythmstructure)_ of given _[RhythmStructure](#rhythmstructure)_
+> transforms rhythm structure to general rhythm structure
 
 ```typescript
 const generalRhythmStructure = getGeneralRhythmStructure({
@@ -368,7 +402,7 @@ const generalRhythmStructure = getGeneralRhythmStructure({
 
 ###### getPhasedRhythmMap
 
-> transforms rhythm points of given _[RhythmMap](#rhythmmap)_ by given _[RhythmPhase](#rhythmphase)_
+> computes new _[RhythmMap](#rhythmmap)_ from _[RhythmMap](#rhythmmap)_ and _number_
 
 ```typescript
 const phasedRhythmMap = getPhasedRhythmMap(
@@ -392,7 +426,7 @@ const phasedRhythmMap = getPhasedRhythmMap(
 
 ###### getRelativeRhythmPoints
 
-> normalizes _[RhythmPoint](#rhythmpoint)s_ to values within 0 and 1 of given _[RhythmMap](#rhythmmap)_
+> transforms _[RhythmMap](#rhythmmap)_ to _Array<number>_
 
 ```typescript
 const relativeRhythmPoints = getRelativeRhythmPoints(
@@ -411,7 +445,7 @@ const relativeRhythmPoints = getRelativeRhythmPoints(
 
 ###### getPhasedRhythmComponents
 
-> computes each layers corresponding _[PhasedRhythmStructure](#phasedrhythmstructure)_ of given _[PhasedRhythmStructure](#phasedrhythmstructure)_
+> computes each layer's corresponding from phased rhythm structure
 
 ```typescript
 const phasedRhythmComponents = getPhasedRhythmComponents({
@@ -463,7 +497,7 @@ const phasedRhythmComponents = getPhasedRhythmComponents({
 
 ###### getAlignedRhythmComponents
 
-> computes each layers corresponding _[AlignedRhythmStructure](#alignedrhythmstructure)_ of given _[AlignedRhythmStructure](#alignedrhythmstructure)_
+> computes each layer's corresponding _[AlignedRhythmStructure](#alignedrhythmstructure)_ from _[AlignedRhythmStructure](#alignedrhythmstructure)_
 
 ```typescript
 const alignedRhythmComponents = getAlignedRhythmComponents({
@@ -510,7 +544,7 @@ const alignedRhythmComponents = getAlignedRhythmComponents({
 
 ###### getRhythmGroupId
 
-> computes the deterministic string encoding of given _[RhythmGroupStructure](#rhythmgroupstructure)_
+> transforms rhythm group structure to unique deterministic string encoding
 
 ```typescript
 const rhythmGroupId = getRhythmGroupId({
@@ -528,7 +562,7 @@ const rhythmGroupId = getRhythmGroupId({
 
 ###### getRhythmGroupMembers
 
-> computes all _[AlignedRhythmStructure](#alignedrhythmstructure)_ of given _[RhythmGroupStructure](#rhythmgroupstructure)_
+> transforms rhythm group structure to aligned rhythm structures
 
 ```typescript
 const rhythmGroupMembers = getRhythmGroupMembers({
@@ -575,7 +609,7 @@ const rhythmGroupMembers = getRhythmGroupMembers({
 
 ###### getAlignedRhythmId
 
-> computes the deterministic string encoding of given _[AlignedRhythmStructure](#alignedrhythmstructure)_
+> transforms aligned rhythm structure to unique deterministic string encoding
 
 ```typescript
 const alignedRhythmId = getAlignedRhythmId({
@@ -592,7 +626,7 @@ const alignedRhythmId = getAlignedRhythmId({
 
 ###### getPhasedRhythmId
 
-> computes the deterministic string encoding of given _[PhasedRhythmStructure](#phasedrhythmstructure)_
+> transforms phased rhythm structure to unique deterministic string encoding
 
 ```typescript
 const phasedRhythmId = getPhasedRhythmId({
@@ -610,7 +644,7 @@ const phasedRhythmId = getPhasedRhythmId({
 
 ###### getRhythmIntervals
 
-> computes the length between _[RhythmPoint](#rhythmpoint)s_ of given _[RhythmMap](#rhythmmap)_
+> computes point intervals from rhythm map
 
 ```typescript
 const rhythmIntervals = getRhythmIntervals(
@@ -629,7 +663,7 @@ const rhythmIntervals = getRhythmIntervals(
 
 ###### getRhythmLineage
 
-> computes each layer's corresponding _[RhythmGroupStructure](#rhythmgroupstructure)_ of given _[AlignedRhythmStructure](#alignedrhythmstructure)_
+> computes each layer's corresponding rhythm group structure from aligned rhythm structure
 
 ```typescript
 const rhythmLineage = getRhythmLineage({
@@ -682,7 +716,7 @@ const rhythmLineage = getRhythmLineage({
 
 ###### getRhythmMap
 
-> computes the _[RhythmMap](#rhythmmap)_ of given _[RhythmStructure](#rhythmstructure)_
+> computes rhythm map from rhythm structure
 
 ```typescript
 const rhythmMap = getRhythmMap({
@@ -702,7 +736,7 @@ const rhythmMap = getRhythmMap({
 
 ###### getRhythmPointWeights
 
-> maps _[RhythmPoint](#rhythmpoint)s_ of given _[RhythmMap](#rhythmmap)_ to corresponding _[RhythmSlot](#rhythmslot)_ weights
+> computes point weights from rhythm map and slot weights
 
 ```typescript
 const rhythmGroupMemberRhythmMaps = getRhythmGroupMembers({
@@ -725,7 +759,7 @@ const rhythmPointWeights = getRhythmPointWeights(
 
 ###### getRhythmSlotWeights
 
-> computes the weight / count of rhythm point distribution across the slots of given rhythm group members
+> computes slot weights from rhythm maps
 
 ```typescript
 const rhythmSlotWeights = getRhythmSlotWeights(
@@ -745,7 +779,7 @@ const rhythmSlotWeights = getRhythmSlotWeights(
 
 ###### getRhythmString
 
-> transforms a _[RhythmMap](#rhythmmap)_ into a string of 1s and 0s
+> transforms rhythm map to binary string
 
 ```typescript
 const rhythmString = getRhythmString(
@@ -764,7 +798,7 @@ const rhythmString = getRhythmString(
 
 ###### getRhythmWeight
 
-> computes the rhythm point weight sum of given _[RhythmMap](#rhythmmap)_ with corresponding slot weights
+> computes rhythm weight from rhythm map and slot weights
 
 ```typescript
 const rhythmGroupMemberRhythmMaps = getRhythmGroupMembers({

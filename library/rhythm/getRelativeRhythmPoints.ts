@@ -1,4 +1,4 @@
-import { RhythmMap } from "./models";
+import { RhythmMap } from "./encodings";
 
 export function getRelativeRhythmPoints(someRhythmMap: RhythmMap) {
   return _getRelativeRhythmPoints({

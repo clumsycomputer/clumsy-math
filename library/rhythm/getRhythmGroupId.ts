@@ -1,4 +1,4 @@
-import { RhythmGroupStructure } from "./models";
+import { RhythmGroupStructure } from "./encodings";
 
 export function getRhythmGroupId(
   someRhythmGroupStructure: RhythmGroupStructure

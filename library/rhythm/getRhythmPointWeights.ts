@@ -1,4 +1,4 @@
-import { RhythmMap } from "./models";
+import { RhythmMap } from "./encodings";
 
 export function getRhythmPointWeights(
   someRhythmMap: RhythmMap,

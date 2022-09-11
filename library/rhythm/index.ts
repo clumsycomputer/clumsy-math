@@ -1,4 +1,4 @@
-export * from "./getEuclideanRhythm";
+export * from "./getSimpleRhythm";
 export * from "./getGeneralRhythmStructure";
 export * from "./getPhasedRhythmMap";
 export * from "./getRelativeRhythmPoints";
@@ -13,4 +13,4 @@ export * from "./getRhythmPointWeights";
 export * from "./getRhythmSlotWeights";
 export * from "./getRhythmString";
 export * from "./getRhythmWeight";
-export * from "./models";
+export * from "./encodings";

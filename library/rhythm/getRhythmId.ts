@@ -6,7 +6,7 @@ import {
   AlignedRhythmStructure,
   PhasedRhythmStructure,
   RhythmStructure,
-} from "./models";
+} from "./encodings";
 
 export function getPhasedRhythmId(
   somePhasedRhythmStructure: PhasedRhythmStructure

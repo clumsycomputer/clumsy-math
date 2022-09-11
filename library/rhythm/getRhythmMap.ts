@@ -1,47 +1,56 @@
-import { _getEuclideanRhythm } from "./getEuclideanRhythm";
+import { _getSimpleRhythm } from "./getSimpleRhythm";
 import { _getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
-import { BasicRhythmStructure, RhythmMap, RhythmStructure } from "./models";
+import {
+  VariableRhythmStructure,
+  RhythmMap,
+  RecursiveRhythmStructure,
+} from "./encodings";
 
-export function getRhythmMap(someRhythmStructure: RhythmStructure) {
+export function getRhythmMap(
+  someRecursiveRhythmStructure: RecursiveRhythmStructure
+) {
   return _getRhythmMap({
-    someRhythmStructure,
+    someRecursiveRhythmStructure,
   });
 }
 
 export interface _GetRhythmMapApi {
-  someRhythmStructure: RhythmStructure;
+  someRecursiveRhythmStructure: RecursiveRhythmStructure;
 }
 
 export function _getRhythmMap(api: _GetRhythmMapApi): RhythmMap {
-  const { someRhythmStructure } = api;
+  const { someRecursiveRhythmStructure } = api;
   return {
-    rhythmResolution: someRhythmStructure.rhythmResolution,
+    rhythmResolution: someRecursiveRhythmStructure.rhythmResolution,
     rhythmPoints: _getGeneralRhythmStructure({
-      someRhythmStructure,
+      someRecursiveRhythmStructure,
     }).reduce<Array<number>>(
-      (baseRhythmPoints, someBasicRhythmStructure) => {
-        return getBasicRhythmPoints({
-          someBasicRhythmStructure,
+      (baseRhythmPoints, someVariableRhythmStructure) => {
+        return getVariableRhythmPoints({
+          someVariableRhythmStructure,
         })
           .map(
-            (someBasicRhythmPoint) => baseRhythmPoints[someBasicRhythmPoint]!
+            (someVariableRhythmPoint) =>
+              baseRhythmPoints[someVariableRhythmPoint]!
           )
           .sort((pointA, pointB) => pointA - pointB);
       },
-      new Array(someRhythmStructure.rhythmResolution)
+      new Array(someRecursiveRhythmStructure.rhythmResolution)
         .fill(undefined)
         .map((_, someRhythmPoint) => someRhythmPoint)
     ),
   };
 }
-interface GetBasicRhythmPointsApi {
-  someBasicRhythmStructure: BasicRhythmStructure;
+interface GetVariableRhythmPointsApi {
+  someVariableRhythmStructure: VariableRhythmStructure;
 }
 
-function getBasicRhythmPoints(api: GetBasicRhythmPointsApi): Array<number> {
-  const { someBasicRhythmStructure } = api;
-  return _getEuclideanRhythm({
-    someEuclideanRhythmStructure: someBasicRhythmStructure,
+function getVariableRhythmPoints(
+  api: GetVariableRhythmPointsApi
+): Array<number> {
+  const { someVariableRhythmStructure } = api;
+  return _getSimpleRhythm({
+    someSimpleRhythmStructure: someVariableRhythmStructure,
   })
     .reduce<Array<number>>(
       (unadjustedPointsResult, someRhythmSlot, rhythmSlotIndex) => {
@@ -54,15 +63,15 @@ function getBasicRhythmPoints(api: GetBasicRhythmPointsApi): Array<number> {
     )
     .map((someUnadjustedPoint, pointSlotIndex, unadjustedPoints) => {
       const orientationPhase =
-        unadjustedPoints[someBasicRhythmStructure.rhythmOrientation]!;
+        unadjustedPoints[someVariableRhythmStructure.rhythmOrientation]!;
       const pointAdjustment =
-        (-orientationPhase - someBasicRhythmStructure.rhythmPhase) %
-        someBasicRhythmStructure.rhythmResolution;
+        (-orientationPhase - someVariableRhythmStructure.rhythmPhase) %
+        someVariableRhythmStructure.rhythmResolution;
       const adjustedPoint =
         (someUnadjustedPoint +
           pointAdjustment +
-          someBasicRhythmStructure.rhythmResolution) %
-        someBasicRhythmStructure.rhythmResolution;
+          someVariableRhythmStructure.rhythmResolution) %
+        someVariableRhythmStructure.rhythmResolution;
       return adjustedPoint;
     });
 }

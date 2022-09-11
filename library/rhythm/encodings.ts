@@ -7,11 +7,31 @@ import {
 
 export type Rhythm = Array<boolean>;
 
-export interface RhythmMap extends Pick<RhythmStructure, "rhythmResolution"> {
+export interface RhythmMap
+  extends Pick<RecursiveRhythmStructure, "rhythmResolution"> {
   rhythmPoints: Array<number>;
 }
 
-export type PhasedRhythmStructure = RhythmStructure<{ rhythmPhase: number }>;
+export type SimpleRhythmStructure = Pick<
+  InitialPhasedRhythmStructure,
+  "rhythmResolution"
+> &
+  Pick<InterposedPhasedRhythmStructure, "rhythmDensity">;
+
+export type VariableRhythmStructure = Pick<
+  InitialPhasedRhythmStructure,
+  "rhythmResolution"
+> &
+  Pick<
+    InterposedPhasedRhythmStructure,
+    "rhythmDensity" | "rhythmOrientation" | "rhythmPhase"
+  >;
+
+export type GeneralRhythmStructure = Array<VariableRhythmStructure>;
+
+export type PhasedRhythmStructure = RecursiveRhythmStructure<{
+  rhythmPhase: number;
+}>;
 
 export type InitialPhasedRhythmStructure =
   ExtractInitialStructure<PhasedRhythmStructure>;
@@ -22,7 +42,7 @@ export type InterposedPhasedRhythmStructure =
 export type TerminalPhasedRhythmStructure =
   ExtractTerminalStructure<PhasedRhythmStructure>;
 
-export type AlignedRhythmStructure = RhythmStructure<{}>;
+export type AlignedRhythmStructure = RecursiveRhythmStructure<{}>;
 
 export type InitialAlignedRhythmStructure =
   ExtractInitialStructure<AlignedRhythmStructure>;
@@ -33,7 +53,7 @@ export type InterposedAlignedRhythmStructure =
 export type TerminalAlignedRhythmStructure =
   ExtractTerminalStructure<AlignedRhythmStructure>;
 
-export type RhythmStructure<
+export type RecursiveRhythmStructure<
   BaseRhythmStructureExtension extends Record<string, unknown> = {}
 > = RecursiveSpatialStructure<
   { rhythmResolution: number },
@@ -42,31 +62,6 @@ export type RhythmStructure<
     rhythmDensity: number;
     rhythmOrientation: number;
   }
->;
-
-export type InitialRhythmStructure =
-  ExtractInitialStructure<AlignedRhythmStructure>;
-
-export type InterposedRhythmStructure =
-  ExtractInterposedStructure<AlignedRhythmStructure>;
-
-export type TerminalRhythmStructure =
-  ExtractTerminalStructure<AlignedRhythmStructure>;
-
-export type GeneralRhythmStructure = Array<BasicRhythmStructure>;
-
-export type BasicRhythmStructure = Pick<
-  InitialPhasedRhythmStructure,
-  "rhythmResolution"
-> &
-  Pick<
-    InterposedPhasedRhythmStructure,
-    "rhythmDensity" | "rhythmOrientation" | "rhythmPhase"
-  >;
-
-export type EuclideanRhythmStructure = Pick<
-  BasicRhythmStructure,
-  "rhythmResolution" | "rhythmDensity"
 >;
 
 export interface RhythmGroupStructure {
@@ -82,7 +77,7 @@ export type RhythmGroupBaseStructure = Pick<
 };
 
 export type InterposedRhythmGroupBaseStructure = Pick<
-  InterposedRhythmStructure,
+  ExtractInterposedStructure<AlignedRhythmStructure>,
   "structureType" | "rhythmDensity" | "rhythmOrientation"
 > & {
   subStructure?: InterposedRhythmGroupBaseStructure;

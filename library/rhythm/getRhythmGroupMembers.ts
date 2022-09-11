@@ -3,7 +3,7 @@ import {
   RhythmGroupStructure,
   AlignedRhythmStructure,
   GeneralRhythmStructure,
-} from "./models";
+} from "./encodings";
 
 export function getRhythmGroupMembers(
   someRhythmGroupStructure: RhythmGroupStructure

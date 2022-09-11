@@ -6,7 +6,7 @@ import {
   GeneralRhythmStructure,
   PhasedRhythmStructure,
   RhythmStructure,
-} from "./models";
+} from "./encodings";
 
 export function getPhasedRhythmComponents(
   somePhasedRhythmStructure: PhasedRhythmStructure
