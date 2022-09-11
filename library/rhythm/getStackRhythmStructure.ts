@@ -3,30 +3,30 @@ import {
   _IterateRecursiveSpatialStructureApi,
 } from "../general/iterateRecursiveSpatialStructure";
 import { ExtractTerminalStructure } from "../general/models";
-import { GeneralRhythmStructure, RecursiveRhythmStructure } from "./encodings";
+import { RecursiveRhythmStructure, StackRhythmStructure } from "./encodings";
 
-export function getGeneralRhythmStructure(
+export function getStackRhythmStructure(
   someRecursiveRhythmStructure: RecursiveRhythmStructure
 ) {
-  return _getGeneralRhythmStructure({
+  return _getStackRhythmStructure({
     someRecursiveRhythmStructure,
   });
 }
 
-export interface _GetGeneralRhythmStructureApi {
+export interface _GetStackRhythmStructureApi {
   someRecursiveRhythmStructure: RecursiveRhythmStructure;
 }
 
-export function _getGeneralRhythmStructure(
-  api: _GetGeneralRhythmStructureApi
-): GeneralRhythmStructure {
+export function _getStackRhythmStructure(
+  api: _GetStackRhythmStructureApi
+): StackRhythmStructure {
   const { someRecursiveRhythmStructure } = api;
-  const generalRhythmStructureResult: GeneralRhythmStructure = [];
+  const stackRhythmStructureResult: StackRhythmStructure = [];
   _iterateRecursiveSpatialStructure({
     someSpatialStructure: someRecursiveRhythmStructure,
     forEach: (someScopedRhythmStructure) => {
       if (someScopedRhythmStructure.structureType === "initial") {
-        generalRhythmStructureResult.push({
+        stackRhythmStructureResult.push({
           rhythmResolution: someScopedRhythmStructure.rhythmResolution,
           rhythmDensity: someScopedRhythmStructure.subStructure.rhythmDensity,
           rhythmOrientation:
@@ -36,7 +36,7 @@ export function _getGeneralRhythmStructure(
           }),
         });
       } else if (someScopedRhythmStructure.structureType === "interposed") {
-        generalRhythmStructureResult.push({
+        stackRhythmStructureResult.push({
           rhythmResolution: someScopedRhythmStructure.rhythmDensity,
           rhythmDensity: someScopedRhythmStructure.subStructure.rhythmDensity,
           rhythmOrientation:
@@ -52,7 +52,7 @@ export function _getGeneralRhythmStructure(
       }
     },
   });
-  return generalRhythmStructureResult;
+  return stackRhythmStructureResult;
 }
 
 interface GetRhythmPhaseApi {

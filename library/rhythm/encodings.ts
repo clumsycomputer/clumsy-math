@@ -5,7 +5,27 @@ import {
   RecursiveSpatialStructure,
 } from "../general/models";
 
-export type Rhythm = Array<boolean>;
+export type Rhythm = Array<RhythmSlot>;
+
+export type RhythmSlot = boolean;
+
+export type RhythmPoint = number;
+
+export type RhythmResolution = number;
+
+export type RhythmDensity = number;
+
+export type RhythmPhase = number;
+
+export type RhythmOrientation = number;
+
+export type EuclideanRhythm = Rhythm;
+
+export type RecursiveEuclideanRhythm = Rhythm;
+
+export type AlignedRecursiveEuclideanRhythm = RecursiveEuclideanRhythm;
+
+export type PhasedRecursiveEuclideanRhythm = RecursiveEuclideanRhythm;
 
 export interface RhythmMap
   extends Pick<RecursiveRhythmStructure, "rhythmResolution"> {
@@ -18,7 +38,7 @@ export type SimpleRhythmStructure = Pick<
 > &
   Pick<InterposedPhasedRhythmStructure, "rhythmDensity">;
 
-export type VariableRhythmStructure = Pick<
+export type GeneralRhythmStructure = Pick<
   InitialPhasedRhythmStructure,
   "rhythmResolution"
 > &
@@ -27,7 +47,7 @@ export type VariableRhythmStructure = Pick<
     "rhythmDensity" | "rhythmOrientation" | "rhythmPhase"
   >;
 
-export type GeneralRhythmStructure = Array<VariableRhythmStructure>;
+export type StackRhythmStructure = Array<GeneralRhythmStructure>;
 
 export type PhasedRhythmStructure = RecursiveRhythmStructure<{
   rhythmPhase: number;

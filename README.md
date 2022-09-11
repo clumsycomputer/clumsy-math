@@ -187,21 +187,89 @@ const resultRhythm = [true, false, false, true, false];
 
 <sup><i>&emsp;[euclidean rhythm](#euclidean-rhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf),&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm resolution](#rhythm-resolution)</i></sup>
 
+###### aligned recursive euclidean rhythm
+
+>
+
+```typescript
+
+```
+
+###### phased recursive euclidean rhythm
+
+>
+
+```typescript
+
+```
+
 ## rhythm _(encodings)_
+
+###### RhythmSlot
+
+> a rhythm slot as _boolean_
+
+```typescript
+const rhythmSlot: RhythmSlot = true;
+```
+
+<sup><i>&emsp;[rhythm slot](#rhythm-slot)</i></sup>
 
 ###### Rhythm
 
-> rhythm as an array of booleans
+> a rhythm as _Array<[RhythmSlot](#rhythmslot)>_
 
 ```typescript
-const rhythm: Rhythm = [true, true, false, true, false];
+const rhythm: Rhythm = [true, true, false, false, false];
 ```
 
 <sup><i>&emsp;[rhythm](#rhythm)</i></sup>
 
+###### EuclideanRhythm
+
+> a euclidean rhythm as _[Rhythm](#rhythm-1)_
+
+```typescript
+const euclideanRhythm: EuclideanRhythm = [true, true, false, true, false];
+```
+
+<sup><i>&emsp;[euclidean rhythm](#euclidean-rhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf)</i></sup>
+
+###### RecursiveEuclideanRhythm
+
+> a recursive euclidean rhythm as _[Rhythm](#rhythm-1)_
+
+```typescript
+const recursiveEuclideanRhythm: RecursiveEuclideanRhythm = [
+  true,
+  false,
+  false,
+  true,
+  false,
+];
+```
+
+<sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm)</i></sup>
+
+###### AlignedRecursiveEuclideanRhythm
+
+>
+
+```typescript
+
+```
+
+###### PhasedRecursiveEuclideanRhythm
+
+>
+
+```typescript
+
+```
+
 ###### RhythmMap
 
-> the defacto encoding for rhythm
+> the defacto encoding for _[Rhythm](#rhythm-1)_
 
 ```typescript
 const rhythmMap: RhythmMap = {
@@ -214,7 +282,7 @@ const rhythmMap: RhythmMap = {
 
 ###### SimpleRhythmStructure
 
-> a minimal encoding for euclidean rhythm
+> a minimal encoding for _[EuclideanRhythm](#euclideanrhythm)_
 
 ```typescript
 const simpleRhythmStructure: SimpleRhythmStructure = {
@@ -225,12 +293,12 @@ const simpleRhythmStructure: SimpleRhythmStructure = {
 
 <sup><i>&emsp;[euclidean rhythm](#euclidean-rhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf),&emsp;[rhythm resolution](#rhythm-resolution),&emsp;[rhythm density](#rhythm-density)</i></sup>
 
-###### VariableRhythmStructure
+###### GeneralRhythmStructure
 
-> a generalized encoding for euclidean rhythm
+> a generalized encoding for _[EuclideanRhythm](#euclideanrhythm)_
 
 ```typescript
-const variableRhythmStructure: VariableRhythmStructure = {
+const generalRhythmStructure: GeneralRhythmStructure = {
   rhythmResolution: 5,
   rhythmDensity: 3,
   rhythmOrientation: 0,
@@ -240,15 +308,15 @@ const variableRhythmStructure: VariableRhythmStructure = {
 
 <sup><i>&emsp;[euclidean rhythm](#euclidean-rhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf),&emsp;[rhythm resolution](#rhythm-resolution),&emsp;[rhythm density](#rhythm-density),&emsp;[rhythm orientation](#rhythm-orientation),&emsp;[rhythm phase](#rhythm-phase)</i></sup>
 
-###### RhythmStructure
+###### RecursiveRhythmStructure
 
-> the foundational encoding for recursive euclidean rhythms
+> the foundational encoding for _[RecursiveEuclideanRhythm](#recursive-euclidean-rhythm)_
 
 <sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm)</i></sup>
 
 ###### AlignedRhythmStructure
 
-> an alias for rhythm structure that highlights the difference between itself and phased rhythm structure
+> a compact encoding for _[](#aligned-recursive-euclidean-rhythm)_
 
 ```typescript
 const alignedRhythmStructure: AlignedRhythmStructure = {
@@ -269,7 +337,7 @@ const alignedRhythmStructure: AlignedRhythmStructure = {
 
 ###### PhasedRhythmStructure
 
-> a rhythm structure with the additional concept of layers being phased
+>
 
 ```typescript
 const phasedRhythmStructure: PhasedRhythmStructure = {
@@ -290,12 +358,12 @@ const phasedRhythmStructure: PhasedRhythmStructure = {
 };
 ```
 
-###### GeneralRhythmStructure
+###### StackRhythmStructure
 
 > a generalized more flexible encoding that encompasses aligned rhythm structure and phased rhythm structure for simplifying computations
 
 ```typescript
-const generalRhythmStructure: GeneralRhythmStructure = [
+const stackRhythmStructure: StackRhythmStructure = [
   {
     rhythmResolution: 5,
     rhythmDensity: 3,

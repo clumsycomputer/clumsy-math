@@ -1,7 +1,7 @@
 import { _getSimpleRhythm } from "./getSimpleRhythm";
-import { _getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
+import { _getStackRhythmStructure } from "./getStackRhythmStructure";
 import {
-  VariableRhythmStructure,
+  GeneralRhythmStructure,
   RhythmMap,
   RecursiveRhythmStructure,
 } from "./encodings";
@@ -22,12 +22,12 @@ export function _getRhythmMap(api: _GetRhythmMapApi): RhythmMap {
   const { someRecursiveRhythmStructure } = api;
   return {
     rhythmResolution: someRecursiveRhythmStructure.rhythmResolution,
-    rhythmPoints: _getGeneralRhythmStructure({
+    rhythmPoints: _getStackRhythmStructure({
       someRecursiveRhythmStructure,
     }).reduce<Array<number>>(
-      (baseRhythmPoints, someVariableRhythmStructure) => {
-        return getVariableRhythmPoints({
-          someVariableRhythmStructure,
+      (baseRhythmPoints, someGeneralRhythmStructure) => {
+        return getGeneralRhythmPoints({
+          someGeneralRhythmStructure,
         })
           .map(
             (someVariableRhythmPoint) =>
@@ -41,16 +41,14 @@ export function _getRhythmMap(api: _GetRhythmMapApi): RhythmMap {
     ),
   };
 }
-interface GetVariableRhythmPointsApi {
-  someVariableRhythmStructure: VariableRhythmStructure;
+interface GetGeneralRhythmPointsApi {
+  someGeneralRhythmStructure: GeneralRhythmStructure;
 }
 
-function getVariableRhythmPoints(
-  api: GetVariableRhythmPointsApi
-): Array<number> {
-  const { someVariableRhythmStructure } = api;
+function getGeneralRhythmPoints(api: GetGeneralRhythmPointsApi): Array<number> {
+  const { someGeneralRhythmStructure } = api;
   return _getSimpleRhythm({
-    someSimpleRhythmStructure: someVariableRhythmStructure,
+    someSimpleRhythmStructure: someGeneralRhythmStructure,
   })
     .reduce<Array<number>>(
       (unadjustedPointsResult, someRhythmSlot, rhythmSlotIndex) => {
@@ -63,15 +61,15 @@ function getVariableRhythmPoints(
     )
     .map((someUnadjustedPoint, pointSlotIndex, unadjustedPoints) => {
       const orientationPhase =
-        unadjustedPoints[someVariableRhythmStructure.rhythmOrientation]!;
+        unadjustedPoints[someGeneralRhythmStructure.rhythmOrientation]!;
       const pointAdjustment =
-        (-orientationPhase - someVariableRhythmStructure.rhythmPhase) %
-        someVariableRhythmStructure.rhythmResolution;
+        (-orientationPhase - someGeneralRhythmStructure.rhythmPhase) %
+        someGeneralRhythmStructure.rhythmResolution;
       const adjustedPoint =
         (someUnadjustedPoint +
           pointAdjustment +
-          someVariableRhythmStructure.rhythmResolution) %
-        someVariableRhythmStructure.rhythmResolution;
+          someGeneralRhythmStructure.rhythmResolution) %
+        someGeneralRhythmStructure.rhythmResolution;
       return adjustedPoint;
     });
 }

@@ -1,11 +1,11 @@
 import { ExtractBaseStructure } from "../general";
-import { _getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
+import { _getStackRhythmStructure } from "./getStackRhythmStructure";
 import {
   AlignedRhythmStructure,
-  BasicRhythmStructure,
   GeneralRhythmStructure,
   PhasedRhythmStructure,
-  RhythmStructure,
+  RecursiveRhythmStructure,
+  StackRhythmStructure,
 } from "./encodings";
 
 export function getPhasedRhythmComponents(
@@ -25,7 +25,7 @@ export function _getPhasedRhythmComponents(
 ): Array<PhasedRhythmStructure> {
   const { somePhasedRhythmStructure } = api;
   return getRhythmComponents({
-    someRhythmStructure: somePhasedRhythmStructure,
+    someRecursiveRhythmStructure: somePhasedRhythmStructure,
     getBaseStructureData: (someBasicRhythmStructure) => ({
       rhythmPhase: someBasicRhythmStructure.rhythmPhase,
     }),
@@ -49,24 +49,28 @@ export function _getAlignedRhythmComponents(
 ): Array<AlignedRhythmStructure> {
   const { someAlignedRhythmStructure } = api;
   return getRhythmComponents({
-    someRhythmStructure: someAlignedRhythmStructure,
+    someRecursiveRhythmStructure: someAlignedRhythmStructure,
     getBaseStructureData: () => ({}),
   });
 }
 
-interface GetRhythmComponentsApi<SomeRhythmStructure extends RhythmStructure> {
-  someRhythmStructure: SomeRhythmStructure;
+interface GetRhythmComponentsApi<
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
+> {
+  someRecursiveRhythmStructure: SomeRecursiveRhythmStructure;
   getBaseStructureData: (
-    someBasicRhythmStructure: BasicRhythmStructure
-  ) => ExtractBaseStructure<SomeRhythmStructure>;
+    someGeneralRhythmStructure: GeneralRhythmStructure
+  ) => ExtractBaseStructure<SomeRecursiveRhythmStructure>;
 }
 
-function getRhythmComponents<SomeRhythmStructure extends RhythmStructure>(
+function getRhythmComponents<
+  SomeRhythmStructure extends RecursiveRhythmStructure
+>(
   api: GetRhythmComponentsApi<SomeRhythmStructure>
 ): Array<SomeRhythmStructure> {
-  const { someRhythmStructure, getBaseStructureData } = api;
-  return _getGeneralRhythmStructure({
-    someRhythmStructure,
+  const { someRecursiveRhythmStructure, getBaseStructureData } = api;
+  return _getStackRhythmStructure({
+    someRecursiveRhythmStructure,
   }).map((_, sliceIndex, baseGeneralRhythmStructure) =>
     getComponentStructure({
       getBaseStructureData,
@@ -78,23 +82,26 @@ function getRhythmComponents<SomeRhythmStructure extends RhythmStructure>(
   );
 }
 
-interface GetComponentStructureApi<SomeRhythmStructure extends RhythmStructure>
-  extends Pick<
-    GetRhythmComponentsApi<SomeRhythmStructure>,
+interface GetComponentStructureApi<
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
+> extends Pick<
+    GetRhythmComponentsApi<SomeRecursiveRhythmStructure>,
     "getBaseStructureData"
   > {
-  componentRhythmStructures: GeneralRhythmStructure;
+  componentRhythmStructures: StackRhythmStructure;
 }
 
-function getComponentStructure<SomeRhythmStructure extends RhythmStructure>(
-  api: GetComponentStructureApi<SomeRhythmStructure>
-): SomeRhythmStructure {
+function getComponentStructure<
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
+>(
+  api: GetComponentStructureApi<SomeRecursiveRhythmStructure>
+): SomeRecursiveRhythmStructure {
   const { componentRhythmStructures, getBaseStructureData } = api;
   const componentRhythmStructuresReversed = componentRhythmStructures.reverse();
   const initialComponentStructure = componentRhythmStructuresReversed[0];
   if (initialComponentStructure === undefined)
     throw new Error("getComponentStructure: baseRhythmStructures empty");
-  let componentStructureResult: SomeRhythmStructure = {
+  let componentStructureResult: SomeRecursiveRhythmStructure = {
     structureType: "initial",
     rhythmResolution: initialComponentStructure.rhythmResolution,
     ...getBaseStructureData(initialComponentStructure),
@@ -124,17 +131,17 @@ function getComponentStructure<SomeRhythmStructure extends RhythmStructure>(
 }
 
 interface GetInterposedBaseStructureDataApi<
-  SomeRhythmStructure extends RhythmStructure
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
 > {
-  componentStructureResult: SomeRhythmStructure;
+  componentStructureResult: SomeRecursiveRhythmStructure;
 }
 
 function getInterposedBaseStructureData<
-  SomeRhythmStructure extends RhythmStructure
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
 >(
-  api: GetInterposedBaseStructureDataApi<SomeRhythmStructure>
+  api: GetInterposedBaseStructureDataApi<SomeRecursiveRhythmStructure>
 ): Omit<
-  SomeRhythmStructure,
+  SomeRecursiveRhythmStructure,
   "structureType" | "rhythmResolution" | "subStructure"
 > {
   const { componentStructureResult } = api;

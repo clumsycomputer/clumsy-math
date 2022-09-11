@@ -1,4 +1,4 @@
-import { _getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
+import { _getStackRhythmStructure } from "./getStackRhythmStructure";
 import {
   AlignedRhythmStructure,
   GeneralRhythmStructure,
@@ -6,6 +6,7 @@ import {
   RhythmGroupBaseStructure,
   RhythmGroupMemberStructure,
   RhythmGroupStructure,
+  StackRhythmStructure,
   TerminalRhythmGroupMemberStructure,
 } from "./encodings";
 
@@ -25,20 +26,20 @@ export function _getRhythmLineage(
   api: _GetRhythmLineageApi
 ): Array<RhythmGroupStructure> {
   const { someAlignedRhythmStructure } = api;
-  return _getGeneralRhythmStructure({
-    someRhythmStructure: someAlignedRhythmStructure,
-  }).map((_, sliceIndex, baseGeneralRhythmStructure) => ({
+  return _getStackRhythmStructure({
+    someRecursiveRhythmStructure: someAlignedRhythmStructure,
+  }).map((_, sliceIndex, baseStackRhythmStructure) => ({
     baseStructure: getBaseStructure({
-      baseRhythmStructures: baseGeneralRhythmStructure.slice(0, sliceIndex + 1),
+      baseRhythmStructures: baseStackRhythmStructure.slice(0, sliceIndex + 1),
     }),
     memberStructure: getMemberStructure({
-      memberRhythmStructures: baseGeneralRhythmStructure.slice(sliceIndex),
+      memberRhythmStructures: baseStackRhythmStructure.slice(sliceIndex),
     }),
   }));
 }
 
 interface GetBaseStructureApi {
-  baseRhythmStructures: GeneralRhythmStructure;
+  baseRhythmStructures: StackRhythmStructure;
 }
 
 function getBaseStructure(api: GetBaseStructureApi): RhythmGroupBaseStructure {
@@ -67,7 +68,7 @@ function getBaseStructure(api: GetBaseStructureApi): RhythmGroupBaseStructure {
 }
 
 interface GetMemberStructureApi {
-  memberRhythmStructures: GeneralRhythmStructure;
+  memberRhythmStructures: StackRhythmStructure;
 }
 
 function getMemberStructure(

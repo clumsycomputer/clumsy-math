@@ -1,5 +1,5 @@
 export * from "./getSimpleRhythm";
-export * from "./getGeneralRhythmStructure";
+export * from "./getStackRhythmStructure";
 export * from "./getPhasedRhythmMap";
 export * from "./getRelativeRhythmPoints";
 export * from "./getRhythmComponents";
