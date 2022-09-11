@@ -82,6 +82,8 @@ const phasedRhythm = [false, true, true, false, true];
 
 <sup><i>&emsp;[RhythmPhase](#rhythmphase)</i></sup>
 
+<sup><i>&emsp;[getPhasedRhythmMap](#getphasedrhythmmap)</i></sup>
+
 ###### rhythm orientation
 
 > the point index relative to a base rhythm that indicates a reoriented rhythm's anchor/starting point
@@ -110,6 +112,8 @@ const relativeRhythmPoints = [0, 0.2, 0.6];
 
 <sup><i>&emsp;[RelativeRhythmPoint](#relativerhythmpoint)</i></sup>
 
+<sup><i>&emsp;[getRelativeRhythmPoints](#getrelativerhythmpoints)</i></sup>
+
 ###### rhythm interval
 
 > the length/distance between two points measured in slots
@@ -123,6 +127,8 @@ const rhythmIntervals = [1, 2, 2];
 <sup><i>&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm slot](#rhythm-slot)</i></sup>
 
 <sup><i>&emsp;[RhythmInterval](#rhythminterval)</i></sup>
+
+<sup><i>&emsp;[getRhythmIntervals](#getrhythmintervals)</i></sup>
 
 ###### rhythm slot weight
 
@@ -140,6 +146,8 @@ const rhythmSlotWeightZero = 3; // rhythmSlotWeights[0]
 
 <sup><i>&emsp;[RhythmSlotWeight](#rhythmslotweight)</i></sup>
 
+<sup><i>&emsp;[getRhythmSlotWeights](#getrhythmslotweights)</i></sup>
+
 ###### rhythm point weight
 
 > a point's corresponding slot weight
@@ -156,6 +164,8 @@ const rhythmAaaPointZeroWeight = 3; // rhythmSlotWeights[rhythmAaaPoints[0]]
 <sup><i>&emsp;[rhythm slot weight](#rhythm-slot-weight),&emsp;[rhythm point](#rhythm-point)</i></sup>
 
 <sup><i>&emsp;[RhythmPointWeight](#rhythmpointweight)</i></sup>
+
+<sup><i>&emsp;[getRhythmPointWeights](#getrhythmpointweights)</i></sup>
 
 ###### rhythm weight
 
