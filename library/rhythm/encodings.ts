@@ -27,6 +27,8 @@ export type AlignedRecursiveEuclideanRhythm = RecursiveEuclideanRhythm;
 
 export type PhasedRecursiveEuclideanRhythm = RecursiveEuclideanRhythm;
 
+export type RhythmGroup = Array<AlignedRecursiveEuclideanRhythm>;
+
 export interface RhythmMap
   extends Pick<RecursiveRhythmStructure, "rhythmResolution"> {
   rhythmPoints: Array<number>;

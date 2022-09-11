@@ -177,11 +177,11 @@ const rhythmCcc = [true, false, true, false, true];
 
 ###### recursive euclidean rhythm
 
-> a rhythm composed of layered euclidean rhythms where the base rhythm's density/points determines the next rhythm's resolution/space
+> a rhythm composed by stacking euclidean rhythms on top of each other where the base rhythm's density/points determines the next rhythm's resolution/space
 
 ```typescript
 const baseRhythm = [true, true, false, true, false];
-const terminalRhythm = [true, false, true, false];
+const terminalRhythm = [true, false, true];
 const resultRhythm = [true, false, false, true, false];
 ```
 
@@ -189,19 +189,27 @@ const resultRhythm = [true, false, false, true, false];
 
 ###### aligned recursive euclidean rhythm
 
->
+> a recursive euclidean rhythm where rhythm layers have a phase of zero such that one of it's points remains anchored to the zero slot
 
 ```typescript
-
+const baseRhythm = [true, true, false, true, false];
+const terminalRhythm = [true, false, true];
+const resultRhythm = [true, false, false, true, false];
 ```
+
+<sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm),&emsp;[rhythm slot](#rhythm-slot),&emsp;[rhythm phase](#rhythm-phase)</i></sup>
 
 ###### phased recursive euclidean rhythm
 
->
+> a recursive euclidean rhythm where rhythm layers can be phased
 
 ```typescript
-
+const baseRhythm = [true, true, false, true, false];
+const terminalRhythm = [false, true, true]; // phase === -1
+const resultRhythm = [false, true, false, true, false];
 ```
+
+<sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm),&emsp;[rhythm phase](#rhythm-phase)</i></sup>
 
 ## rhythm _(encodings)_
 
@@ -253,19 +261,29 @@ const recursiveEuclideanRhythm: RecursiveEuclideanRhythm = [
 
 ###### AlignedRecursiveEuclideanRhythm
 
->
+> an aligned recursive euclidean rhythm as _[RecursiveEuclideanRhythm](#recursiveeuclideanrhythm)_
 
 ```typescript
-
+// AlignedRecursiveEuclideanRhythm === Array<boolean>
 ```
+
+<sup><i>&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
 
 ###### PhasedRecursiveEuclideanRhythm
 
->
+> a phased recursive euclidean rhythm as _[RecursiveEuclideanRhythm](#recursiveeuclideanrhythm)_
 
 ```typescript
-
+// PhasedRecursiveEuclideanRhythm === Array<boolean>
 ```
+
+<sup><i>&emsp;[phased recursive euclidean rhythm](#phased-recursive-euclidean-rhythm)</i></sup>
+
+###### RhythmGroup
+
+> a rhythm group as _Array<[AlignedRecursiveEuclideanRhythm](#alignedrecursiveeuclideanrhythm)>_
+
+<sup><i>&emsp;[rhythm group](#rhythm-group),&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
 
 ###### RhythmMap
 
@@ -316,7 +334,7 @@ const generalRhythmStructure: GeneralRhythmStructure = {
 
 ###### AlignedRhythmStructure
 
-> a compact encoding for _[](#aligned-recursive-euclidean-rhythm)_
+> a demonstrative encoding for _[AlignedRecursiveEuclideanRhythm](#alignedrecursiveeuclideanrhythm)_
 
 ```typescript
 const alignedRhythmStructure: AlignedRhythmStructure = {
@@ -335,9 +353,11 @@ const alignedRhythmStructure: AlignedRhythmStructure = {
 };
 ```
 
+<sup><i>&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
+
 ###### PhasedRhythmStructure
 
->
+> a demonstrative encoding for _[PhasedRecursiveEuclideanRhythm](#phasedrecursiveeuclideanrhythm)_
 
 ```typescript
 const phasedRhythmStructure: PhasedRhythmStructure = {
@@ -358,9 +378,11 @@ const phasedRhythmStructure: PhasedRhythmStructure = {
 };
 ```
 
+<sup><i>&emsp;[phased recursive euclidean rhythm](#phased-recursive-euclidean-rhythm)</i></sup>
+
 ###### StackRhythmStructure
 
-> a generalized more flexible encoding that encompasses aligned rhythm structure and phased rhythm structure for simplifying computations
+> a generalized more flexible encoding that encompasses both _[AlignedRhythmStructure](#alignedrhythmstructure)_ and _[PhasedRhythmStructure](#phasedrhythmstructure)_ that simplifies computations
 
 ```typescript
 const stackRhythmStructure: StackRhythmStructure = [
@@ -379,9 +401,11 @@ const stackRhythmStructure: StackRhythmStructure = [
 ];
 ```
 
+<sup><i>&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm),&emsp;[phased recursive euclidean rhythm](#phased-recursive-euclidean-rhythm),&emsp;[GeneralRhythmStructure](#generalrhythmstructure)</i></sup>
+
 ###### RhythmGroupStructure
 
-> a compact encoding for a set of related _[AlignedRhythmStructure](#alignedrhythmstructure)s_
+> a compact encoding for _[RhythmGroup](#rhythmgroup)_
 
 ```typescript
 const rhythmGroupStructure: RhythmGroupStructure = {
@@ -396,27 +420,7 @@ const rhythmGroupStructure: RhythmGroupStructure = {
 };
 ```
 
-###### RhythmGroupBaseStructure
-
-> the invariant portion of _[RhythmGroupStructure](#rhythmgroupstructure)_
-
-```typescript
-const rhythmGroupBaseStructure: RhythmGroupBaseStructure = {
-  structureType: "initial",
-  rhythmResolution: 5,
-};
-```
-
-###### RhythmGroupMemberStructure
-
-> the variant portion of _[RhythmGroupStructure](#rhythmgroupstructure)_
-
-```typescript
-const rhythmGroupMemberStructure: RhythmGroupMemberStructure = {
-  structureType: "terminal",
-  rhythmDensity: 3,
-};
-```
+<sup><i>&emsp;[rhythm group](#rhythm-group)</i></sup>
 
 ## rhythm _(functions)_
 
