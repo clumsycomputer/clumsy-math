@@ -12,6 +12,8 @@ a little library of helpful math utensils 🙂
 const rhythm = [true, true, false, true, false];
 ```
 
+<sup><i>&emsp;[Rhythm](#rhythm-1)</i></sup>
+
 ###### rhythm slot
 
 > a rhythm's building block
@@ -24,6 +26,8 @@ const rhythmSlotTwo = false; // rhythm[2]
 
 <sup><i>&emsp;[rhythm](#rhythm)</i></sup>
 
+<sup><i>&emsp;[RhythmSlot](#rhythmslot)</i></sup>
+
 ###### rhythm resolution
 
 > the number of slots that make up a rhythm
@@ -35,6 +39,8 @@ const rhythmResolution = 5; // rhythm.length
 
 <sup><i>&emsp;[rhythm slot](#rhythm-slot)</i></sup>
 
+<sup><i>&emsp;[RhythmResolution](#rhythmresolution)</i></sup>
+
 ###### rhythm point
 
 > the index of a slot whose value is true/1
@@ -45,6 +51,8 @@ const rhythmPoints = [0, 1, 3];
 ```
 
 <sup><i>&emsp;[rhythm slot](#rhythm-slot)</i></sup>
+
+<sup><i>&emsp;[RhythmPoint](#rhythmpoint)</i></sup>
 
 ###### rhythm density
 
@@ -58,6 +66,8 @@ const rhythmDensity = 3; // rhythmPoints.length
 
 <sup><i>&emsp;[rhythm point](#rhythm-point)</i></sup>
 
+<sup><i>&emsp;[RhythmDensity](#rhythmdensity)</i></sup>
+
 ###### rhythm phase
 
 > an offset measured in slots applied to points relative to a base rhythm
@@ -70,6 +80,8 @@ const phasedRhythm = [false, true, true, false, true];
 
 <sup><i>&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm slot](#rhythm-slot)</i></sup>
 
+<sup><i>&emsp;[RhythmPhase](#rhythmphase)</i></sup>
+
 ###### rhythm orientation
 
 > the point index relative to a base rhythm that indicates a reoriented rhythm's anchor/starting point
@@ -79,6 +91,10 @@ const rhythm = [true, true, false, true, false];
 const reorientedRhythm = [true, false, true, false, true];
 const reorientedRhythmOrientation = 1;
 ```
+
+<sup><i>&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm resoluiton](#rhythm-resolution)</i></sup>
+
+<sup><i>&emsp;[RhythmOrientation](#rhythmorientation)</i></sup>
 
 ###### relative rhythm point
 
@@ -92,6 +108,8 @@ const relativeRhythmPoints = [0, 0.2, 0.6];
 
 <sup><i>&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm resolution](#rhythm-resolution)</i></sup>
 
+<sup><i>&emsp;[RelativeRhythmPoint](#relativerhythmpoint)</i></sup>
+
 ###### rhythm interval
 
 > the length/distance between two points measured in slots
@@ -103,6 +121,8 @@ const rhythmIntervals = [1, 2, 2];
 ```
 
 <sup><i>&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm slot](#rhythm-slot)</i></sup>
+
+<sup><i>&emsp;[RhythmInterval](#rhythminterval)</i></sup>
 
 ###### rhythm slot weight
 
@@ -117,6 +137,8 @@ const rhythmSlotWeightZero = 3; // rhythmSlotWeights[0]
 ```
 
 <sup><i>&emsp;[rhythm slot](#rhythm-slot),&emsp;[rhythm point](#rhythm-point)</i></sup>
+
+<sup><i>&emsp;[RhythmSlotWeight](#rhythmslotweight)</i></sup>
 
 ###### rhythm point weight
 
@@ -133,6 +155,8 @@ const rhythmAaaPointZeroWeight = 3; // rhythmSlotWeights[rhythmAaaPoints[0]]
 
 <sup><i>&emsp;[rhythm slot weight](#rhythm-slot-weight),&emsp;[rhythm point](#rhythm-point)</i></sup>
 
+<sup><i>&emsp;[RhythmPointWeight](#rhythmpointweight)</i></sup>
+
 ###### rhythm weight
 
 > the sum of a rhythm's point weights
@@ -148,6 +172,10 @@ const rhythmAaaWeight = 6;
 
 <sup><i>&emsp;[rhythm point weight](#rhythm-point-weight),&emsp;[rhythm point](#rhythm-point)</i></sup>
 
+<sup><i>&emsp;[RhythmWeight](#rhythmweight)</i></sup>
+
+<sup><i>&emsp;[getRhythmWeight](#getrhythmweight)</i></sup>
+
 ###### rhythm group
 
 > a set of recursive euclidean rhythms that share a static base structure and a dynamic member structure where the density structure is the same but orientations are different
@@ -160,6 +188,10 @@ const memberBaseRhythmBbb = [true, false, true]; // memberRhythmBase with orient
 const groupMemberRhythmAaa = [true, true, false, false, false]; // 11010 -> 110 === 11000
 const groupMemberRhythmBbb = [true, false, false, true, false]; // 11010 -> 101 === 10010
 ```
+
+<sup><i>&emsp;[RhythmGroup](#rhythmgroup),&emsp;[RhythmGroupStructure](#rhythmgroupstructure)</i></sup>
+
+<sup><i>&emsp;[getRhythmGroupId](#getrhythmgroupid),&emsp;[getRhythmGroupMembers](#getrhythmgroupmembers)</i></sup>
 
 ## rhythm _(classifications)_
 
