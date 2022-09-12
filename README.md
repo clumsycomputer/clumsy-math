@@ -226,6 +226,8 @@ const rhythmCcc = [true, false, true, false, true];
 
 <sup><i>&emsp;[rhythm](#rhythm),&emsp;[rhythm point](#rhythm-point)</i></sup>
 
+<sup><i>&emsp;[getSimpleRhythm](#getsimplerhythm)</i></sup>
+
 ###### recursive euclidean rhythm
 
 > a rhythm composed by stacking euclidean rhythms on top of each other where the base rhythm's density/points determines the next rhythm's resolution/space
@@ -282,7 +284,7 @@ const rhythm: Rhythm = [true, true, false, true, false];
 
 <sup><i>&emsp;[rhythm](#rhythm)</i></sup>
 
-<sup><i>&emsp;[getRhythmString](#getrhythmstring)</i></sup>
+<sup><i>&emsp;[getSimpleRhythm](#getsimplerhythm),&emsp;[getRhythmString](#getrhythmstring)</i></sup>
 
 ###### RhythmString
 
@@ -320,6 +322,8 @@ const rhythmString: RhythmString = "11010";
 
 <sup><i>&emsp;[relative rhythm point](#relative-rhythm-point)</i></sup>
 
+<sup><i>&emsp;[getRelativeRhythmPoints](#getrelativerhythmpoints)</i></sup>
+
 ###### RhythmInterval
 
 > rhythm interval as _number_
@@ -331,6 +335,8 @@ const rhythmString: RhythmString = "11010";
 > rhythm phase as _number_
 
 <sup><i>&emsp;[rhythm phase](#rhythm-phase)</i></sup>
+
+<sup><i>&emsp;[getPhasedRhythmMap](#getphasedrhythmmap)</i></sup>
 
 ###### RhythmOrientation
 
@@ -398,11 +404,15 @@ const rhythmString: RhythmString = "11010";
 
 <sup><i>&emsp;[rhythm group](#rhythm-group),&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
 
+<sup><i>&emsp;[getRhythmGroupMembers](#getrhythmgroupmembers)</i></sup>
+
 ###### RhythmGroupId
 
 > rhythm group as _string_
 
 <sup><i>&emsp;[rhythm group](#rhythm-group)</i></sup>
+
+<sup><i>&emsp;[getRhythmGroupId](#getrhythmgroupid)</i></sup>
 
 ###### RhythmGroupLineage
 
@@ -423,6 +433,8 @@ const rhythmMap: RhythmMap = {
 
 <sup><i>&emsp;[rhythm resolution](#rhythm-resolution),&emsp;[rhythm point](#rhythm-point)</i></sup>
 
+<sup><i>&emsp;[getPhasedRhythmMap](#getphasedrhythmmap),&emsp;[getRelativeRhythmPoints](#getrelativerhythmpoints)</i></sup>
+
 ###### SimpleRhythmStructure
 
 > minimal encoding for _[EuclideanRhythm](#euclideanrhythm)_
@@ -435,6 +447,8 @@ const simpleRhythmStructure: SimpleRhythmStructure = {
 ```
 
 <sup><i>&emsp;[euclidean rhythm](#euclidean-rhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf),&emsp;[rhythm resolution](#rhythm-resolution),&emsp;[rhythm density](#rhythm-density)</i></sup>
+
+<sup><i>&emsp;[getSimpleRhythm](#getsimplerhythm)</i></sup>
 
 ###### GeneralRhythmStructure
 
@@ -456,6 +470,8 @@ const generalRhythmStructure: GeneralRhythmStructure = {
 > foundational encoding for _[RecursiveEuclideanRhythm](#recursive-euclidean-rhythm)_
 
 <sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm)</i></sup>
+
+<sup><i>&emsp;[getStackRhythmStructure](#getstackrhythmstructure)</i></sup>
 
 ###### AlignedRhythmStructure
 
@@ -530,6 +546,8 @@ const stackRhythmStructure: StackRhythmStructure = [
 
 <sup><i>&emsp;[GeneralRhythmStructure](#generalrhythmstructure)</i></sup>
 
+<sup><i>&emsp;[getStackRhythmStructure](#getstackrhythmstructure)</i></sup>
+
 ###### RhythmGroupStructure
 
 > compact encoding for _[RhythmGroup](#rhythmgroup)_
@@ -549,6 +567,8 @@ const rhythmGroupStructure: RhythmGroupStructure = {
 
 <sup><i>&emsp;[rhythm group](#rhythm-group)</i></sup>
 
+<sup><i>&emsp;[getRhythmGroupId](#getrhythmgroupid),&emsp;[getRhythmGroupMembers](#getrhythmgroupmembers)</i></sup>
+
 ## rhythm _(functions)_
 
 #### getSimpleRhythm
@@ -563,9 +583,11 @@ const simpleRhythm = getSimpleRhythm({
 // simpleRhythm === [true,true,false,true,false]
 ```
 
+<sup><i>&emsp;[euclidean rhythm](#euclidean-rhythm---white-paperhttpcgmcsmcgillcagodfriedpublicationsbanffpdf),&emsp;[rhythm](#rhythm)</i></sup>
+
 ###### getStackRhythmStructure
 
-> transforms _[RhythmStructure](#rhythmstructure)_ to _[StackRhythmStructure](#stackrhythmstructure)_
+> transforms _[RecursiveRhythmStructure](#recursiverhythmstructure)_ to _[StackRhythmStructure](#stackrhythmstructure)_
 
 ```typescript
 const stackRhythmStructure = getStackRhythmStructure({
@@ -599,6 +621,8 @@ const stackRhythmStructure = getStackRhythmStructure({
 //   ];
 ```
 
+<sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm)</i></sup>
+
 ###### getPhasedRhythmMap
 
 > computes new _[RhythmMap](#rhythmmap)_ from _[RhythmMap](#rhythmmap)_ and _[RhythmPhase](#rhythmphase)_
@@ -623,6 +647,8 @@ const phasedRhythmMap = getPhasedRhythmMap(
 //   };
 ```
 
+<sup><i>&emsp;[rhythm phase](#rhythm-phase)</i></sup>
+
 ###### getRelativeRhythmPoints
 
 > transforms _[RhythmMap](#rhythmmap)_ to _Array<[RelativeRhythmPoint](#relativerhythmpoint)>_
@@ -641,6 +667,8 @@ const relativeRhythmPoints = getRelativeRhythmPoints(
 );
 // relativeRhythmPoints === [0, 0.2, 0.6];
 ```
+
+<sup><i>&emsp;[relative rhythm point](#relative-rhythm-point)</i></sup>
 
 ###### getPhasedRhythmComponents
 
@@ -759,6 +787,8 @@ const rhythmGroupId = getRhythmGroupId({
 // rhythmGroupId === "group___5___3";
 ```
 
+<sup><i>&emsp;[rhythm group](#rhythm-group)</i></sup>
+
 ###### getRhythmGroupMembers
 
 > transforms _[RhythmGroupStructure](#rhythmgroupstructure)_ to _[RhythmGroup](#rhythmgroup)_
@@ -805,6 +835,8 @@ const rhythmGroupMembers = getRhythmGroupMembers({
 //     },
 //   ];
 ```
+
+<sup><i>&emsp;[rhythm group](#rhythm-group)</i></sup>
 
 ###### getAlignedRhythmId
 
