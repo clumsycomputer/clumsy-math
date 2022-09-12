@@ -6,19 +6,23 @@ import {
   RecursiveRhythmStructure,
 } from "./encodings";
 
-export function getRhythmMap(
-  someRecursiveRhythmStructure: RecursiveRhythmStructure
-) {
+export function getRhythmMap<
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
+>(someRecursiveRhythmStructure: SomeRecursiveRhythmStructure) {
   return _getRhythmMap({
     someRecursiveRhythmStructure,
   });
 }
 
-export interface _GetRhythmMapApi {
-  someRecursiveRhythmStructure: RecursiveRhythmStructure;
+export interface _GetRhythmMapApi<
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
+> {
+  someRecursiveRhythmStructure: SomeRecursiveRhythmStructure;
 }
 
-export function _getRhythmMap(api: _GetRhythmMapApi): RhythmMap {
+export function _getRhythmMap<
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
+>(api: _GetRhythmMapApi<SomeRecursiveRhythmStructure>): RhythmMap {
   const { someRecursiveRhythmStructure } = api;
   return {
     rhythmResolution: someRecursiveRhythmStructure.rhythmResolution,

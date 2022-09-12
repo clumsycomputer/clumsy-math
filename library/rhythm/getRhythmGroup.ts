@@ -6,26 +6,22 @@ import {
   RhythmGroup,
 } from "./encodings";
 
-export function getRhythmGroupMembers(
-  someRhythmGroupStructure: RhythmGroupStructure
-) {
-  return _getRhythmGroupMembers({
+export function getRhythmGroup(someRhythmGroupStructure: RhythmGroupStructure) {
+  return _getRhythmGroup({
     someRhythmGroupStructure,
   });
 }
 
-export interface _GetRhythmGroupMembersApi {
+export interface _GetRhythmGroupApi {
   someRhythmGroupStructure: RhythmGroupStructure;
 }
 
-export function _getRhythmGroupMembers(
-  api: _GetRhythmGroupMembersApi
-): RhythmGroup {
+export function _getRhythmGroup(api: _GetRhythmGroupApi): RhythmGroup {
   const { someRhythmGroupStructure } = api;
   return getMembers({
     someRhythmGroupStructure,
     someScopedMemberStructure: someRhythmGroupStructure.memberStructure,
-    rhythmGroupMembersResult: [],
+    rhythmGroupResult: [],
     memberStack: getMemberStackBase({
       someScopedBaseStructure: someRhythmGroupStructure.baseStructure,
       memberStackResult: [],
@@ -83,7 +79,7 @@ function getMemberStackBase(api: GetMemberStackBaseApi): StackRhythmStructure {
 
 interface GetMembersApi {
   someRhythmGroupStructure: RhythmGroupStructure;
-  rhythmGroupMembersResult: RhythmGroup;
+  rhythmGroupResult: RhythmGroup;
   someScopedMemberStructure: RhythmGroupMemberStructure | null;
   memberStack: StackRhythmStructure;
 }
@@ -93,7 +89,7 @@ function getMembers(api: GetMembersApi): RhythmGroup {
     memberStack,
     someRhythmGroupStructure,
     someScopedMemberStructure,
-    rhythmGroupMembersResult,
+    rhythmGroupResult,
   } = api;
   if (someScopedMemberStructure) {
     const nextScopedMemberStructure =
@@ -110,7 +106,7 @@ function getMembers(api: GetMembersApi): RhythmGroup {
     ) {
       getMembers({
         someRhythmGroupStructure,
-        rhythmGroupMembersResult,
+        rhythmGroupResult,
         someScopedMemberStructure: nextScopedMemberStructure,
         memberStack: [
           ...memberStack,
@@ -124,13 +120,13 @@ function getMembers(api: GetMembersApi): RhythmGroup {
       });
     }
   } else if (someScopedMemberStructure === null) {
-    rhythmGroupMembersResult.push(
+    rhythmGroupResult.push(
       getMemberStructure({
         memberStack,
       })
     );
   }
-  return rhythmGroupMembersResult;
+  return rhythmGroupResult;
 }
 
 interface GetMemberStructureApi {

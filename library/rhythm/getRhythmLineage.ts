@@ -1,13 +1,13 @@
-import { _getStackRhythmStructure } from "./getStackRhythmStructure";
 import {
   AlignedRhythmStructure,
   InterposedRhythmGroupMemberStructure,
   RhythmGroupBaseStructure,
   RhythmGroupMemberStructure,
-  RhythmGroupStructure,
+  RhythmLineage,
   StackRhythmStructure,
   TerminalRhythmGroupMemberStructure,
 } from "./encodings";
+import { _getStackRhythmStructure } from "./getStackRhythmStructure";
 
 export function getRhythmLineage(
   someAlignedRhythmStructure: AlignedRhythmStructure
@@ -21,9 +21,7 @@ export interface _GetRhythmLineageApi {
   someAlignedRhythmStructure: AlignedRhythmStructure;
 }
 
-export function _getRhythmLineage(
-  api: _GetRhythmLineageApi
-): Array<RhythmGroupStructure> {
+export function _getRhythmLineage(api: _GetRhythmLineageApi): RhythmLineage {
   const { someAlignedRhythmStructure } = api;
   return _getStackRhythmStructure({
     someRecursiveRhythmStructure: someAlignedRhythmStructure,

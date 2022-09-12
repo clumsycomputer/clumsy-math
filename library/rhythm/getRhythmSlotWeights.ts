@@ -1,4 +1,4 @@
-import { RhythmMap } from "./encodings";
+import { RhythmMap, RhythmSlotWeight } from "./encodings";
 
 export function getRhythmSlotWeights(someRhythmMaps: Array<RhythmMap>) {
   return _getRhythmSlotWeights({
@@ -12,7 +12,7 @@ export interface _GetRhythmSlotWeightsApi {
 
 export function _getRhythmSlotWeights(
   api: _GetRhythmSlotWeightsApi
-): Array<number> {
+): Array<RhythmSlotWeight> {
   const { someRhythmMaps } = api;
   const firstRhythmMap = someRhythmMaps[0];
   if (firstRhythmMap === undefined)

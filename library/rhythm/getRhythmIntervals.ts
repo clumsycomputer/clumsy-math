@@ -1,4 +1,4 @@
-import { RhythmMap } from "./encodings";
+import { RhythmInterval, RhythmMap } from "./encodings";
 
 export function getRhythmIntervals(someRhythmMap: RhythmMap) {
   return _getRhythmIntervals({
@@ -12,7 +12,7 @@ export interface _GetRhythmIntervalsApi {
 
 export function _getRhythmIntervals(
   api: _GetRhythmIntervalsApi
-): Array<number> {
+): Array<RhythmInterval> {
   const { someRhythmMap } = api;
   return someRhythmMap.rhythmPoints.map((someRhythmPoint, rhythmPointIndex) => {
     const nextRhythmPoint =

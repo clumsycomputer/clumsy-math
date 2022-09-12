@@ -3,7 +3,11 @@ import {
   _IterateRecursiveSpatialStructureApi,
 } from "../general/iterateRecursiveSpatialStructure";
 import { ExtractTerminalStructure } from "../general/models";
-import { RecursiveRhythmStructure, StackRhythmStructure } from "./encodings";
+import {
+  RecursiveRhythmStructure,
+  RhythmPhase,
+  StackRhythmStructure,
+} from "./encodings";
 
 export function getStackRhythmStructure(
   someRecursiveRhythmStructure: RecursiveRhythmStructure
@@ -64,7 +68,7 @@ interface GetRhythmPhaseApi {
   >;
 }
 
-function getRhythmPhase(api: GetRhythmPhaseApi): number {
+function getRhythmPhase(api: GetRhythmPhaseApi): RhythmPhase {
   const { someScopedRhythmStructure } = api;
   const rhythmPhase = (someScopedRhythmStructure as Record<string, unknown>)[
     "rhythmPhase"

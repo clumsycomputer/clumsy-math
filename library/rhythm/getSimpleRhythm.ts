@@ -1,4 +1,4 @@
-import { SimpleRhythmStructure, Rhythm } from "./encodings";
+import { EuclideanRhythm, SimpleRhythmStructure } from "./encodings";
 
 export function getSimpleRhythm(
   someSimpleRhythmStructure: SimpleRhythmStructure
@@ -12,7 +12,7 @@ export interface _GetSimpleRhythmApi {
   someSimpleRhythmStructure: SimpleRhythmStructure;
 }
 
-export function _getSimpleRhythm(api: _GetSimpleRhythmApi): Rhythm {
+export function _getSimpleRhythm(api: _GetSimpleRhythmApi): EuclideanRhythm {
   const { someSimpleRhythmStructure } = api;
   const baseSimpleRhythm = _getBaseSimpleRhythm({
     someSimpleRhythmStructure,
@@ -33,7 +33,9 @@ export function getBaseSimpleRhythm(
 export interface _GetBaseSimpleRhythmApi
   extends Pick<_GetSimpleRhythmApi, "someSimpleRhythmStructure"> {}
 
-export function _getBaseSimpleRhythm(api: _GetBaseSimpleRhythmApi): Rhythm {
+export function _getBaseSimpleRhythm(
+  api: _GetBaseSimpleRhythmApi
+): EuclideanRhythm {
   const { someSimpleRhythmStructure } = api;
   return getBaseEuclideanRhythm({
     lhsCount: someSimpleRhythmStructure.rhythmDensity,
@@ -47,12 +49,14 @@ export function _getBaseSimpleRhythm(api: _GetBaseSimpleRhythmApi): Rhythm {
 
 interface GetBaseEuclideanRhythmApi {
   lhsCount: number;
-  lhsRhythm: Rhythm;
+  lhsRhythm: EuclideanRhythm;
   rhsCount: number;
-  rhsRhythm: Rhythm;
+  rhsRhythm: EuclideanRhythm;
 }
 
-function getBaseEuclideanRhythm(api: GetBaseEuclideanRhythmApi): Rhythm {
+function getBaseEuclideanRhythm(
+  api: GetBaseEuclideanRhythmApi
+): EuclideanRhythm {
   const { rhsCount, lhsRhythm, lhsCount, rhsRhythm } = api;
   if (rhsCount === 0) {
     return lhsRhythm;

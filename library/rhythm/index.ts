@@ -4,7 +4,7 @@ export * from "./getPhasedRhythmMap";
 export * from "./getRelativeRhythmPoints";
 export * from "./getRhythmComponents";
 export * from "./getRhythmGroupId";
-export * from "./getRhythmGroupMembers";
+export * from "./getRhythmGroup";
 export * from "./getRhythmId";
 export * from "./getRhythmIntervals";
 export * from "./getRhythmLineage";

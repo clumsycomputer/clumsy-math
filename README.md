@@ -5,7 +5,6 @@ a little library of helpful math utensils 🙂
 ## documentation
 
 - **[rhythm _(concepts)_](#rhythm-concepts)**
-- **[rhythm _(classifications)_](#rhythm-classifications)**
 - **[rhythm _(encodings)_](#rhythm-encodings)**
 - **[rhythm _(functions)_](#rhythm-functions)**
 - **[primes _(functions)_](#primes-functions)**
@@ -49,7 +48,9 @@ const rhythmResolution = 5; // rhythm.length
 
 <sup><i>&emsp;[rhythm slot](#rhythm-slot)</i></sup>
 
-<sup><i>&emsp;[RhythmResolution](#rhythmresolution)</i></sup>
+<sup><i>&emsp;[RhythmResolution](#rhythmresolution),&emsp;[RhythmMap](#rhythmmap)</i></sup>
+
+<sup><i>&emsp;[getRhythmMap](#getrhythmmap)</i></sup>
 
 ###### rhythm point
 
@@ -62,7 +63,9 @@ const rhythmPoints = [0, 1, 3];
 
 <sup><i>&emsp;[rhythm slot](#rhythm-slot)</i></sup>
 
-<sup><i>&emsp;[RhythmPoint](#rhythmpoint)</i></sup>
+<sup><i>&emsp;[RhythmPoint](#rhythmpoint),&emsp;[RhythmMap](#rhythmmap)</i></sup>
+
+<sup><i>&emsp;[getRhythmMap](#getrhythmmap)</i></sup>
 
 ###### rhythm density
 
@@ -154,9 +157,9 @@ const rhythmSlotWeightZero = 3; // rhythmSlotWeights[0]
 
 <sup><i>&emsp;[rhythm slot](#rhythm-slot),&emsp;[rhythm point](#rhythm-point)</i></sup>
 
-<sup><i>&emsp;[RhythmSlotWeight](#rhythmslotweight)</i></sup>
+<sup><i>&emsp;[RhythmSlotWeight](#rhythmslotweight),&emsp;[RhythmPointWeight](#rhythmpointweight),&emsp;[RhythmWeight](#rhythmweight)</i></sup>
 
-<sup><i>&emsp;[getRhythmSlotWeights](#getrhythmslotweights)</i></sup>
+<sup><i>&emsp;[getRhythmSlotWeights](#getrhythmslotweights),&emsp;[getRhythmPointWeights](#getrhythmpointweights),&emsp;[getRhythmWeight](#getrhythmweight)</i></sup>
 
 ###### rhythm point weight
 
@@ -209,9 +212,11 @@ const groupMemberRhythmAaa = [true, true, false, false, false]; // 11010 -> 110 
 const groupMemberRhythmBbb = [true, false, false, true, false]; // 11010 -> 101 === 10010
 ```
 
-<sup><i>&emsp;[RhythmGroup](#rhythmgroup),&emsp;[RhythmGroupStructure](#rhythmgroupstructure)</i></sup>
+<sup><i>&emsp;[rhythm lineage](#rhythm-lineage)</i></sup>
 
-<sup><i>&emsp;[getRhythmGroupId](#getrhythmgroupid),&emsp;[getRhythmGroupMembers](#getrhythmgroupmembers)</i></sup>
+<sup><i>&emsp;[RhythmGroup](#rhythmgroup),&emsp;[RhythmGroupStructure](#rhythmgroupstructure),&emsp;[RhythmGroupId](#rhythmgroupid)</i></sup>
+
+<sup><i>&emsp;[getRhythmGroup](#getrhythmgroup),&emsp;[getRhythmGroupId](#getrhythmgroupid),&emsp;[getRhythmLineage](#getrhythmlineage)</i></sup>
 
 ###### rhythm component
 
@@ -225,6 +230,10 @@ const initialComponentRhythm = [true, true, true, false, true, true, false];
 ```
 
 <sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm)</i></sup>
+
+<sup><i>&emsp;[RhythmComponent](#rhythmcomponent)</i></sup>
+
+<sup><i>&emsp;[getPhasedRhythmComponents](#getphasedrhythmcomponents),&emsp;[getAlignedRhythmComponents](#getalignedrhythmcomponents)</i></sup>
 
 ###### rhythm lineage
 
@@ -248,7 +257,11 @@ const rhythmLineage = [
 ];
 ```
 
-## rhythm _(classifications)_
+<sup><i>&emsp;[rhythm group](#rhythm-group),&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
+
+<sup><i>&emsp;[RhythmLineage](#rhythmlineage)</i></sup>
+
+<sup><i>&emsp;[getRhythmLineage](#getrhythmlineage)</i></sup>
 
 ###### euclidean rhythm - [white paper](http://cgm.cs.mcgill.ca/~godfried/publications/banff.pdf)
 
@@ -288,6 +301,10 @@ const resultRhythm = [true, false, false, true, false];
 
 <sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm),&emsp;[rhythm slot](#rhythm-slot),&emsp;[rhythm phase](#rhythm-phase)</i></sup>
 
+<sup><i>&emsp;[AlignedRecursiveEuclideanRhythm](#alignedrecursiveeuclideanrhythm),&emsp;[AlignedRecursiveEuclideanRhythmId](#alignedrecursiveeuclideanrhythmid)</i></sup>
+
+<sup><i>&emsp;[getAlignedRhythmId](#getalignedrhythmid),&emsp;[getAlignedRhythmComponents](#getalignedrhythmcomponents)</i></sup>
+
 ###### phased recursive euclidean rhythm
 
 > a recursive euclidean rhythm where rhythm layers can be phased
@@ -319,6 +336,8 @@ const rhythm: Rhythm = [true, true, false, true, false];
 ```
 
 <sup><i>&emsp;[rhythm](#rhythm)</i></sup>
+
+<sup><i>&emsp;[RhythmMap](#rhythmmap)</i></sup>
 
 <sup><i>&emsp;[getSimpleRhythm](#getsimplerhythm)</i></sup>
 
@@ -404,7 +423,7 @@ const rhythmString: RhythmString = "11010";
 
 <sup><i>&emsp;[rhythm weight](#rhythm-weight)</i></sup>
 
-<sup><i>&emsp;[getRhythmWeight](#getrhythmweight)</i></sup>
+<sup><i>&emsp;[getRhythmWeight](#getrhythmweight),&emsp;[getRhythmWeight](#getrhythmweight)</i></sup>
 
 ###### EuclideanRhythm
 
@@ -452,7 +471,7 @@ const rhythmString: RhythmString = "11010";
 
 <sup><i>&emsp;[rhythm group](#rhythm-group),&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
 
-<sup><i>&emsp;[getRhythmGroupMembers](#getrhythmgroupmembers)</i></sup>
+<sup><i>&emsp;[getRhythmGroup](#getrhythmgroup)</i></sup>
 
 ###### RhythmGroupId
 
@@ -546,7 +565,7 @@ const alignedRhythmStructure: AlignedRhythmStructure = {
 
 <sup><i>&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
 
-<sup><i>&emsp;[getAlignedRhythmId](#getalignedrhythmid),&emsp;[getRhythmLineage](#getrhythmlineage)</i></sup>
+<sup><i>&emsp;[getRhythmMap](#getrhythmmap),&emsp;[getAlignedRhythmId](#getalignedrhythmid),&emsp;[getRhythmLineage](#getrhythmlineage)</i></sup>
 
 ###### PhasedRhythmStructure
 
@@ -574,6 +593,14 @@ const phasedRhythmStructure: PhasedRhythmStructure = {
 <sup><i>&emsp;[phased recursive euclidean rhythm](#phased-recursive-euclidean-rhythm)</i></sup>
 
 <sup><i>&emsp;[getPhasedRhythmId](#getphasedrhythmid)</i></sup>
+
+###### RhythmComponent<SomeRecursiveRhythmStructure extends [RecursiveRhythmStructure](#recursiverhythmstructure)>
+
+> rhythm component as _SomeRecursiveRhythmStructure_
+
+<sup><i>&emsp;[rhythm component](#rhythm-component)</i></sup>
+
+<sup><i>&emsp;[getPhasedRhythmComponents](#getphasedrhythmcomponents),&emsp;[getAlignedRhythmComponents](#getalignedrhythmcomponents)</i></sup>
 
 ###### StackRhythmStructure
 
@@ -621,7 +648,9 @@ const rhythmGroupStructure: RhythmGroupStructure = {
 
 <sup><i>&emsp;[rhythm group](#rhythm-group)</i></sup>
 
-<sup><i>&emsp;[getRhythmGroupId](#getrhythmgroupid),&emsp;[getRhythmGroupMembers](#getrhythmgroupmembers)</i></sup>
+<sup><i>&emsp;[RhythmLineage](#rhythmlineage)</i></sup>
+
+<sup><i>&emsp;[getRhythmGroup](#getrhythmgroup),&emsp;[getRhythmGroupId](#getrhythmgroupid)</i></sup>
 
 ## rhythm _(functions)_
 
@@ -726,7 +755,7 @@ const relativeRhythmPoints = getRelativeRhythmPoints(
 
 ###### getPhasedRhythmComponents
 
-> computes each layer's corresponding _[PhasedRhythmStructure](#phasedrhythmstructure)_ from _[PhasedRhythmStructure](#phasedrhythmstructure)_
+> computes _Array<[RhythmComponent<[PhasedRhythmStructure](#phasedrhythmstructure)>](#rhythmcomponentsomerecursiverhythmstructure-extends-recursiverhythmstructurerecursiverhythmstructure)>_ from _[PhasedRhythmStructure](#phasedrhythmstructure)_
 
 ```typescript
 const phasedRhythmComponents = getPhasedRhythmComponents({
@@ -776,9 +805,11 @@ const phasedRhythmComponents = getPhasedRhythmComponents({
 //   ];
 ```
 
+<sup><i>&emsp;[rhythm component](#rhythm-component),&emsp;[phased recursive euclidean rhythm](#phased-recursive-euclidean-rhythm)</i></sup>
+
 ###### getAlignedRhythmComponents
 
-> computes each layer's corresponding _[AlignedRhythmStructure](#alignedrhythmstructure)_ from _[AlignedRhythmStructure](#alignedrhythmstructure)_
+> computes _Array<[RhythmComponent<[AlignedRhythmStructure](#alignedrhythmstructure)>](#rhythmcomponentsomerecursiverhythmstructure-extends-recursiverhythmstructurerecursiverhythmstructure)>_ from _[AlignedRhythmStructure](#alignedrhythmstructure)_
 
 ```typescript
 const alignedRhythmComponents = getAlignedRhythmComponents({
@@ -823,6 +854,8 @@ const alignedRhythmComponents = getAlignedRhythmComponents({
 //   ];
 ```
 
+<sup><i>&emsp;[rhythm component](#rhythm-component),&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
+
 ###### getRhythmGroupId
 
 > transforms _[RhythmGroupStructure](#rhythmgroupstructure)_ to _[RhythmGroupId](#rhythmgroupid)_
@@ -843,12 +876,12 @@ const rhythmGroupId = getRhythmGroupId({
 
 <sup><i>&emsp;[rhythm group](#rhythm-group)</i></sup>
 
-###### getRhythmGroupMembers
+###### getRhythmGroup
 
 > transforms _[RhythmGroupStructure](#rhythmgroupstructure)_ to _[RhythmGroup](#rhythmgroup)_
 
 ```typescript
-const rhythmGroupMembers = getRhythmGroupMembers({
+const rhythmGroup = getRhythmGroup({
   baseStructure: {
     structureType: "initial",
     rhythmResolution: 5,
@@ -858,7 +891,7 @@ const rhythmGroupMembers = getRhythmGroupMembers({
     rhythmDensity: 3,
   },
 });
-// rhythmGroupMembers ===
+// rhythmGroup ===
 //   [
 //     {
 //       structureType: "initial",
@@ -909,6 +942,8 @@ const alignedRhythmId = getAlignedRhythmId({
 // alignedRhythmId === "aligned__5__3_0"
 ```
 
+<sup><i>&emsp;[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)</i></sup>
+
 ###### getPhasedRhythmId
 
 > transforms _[PhasedRhythmStructure](#phasedrhythmstructure)_ to _[PhasedRecursiveEuclideanRhythmId](#phasedrecursiveeuclideanrhythmid)_
@@ -926,6 +961,8 @@ const phasedRhythmId = getPhasedRhythmId({
 });
 // phasedRhythmId === "phased__5_0__3_0"
 ```
+
+<sup><i>&emsp;[phased recursive euclidean rhythm](#phased-recursive-euclidean-rhythm)</i></sup>
 
 ###### getRhythmIntervals
 
@@ -1030,7 +1067,7 @@ const rhythmMap = getRhythmMap({
 > computes _Array<[RhythmPointWeight](#rhythmpointweight)>_ from _[RhythmMap](#rhythmmap)_ and _Array<[RhythmSlotWeight](#rhythmslotweight)>_
 
 ```typescript
-const rhythmGroupMemberRhythmMaps = getRhythmGroupMembers({
+const rhythmGroupRhythmMaps = getRhythmGroup({
   baseStructure: {
     structureType: "initial",
     rhythmResolution: 5,
@@ -1056,7 +1093,7 @@ const rhythmPointWeights = getRhythmPointWeights(
 
 ```typescript
 const rhythmSlotWeights = getRhythmSlotWeights(
-  getRhythmGroupMembers({
+  getRhythmGroup({
     baseStructure: {
       structureType: "initial",
       rhythmResolution: 5,
@@ -1098,7 +1135,7 @@ const rhythmString = getRhythmString(
 > computes _[RhythmWeight](#rhythmweight)_ from _[RhythmMap](#rhythmmap)_ and _Array<[RhythmSlotWeight](#rhythmslotweight)>_
 
 ```typescript
-const rhythmGroupMemberRhythmMaps = getRhythmGroupMembers({
+const rhythmGrouphRythmMaps = getRhythmGroup({
   baseStructure: {
     structureType: "initial",
     rhythmResolution: 5,
@@ -1116,7 +1153,7 @@ const rhythmWeight = getRhythmWeight(
 // rhythmWeight === 6
 ```
 
-<sup><i>&emsp;[rhythm weight](#rhythm-weight)</i></sup>
+<sup><i>&emsp;[rhythm weight](#rhythm-weight),&emsp;[rhythm slot weight](#rhythm-slot-weight)</i></sup>
 
 <sup><i>&emsp;[getRhythmSlotWeights](#getrhythmslotweights)</i></sup>
 

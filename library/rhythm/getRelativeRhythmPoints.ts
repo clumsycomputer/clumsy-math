@@ -1,4 +1,4 @@
-import { RhythmMap } from "./encodings";
+import { RelativeRhythmPoint, RhythmMap } from "./encodings";
 
 export function getRelativeRhythmPoints(someRhythmMap: RhythmMap) {
   return _getRelativeRhythmPoints({
@@ -12,7 +12,7 @@ export interface _GetRelativeRhythmPointsApi {
 
 export function _getRelativeRhythmPoints(
   api: _GetRelativeRhythmPointsApi
-): Array<number> {
+): Array<RelativeRhythmPoint> {
   const { someRhythmMap } = api;
   return someRhythmMap.rhythmPoints.map(
     (someRhythmPoint) => someRhythmPoint / someRhythmMap.rhythmResolution

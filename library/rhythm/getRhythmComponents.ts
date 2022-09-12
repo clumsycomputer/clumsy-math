@@ -5,6 +5,7 @@ import {
   GeneralRhythmStructure,
   PhasedRhythmStructure,
   RecursiveRhythmStructure,
+  RhythmComponent,
   StackRhythmStructure,
 } from "./encodings";
 
@@ -22,7 +23,7 @@ export interface _GetPhasedRhythmComponentsApi {
 
 export function _getPhasedRhythmComponents(
   api: _GetPhasedRhythmComponentsApi
-): Array<PhasedRhythmStructure> {
+): Array<RhythmComponent<PhasedRhythmStructure>> {
   const { somePhasedRhythmStructure } = api;
   return getRhythmComponents({
     someRecursiveRhythmStructure: somePhasedRhythmStructure,
@@ -46,7 +47,7 @@ export interface _GetAlignedRhythmComponentsApi {
 
 export function _getAlignedRhythmComponents(
   api: _GetAlignedRhythmComponentsApi
-): Array<AlignedRhythmStructure> {
+): Array<RhythmComponent<AlignedRhythmStructure>> {
   const { someAlignedRhythmStructure } = api;
   return getRhythmComponents({
     someRecursiveRhythmStructure: someAlignedRhythmStructure,
@@ -64,10 +65,10 @@ interface GetRhythmComponentsApi<
 }
 
 function getRhythmComponents<
-  SomeRhythmStructure extends RecursiveRhythmStructure
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
 >(
-  api: GetRhythmComponentsApi<SomeRhythmStructure>
-): Array<SomeRhythmStructure> {
+  api: GetRhythmComponentsApi<SomeRecursiveRhythmStructure>
+): Array<RhythmComponent<SomeRecursiveRhythmStructure>> {
   const { someRecursiveRhythmStructure, getBaseStructureData } = api;
   return _getStackRhythmStructure({
     someRecursiveRhythmStructure,
@@ -95,7 +96,7 @@ function getComponentStructure<
   SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
 >(
   api: GetComponentStructureApi<SomeRecursiveRhythmStructure>
-): SomeRecursiveRhythmStructure {
+): RhythmComponent<SomeRecursiveRhythmStructure> {
   const { componentRhythmStructures, getBaseStructureData } = api;
   const componentRhythmStructuresReversed = componentRhythmStructures.reverse();
   const initialComponentStructure = componentRhythmStructuresReversed[0];

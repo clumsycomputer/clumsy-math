@@ -51,7 +51,7 @@ export type RhythmLineage = Array<RhythmGroupStructure>;
 
 export interface RhythmMap
   extends Pick<RecursiveRhythmStructure, "rhythmResolution"> {
-  rhythmPoints: Array<number>;
+  rhythmPoints: Array<RhythmPoint>;
 }
 
 export type SimpleRhythmStructure = Pick<
@@ -72,7 +72,7 @@ export type GeneralRhythmStructure = Pick<
 export type StackRhythmStructure = Array<GeneralRhythmStructure>;
 
 export type PhasedRhythmStructure = RecursiveRhythmStructure<{
-  rhythmPhase: number;
+  rhythmPhase: RhythmPhase;
 }>;
 
 export type InitialPhasedRhythmStructure =
@@ -98,13 +98,17 @@ export type TerminalAlignedRhythmStructure =
 export type RecursiveRhythmStructure<
   BaseRhythmStructureExtension extends Record<string, unknown> = {}
 > = RecursiveSpatialStructure<
-  { rhythmResolution: number },
+  { rhythmResolution: RhythmResolution },
   BaseRhythmStructureExtension,
   {
-    rhythmDensity: number;
-    rhythmOrientation: number;
+    rhythmDensity: RhythmDensity;
+    rhythmOrientation: RhythmOrientation;
   }
 >;
+
+export type RhythmComponent<
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
+> = SomeRecursiveRhythmStructure;
 
 export interface RhythmGroupStructure {
   baseStructure: RhythmGroupBaseStructure;

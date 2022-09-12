@@ -1,4 +1,4 @@
-import { RhythmGroupStructure } from "./encodings";
+import { RhythmGroupId, RhythmGroupStructure } from "./encodings";
 
 export function getRhythmGroupId(
   someRhythmGroupStructure: RhythmGroupStructure
@@ -12,7 +12,7 @@ export interface _GetRhythmGroupIdApi {
   someRhythmGroupStructure: RhythmGroupStructure;
 }
 
-export function _getRhythmGroupId(api: _GetRhythmGroupIdApi) {
+export function _getRhythmGroupId(api: _GetRhythmGroupIdApi): RhythmGroupId {
   const { someRhythmGroupStructure } = api;
   let rhythmGroupId = "group";
   iterateBaseStructure({
