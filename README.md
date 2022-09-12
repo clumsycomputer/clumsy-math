@@ -5,6 +5,7 @@ a little library of helpful math utensils 🙂
 ## documentation
 
 - **[rhythm _(concepts)_](#rhythm-concepts)**
+- **[rhythm _(classifications)_](#rhythm-classifications)**
 - **[rhythm _(encodings)_](#rhythm-encodings)**
 - **[rhythm _(functions)_](#rhythm-functions)**
 - **[primes _(functions)_](#primes-functions)**
@@ -103,7 +104,7 @@ const reorientedRhythm = [true, false, true, false, true];
 const reorientedRhythmOrientation = 1;
 ```
 
-<sup><i>&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm resoluiton](#rhythm-resolution)</i></sup>
+<sup><i>&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm resolution](#rhythm-resolution)</i></sup>
 
 <sup><i>&emsp;[RhythmOrientation](#rhythmorientation)</i></sup>
 
@@ -211,6 +212,41 @@ const groupMemberRhythmBbb = [true, false, false, true, false]; // 11010 -> 101 
 <sup><i>&emsp;[RhythmGroup](#rhythmgroup),&emsp;[RhythmGroupStructure](#rhythmgroupstructure)</i></sup>
 
 <sup><i>&emsp;[getRhythmGroupId](#getrhythmgroupid),&emsp;[getRhythmGroupMembers](#getrhythmgroupmembers)</i></sup>
+
+###### rhythm component
+
+> a recursive euclidean rhythm of a recursive euclidean rhythm
+
+```typescript
+const terminalComponentRhythm = [true, false, false, false, true, false, false];
+<!--  prettier-ignore -->
+const interposedComponentRhythm = [true, true, false, false, true, false, false];
+const initialComponentRhythm = [true, true, true, false, true, true, false];
+```
+
+<sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm)</i></sup>
+
+###### rhythm lineage
+
+> all rhythm groups an aligned recursive euclidean rhythm belongs to
+
+```typescript
+const rhythm = [true, false, false, true, false];
+const rhythmLineage = [
+  [
+    [true, true, false, false, false],
+    [true, false, false, true, false],
+    [true, false, true, false, false],
+    [true, false, false, false, true],
+    [true, false, true, false, false],
+    [true, false, false, true, false],
+  ],
+  [
+    [true, true, false, false, false],
+    [true, false, false, true, false],
+  ],
+];
+```
 
 ## rhythm _(classifications)_
 
@@ -541,7 +577,7 @@ const phasedRhythmStructure: PhasedRhythmStructure = {
 
 ###### StackRhythmStructure
 
-> utilitarian encoding or simplifying computations that encompasses both _[AlignedRhythmStructure](#alignedrhythmstructure)_ and _[PhasedRhythmStructure](#phasedrhythmstructure)_
+> utilitarian encoding that encompasses both _[AlignedRhythmStructure](#alignedrhythmstructure)_ and _[PhasedRhythmStructure](#phasedrhythmstructure)_
 
 ```typescript
 const stackRhythmStructure: StackRhythmStructure = [
@@ -643,7 +679,7 @@ const stackRhythmStructure = getStackRhythmStructure({
 
 ###### getPhasedRhythmMap
 
-> computes new _[RhythmMap](#rhythmmap)_ from _[RhythmMap](#rhythmmap)_ and _[RhythmPhase](#rhythmphase)_
+> computes _[RhythmMap](#rhythmmap)_ from _[RhythmMap](#rhythmmap)_ and _[RhythmPhase](#rhythmphase)_
 
 ```typescript
 const phasedRhythmMap = getPhasedRhythmMap(
@@ -987,7 +1023,7 @@ const rhythmMap = getRhythmMap({
 // }
 ```
 
-<sup><i>&emsp;[rhythm resolution](#rhythm-resoluiton),&emsp;[rhythm point](#rhythm-point)</i></sup>
+<sup><i>&emsp;[rhythm resolution](#rhythm-resolution),&emsp;[rhythm point](#rhythm-point)</i></sup>
 
 ###### getRhythmPointWeights
 
