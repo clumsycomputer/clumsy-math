@@ -2,6 +2,13 @@
 
 a little library of helpful math utensils 🙂
 
+## documentation
+
+- **[rhythm _(concepts)_](#rhythm-concepts)**
+- **[rhythm _(encodings)_](#rhythm-encodings)**
+- **[rhythm _(functions)_](#rhythm-functions)**
+- **[primes _(functions)_](#primes-functions)**
+
 ## rhythm _(concepts)_
 
 ###### rhythm
@@ -13,6 +20,8 @@ const rhythm = [true, true, false, true, false];
 ```
 
 <sup><i>&emsp;[Rhythm](#rhythm-1)</i></sup>
+
+<sup><i>&emsp;[getRhythmString](#getrhythmstring)</i></sup>
 
 ###### rhythm slot
 
@@ -261,6 +270,8 @@ const resultRhythm = [false, true, false, true, false];
 
 <sup><i>&emsp;[rhythm slot](#rhythm-slot)</i></sup>
 
+<sup><i>&emsp;[getRhythmSlotWeights](#getrhythmslotweights)</i></sup>
+
 ###### Rhythm
 
 > rhythm as _Array<[RhythmSlot](#rhythmslot)>_
@@ -271,6 +282,8 @@ const rhythm: Rhythm = [true, true, false, true, false];
 
 <sup><i>&emsp;[rhythm](#rhythm)</i></sup>
 
+<sup><i>&emsp;[getRhythmString](#getrhythmstring)</i></sup>
+
 ###### RhythmString
 
 > rhythm as binary _string_
@@ -280,6 +293,8 @@ const rhythmString: RhythmString = "11010";
 ```
 
 <sup><i>&emsp;[rhythm](#rhythm)</i></sup>
+
+<sup><i>&emsp;[getRhythmString](#getrhythmstring)</i></sup>
 
 ###### RhythmResolution
 
