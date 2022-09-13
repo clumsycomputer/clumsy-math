@@ -1,8 +1,8 @@
-import { RhythmMap } from "./models";
+import { RhythmMap, RhythmSlotWeight, RhythmWeight } from "./encodings";
 
 export function getRhythmWeight(
   someRhythmMap: RhythmMap,
-  slotWeights: Array<number>
+  slotWeights: Array<RhythmSlotWeight>
 ) {
   return _getRhythmWeight({
     someRhythmMap,
@@ -12,10 +12,10 @@ export function getRhythmWeight(
 
 export interface _GetRhythmWeightApi {
   someRhythmMap: RhythmMap;
-  slotWeights: Array<number>;
+  slotWeights: Array<RhythmSlotWeight>;
 }
 
-export function _getRhythmWeight(api: _GetRhythmWeightApi) {
+export function _getRhythmWeight(api: _GetRhythmWeightApi): RhythmWeight {
   const { someRhythmMap, slotWeights } = api;
   return someRhythmMap.rhythmPoints.reduce(
     (rhythmWeightResult, someRhythmPoint) => {

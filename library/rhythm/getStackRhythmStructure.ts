@@ -3,30 +3,34 @@ import {
   _IterateRecursiveSpatialStructureApi,
 } from "../general/iterateRecursiveSpatialStructure";
 import { ExtractTerminalStructure } from "../general/models";
-import { GeneralRhythmStructure, RhythmStructure } from "./models";
+import {
+  RecursiveRhythmStructure,
+  RhythmPhase,
+  StackRhythmStructure,
+} from "./encodings";
 
-export function getGeneralRhythmStructure(
-  someRhythmStructure: RhythmStructure
+export function getStackRhythmStructure(
+  someRecursiveRhythmStructure: RecursiveRhythmStructure
 ) {
-  return _getGeneralRhythmStructure({
-    someRhythmStructure,
+  return _getStackRhythmStructure({
+    someRecursiveRhythmStructure,
   });
 }
 
-export interface _GetGeneralRhythmStructureApi {
-  someRhythmStructure: RhythmStructure;
+export interface _GetStackRhythmStructureApi {
+  someRecursiveRhythmStructure: RecursiveRhythmStructure;
 }
 
-export function _getGeneralRhythmStructure(
-  api: _GetGeneralRhythmStructureApi
-): GeneralRhythmStructure {
-  const { someRhythmStructure } = api;
-  const generalRhythmStructureResult: GeneralRhythmStructure = [];
+export function _getStackRhythmStructure(
+  api: _GetStackRhythmStructureApi
+): StackRhythmStructure {
+  const { someRecursiveRhythmStructure } = api;
+  const stackRhythmStructureResult: StackRhythmStructure = [];
   _iterateRecursiveSpatialStructure({
-    someSpatialStructure: someRhythmStructure,
+    someSpatialStructure: someRecursiveRhythmStructure,
     forEach: (someScopedRhythmStructure) => {
       if (someScopedRhythmStructure.structureType === "initial") {
-        generalRhythmStructureResult.push({
+        stackRhythmStructureResult.push({
           rhythmResolution: someScopedRhythmStructure.rhythmResolution,
           rhythmDensity: someScopedRhythmStructure.subStructure.rhythmDensity,
           rhythmOrientation:
@@ -36,7 +40,7 @@ export function _getGeneralRhythmStructure(
           }),
         });
       } else if (someScopedRhythmStructure.structureType === "interposed") {
-        generalRhythmStructureResult.push({
+        stackRhythmStructureResult.push({
           rhythmResolution: someScopedRhythmStructure.rhythmDensity,
           rhythmDensity: someScopedRhythmStructure.subStructure.rhythmDensity,
           rhythmOrientation:
@@ -52,19 +56,19 @@ export function _getGeneralRhythmStructure(
       }
     },
   });
-  return generalRhythmStructureResult;
+  return stackRhythmStructureResult;
 }
 
 interface GetRhythmPhaseApi {
   someScopedRhythmStructure: Exclude<
     Parameters<
-      _IterateRecursiveSpatialStructureApi<RhythmStructure>["forEach"]
+      _IterateRecursiveSpatialStructureApi<RecursiveRhythmStructure>["forEach"]
     >[0],
-    ExtractTerminalStructure<RhythmStructure>
+    ExtractTerminalStructure<RecursiveRhythmStructure>
   >;
 }
 
-function getRhythmPhase(api: GetRhythmPhaseApi): number {
+function getRhythmPhase(api: GetRhythmPhaseApi): RhythmPhase {
   const { someScopedRhythmStructure } = api;
   const rhythmPhase = (someScopedRhythmStructure as Record<string, unknown>)[
     "rhythmPhase"

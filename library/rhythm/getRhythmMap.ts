@@ -1,47 +1,58 @@
-import { _getEuclideanRhythm } from "./getEuclideanRhythm";
-import { _getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
-import { BasicRhythmStructure, RhythmMap, RhythmStructure } from "./models";
+import { _getSimpleRhythm } from "./getSimpleRhythm";
+import { _getStackRhythmStructure } from "./getStackRhythmStructure";
+import {
+  GeneralRhythmStructure,
+  RhythmMap,
+  RecursiveRhythmStructure,
+} from "./encodings";
 
-export function getRhythmMap(someRhythmStructure: RhythmStructure) {
+export function getRhythmMap<
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
+>(someRecursiveRhythmStructure: SomeRecursiveRhythmStructure) {
   return _getRhythmMap({
-    someRhythmStructure,
+    someRecursiveRhythmStructure,
   });
 }
 
-export interface _GetRhythmMapApi {
-  someRhythmStructure: RhythmStructure;
+export interface _GetRhythmMapApi<
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
+> {
+  someRecursiveRhythmStructure: SomeRecursiveRhythmStructure;
 }
 
-export function _getRhythmMap(api: _GetRhythmMapApi): RhythmMap {
-  const { someRhythmStructure } = api;
+export function _getRhythmMap<
+  SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
+>(api: _GetRhythmMapApi<SomeRecursiveRhythmStructure>): RhythmMap {
+  const { someRecursiveRhythmStructure } = api;
   return {
-    rhythmResolution: someRhythmStructure.rhythmResolution,
-    rhythmPoints: _getGeneralRhythmStructure({
-      someRhythmStructure,
+    rhythmResolution: someRecursiveRhythmStructure.rhythmResolution,
+    rhythmPoints: _getStackRhythmStructure({
+      someRecursiveRhythmStructure,
     }).reduce<Array<number>>(
-      (baseRhythmPoints, someBasicRhythmStructure) => {
-        return getBasicRhythmPoints({
-          someBasicRhythmStructure,
+      (baseRhythmPoints, someGeneralRhythmStructure) => {
+        return getGeneralRhythmPoints({
+          someGeneralRhythmStructure,
         })
           .map(
-            (someBasicRhythmPoint) => baseRhythmPoints[someBasicRhythmPoint]!
+            (someVariableRhythmPoint) =>
+              baseRhythmPoints[someVariableRhythmPoint]!
           )
           .sort((pointA, pointB) => pointA - pointB);
       },
-      new Array(someRhythmStructure.rhythmResolution)
+      new Array(someRecursiveRhythmStructure.rhythmResolution)
         .fill(undefined)
         .map((_, someRhythmPoint) => someRhythmPoint)
     ),
   };
 }
-interface GetBasicRhythmPointsApi {
-  someBasicRhythmStructure: BasicRhythmStructure;
+interface GetGeneralRhythmPointsApi {
+  someGeneralRhythmStructure: GeneralRhythmStructure;
 }
 
-function getBasicRhythmPoints(api: GetBasicRhythmPointsApi): Array<number> {
-  const { someBasicRhythmStructure } = api;
-  return _getEuclideanRhythm({
-    someEuclideanRhythmStructure: someBasicRhythmStructure,
+function getGeneralRhythmPoints(api: GetGeneralRhythmPointsApi): Array<number> {
+  const { someGeneralRhythmStructure } = api;
+  return _getSimpleRhythm({
+    someSimpleRhythmStructure: someGeneralRhythmStructure,
   })
     .reduce<Array<number>>(
       (unadjustedPointsResult, someRhythmSlot, rhythmSlotIndex) => {
@@ -54,15 +65,15 @@ function getBasicRhythmPoints(api: GetBasicRhythmPointsApi): Array<number> {
     )
     .map((someUnadjustedPoint, pointSlotIndex, unadjustedPoints) => {
       const orientationPhase =
-        unadjustedPoints[someBasicRhythmStructure.rhythmOrientation]!;
+        unadjustedPoints[someGeneralRhythmStructure.rhythmOrientation]!;
       const pointAdjustment =
-        (-orientationPhase - someBasicRhythmStructure.rhythmPhase) %
-        someBasicRhythmStructure.rhythmResolution;
+        (-orientationPhase - someGeneralRhythmStructure.rhythmPhase) %
+        someGeneralRhythmStructure.rhythmResolution;
       const adjustedPoint =
         (someUnadjustedPoint +
           pointAdjustment +
-          someBasicRhythmStructure.rhythmResolution) %
-        someBasicRhythmStructure.rhythmResolution;
+          someGeneralRhythmStructure.rhythmResolution) %
+        someGeneralRhythmStructure.rhythmResolution;
       return adjustedPoint;
     });
 }

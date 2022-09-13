@@ -2,29 +2,26 @@ import {
   RhythmGroupMemberStructure,
   RhythmGroupStructure,
   AlignedRhythmStructure,
-  GeneralRhythmStructure,
-} from "./models";
+  StackRhythmStructure,
+  RhythmGroup,
+} from "./encodings";
 
-export function getRhythmGroupMembers(
-  someRhythmGroupStructure: RhythmGroupStructure
-) {
-  return _getRhythmGroupMembers({
+export function getRhythmGroup(someRhythmGroupStructure: RhythmGroupStructure) {
+  return _getRhythmGroup({
     someRhythmGroupStructure,
   });
 }
 
-export interface _GetRhythmGroupMembersApi {
+export interface _GetRhythmGroupApi {
   someRhythmGroupStructure: RhythmGroupStructure;
 }
 
-export function _getRhythmGroupMembers(
-  api: _GetRhythmGroupMembersApi
-): Array<AlignedRhythmStructure> {
+export function _getRhythmGroup(api: _GetRhythmGroupApi): RhythmGroup {
   const { someRhythmGroupStructure } = api;
   return getMembers({
     someRhythmGroupStructure,
     someScopedMemberStructure: someRhythmGroupStructure.memberStructure,
-    rhythmGroupMembersResult: [],
+    rhythmGroupResult: [],
     memberStack: getMemberStackBase({
       someScopedBaseStructure: someRhythmGroupStructure.baseStructure,
       memberStackResult: [],
@@ -33,15 +30,13 @@ export function _getRhythmGroupMembers(
 }
 
 interface GetMemberStackBaseApi {
-  memberStackResult: GeneralRhythmStructure;
+  memberStackResult: StackRhythmStructure;
   someScopedBaseStructure:
     | RhythmGroupStructure["baseStructure"]
     | Exclude<RhythmGroupStructure["baseStructure"]["subStructure"], undefined>;
 }
 
-function getMemberStackBase(
-  api: GetMemberStackBaseApi
-): GeneralRhythmStructure {
+function getMemberStackBase(api: GetMemberStackBaseApi): StackRhythmStructure {
   const { someScopedBaseStructure, memberStackResult } = api;
   if (
     someScopedBaseStructure?.structureType === "initial" &&
@@ -84,17 +79,17 @@ function getMemberStackBase(
 
 interface GetMembersApi {
   someRhythmGroupStructure: RhythmGroupStructure;
-  rhythmGroupMembersResult: Array<AlignedRhythmStructure>;
+  rhythmGroupResult: RhythmGroup;
   someScopedMemberStructure: RhythmGroupMemberStructure | null;
-  memberStack: GeneralRhythmStructure;
+  memberStack: StackRhythmStructure;
 }
 
-function getMembers(api: GetMembersApi): Array<AlignedRhythmStructure> {
+function getMembers(api: GetMembersApi): RhythmGroup {
   const {
     memberStack,
     someRhythmGroupStructure,
     someScopedMemberStructure,
-    rhythmGroupMembersResult,
+    rhythmGroupResult,
   } = api;
   if (someScopedMemberStructure) {
     const nextScopedMemberStructure =
@@ -111,7 +106,7 @@ function getMembers(api: GetMembersApi): Array<AlignedRhythmStructure> {
     ) {
       getMembers({
         someRhythmGroupStructure,
-        rhythmGroupMembersResult,
+        rhythmGroupResult,
         someScopedMemberStructure: nextScopedMemberStructure,
         memberStack: [
           ...memberStack,
@@ -125,17 +120,17 @@ function getMembers(api: GetMembersApi): Array<AlignedRhythmStructure> {
       });
     }
   } else if (someScopedMemberStructure === null) {
-    rhythmGroupMembersResult.push(
+    rhythmGroupResult.push(
       getMemberStructure({
         memberStack,
       })
     );
   }
-  return rhythmGroupMembersResult;
+  return rhythmGroupResult;
 }
 
 interface GetMemberStructureApi {
-  memberStack: GeneralRhythmStructure;
+  memberStack: StackRhythmStructure;
 }
 
 function getMemberStructure(

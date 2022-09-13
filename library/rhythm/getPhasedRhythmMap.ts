@@ -1,8 +1,8 @@
-import { RhythmMap } from "./models";
+import { RhythmMap, RhythmPhase } from "./encodings";
 
 export function getPhasedRhythmMap(
   someRhythmMap: RhythmMap,
-  rhythmPhase: number
+  rhythmPhase: RhythmPhase
 ) {
   return _getPhasedRhythmMap({
     someRhythmMap,
@@ -12,7 +12,7 @@ export function getPhasedRhythmMap(
 
 export interface _GetPhasedRhythmMapApi {
   someRhythmMap: RhythmMap;
-  rhythmPhase: number;
+  rhythmPhase: RhythmPhase;
 }
 
 export function _getPhasedRhythmMap(api: _GetPhasedRhythmMapApi): RhythmMap {

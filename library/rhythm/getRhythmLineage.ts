@@ -1,13 +1,13 @@
-import { _getGeneralRhythmStructure } from "./getGeneralRhythmStructure";
 import {
   AlignedRhythmStructure,
-  GeneralRhythmStructure,
   InterposedRhythmGroupMemberStructure,
   RhythmGroupBaseStructure,
   RhythmGroupMemberStructure,
-  RhythmGroupStructure,
+  RhythmLineage,
+  StackRhythmStructure,
   TerminalRhythmGroupMemberStructure,
-} from "./models";
+} from "./encodings";
+import { _getStackRhythmStructure } from "./getStackRhythmStructure";
 
 export function getRhythmLineage(
   someAlignedRhythmStructure: AlignedRhythmStructure
@@ -21,24 +21,22 @@ export interface _GetRhythmLineageApi {
   someAlignedRhythmStructure: AlignedRhythmStructure;
 }
 
-export function _getRhythmLineage(
-  api: _GetRhythmLineageApi
-): Array<RhythmGroupStructure> {
+export function _getRhythmLineage(api: _GetRhythmLineageApi): RhythmLineage {
   const { someAlignedRhythmStructure } = api;
-  return _getGeneralRhythmStructure({
-    someRhythmStructure: someAlignedRhythmStructure,
-  }).map((_, sliceIndex, baseGeneralRhythmStructure) => ({
+  return _getStackRhythmStructure({
+    someRecursiveRhythmStructure: someAlignedRhythmStructure,
+  }).map((_, sliceIndex, baseStackRhythmStructure) => ({
     baseStructure: getBaseStructure({
-      baseRhythmStructures: baseGeneralRhythmStructure.slice(0, sliceIndex + 1),
+      baseRhythmStructures: baseStackRhythmStructure.slice(0, sliceIndex + 1),
     }),
     memberStructure: getMemberStructure({
-      memberRhythmStructures: baseGeneralRhythmStructure.slice(sliceIndex),
+      memberRhythmStructures: baseStackRhythmStructure.slice(sliceIndex),
     }),
   }));
 }
 
 interface GetBaseStructureApi {
-  baseRhythmStructures: GeneralRhythmStructure;
+  baseRhythmStructures: StackRhythmStructure;
 }
 
 function getBaseStructure(api: GetBaseStructureApi): RhythmGroupBaseStructure {
@@ -67,7 +65,7 @@ function getBaseStructure(api: GetBaseStructureApi): RhythmGroupBaseStructure {
 }
 
 interface GetMemberStructureApi {
-  memberRhythmStructures: GeneralRhythmStructure;
+  memberRhythmStructures: StackRhythmStructure;
 }
 
 function getMemberStructure(

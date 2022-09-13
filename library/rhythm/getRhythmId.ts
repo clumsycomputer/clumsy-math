@@ -3,10 +3,12 @@ import {
   _IterateRecursiveSpatialStructureApi,
 } from "../general/iterateRecursiveSpatialStructure";
 import {
+  AlignedRecursiveEuclideanRhythmId,
   AlignedRhythmStructure,
+  PhasedRecursiveEuclideanRhythmId,
   PhasedRhythmStructure,
-  RhythmStructure,
-} from "./models";
+  RecursiveRhythmStructure,
+} from "./encodings";
 
 export function getPhasedRhythmId(
   somePhasedRhythmStructure: PhasedRhythmStructure
@@ -20,7 +22,9 @@ export interface _GetPhasedRhythmIdApi {
   somePhasedRhythmStructure: PhasedRhythmStructure;
 }
 
-export function _getPhasedRhythmId(api: _GetPhasedRhythmIdApi): string {
+export function _getPhasedRhythmId(
+  api: _GetPhasedRhythmIdApi
+): PhasedRecursiveEuclideanRhythmId {
   const { somePhasedRhythmStructure } = api;
   return getRhythmId({
     someRhythmStructure: somePhasedRhythmStructure,
@@ -51,7 +55,9 @@ export interface _GetAlignedRhythmIdApi {
   someAlignedRhythmStructure: AlignedRhythmStructure;
 }
 
-export function _getAlignedRhythmId(api: _GetAlignedRhythmIdApi): string {
+export function _getAlignedRhythmId(
+  api: _GetAlignedRhythmIdApi
+): AlignedRecursiveEuclideanRhythmId {
   const { someAlignedRhythmStructure } = api;
   return getRhythmId({
     someRhythmStructure: someAlignedRhythmStructure,
@@ -71,7 +77,7 @@ export function _getAlignedRhythmId(api: _GetAlignedRhythmIdApi): string {
   });
 }
 
-interface GetRhythmIdApi<SomeRhythmStructure extends RhythmStructure> {
+interface GetRhythmIdApi<SomeRhythmStructure extends RecursiveRhythmStructure> {
   someRhythmStructure: SomeRhythmStructure;
   typeId: string;
   getStructureId: (
@@ -81,9 +87,9 @@ interface GetRhythmIdApi<SomeRhythmStructure extends RhythmStructure> {
   ) => string;
 }
 
-function getRhythmId<SomeRhythmStructure extends RhythmStructure>(
+function getRhythmId<SomeRhythmStructure extends RecursiveRhythmStructure>(
   api: GetRhythmIdApi<SomeRhythmStructure>
-) {
+): string {
   const { typeId, someRhythmStructure, getStructureId } = api;
   let rhythmIdResult = `${typeId}__`;
   _iterateRecursiveSpatialStructure({
