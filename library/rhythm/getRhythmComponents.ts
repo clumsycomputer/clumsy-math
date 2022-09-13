@@ -3,6 +3,7 @@ import { _getStackRhythmStructure } from "./getStackRhythmStructure";
 import {
   AlignedRhythmStructure,
   GeneralRhythmStructure,
+  PhasedRhythmComponent,
   PhasedRhythmStructure,
   RecursiveRhythmStructure,
   RhythmComponent,
@@ -23,7 +24,7 @@ export interface _GetPhasedRhythmComponentsApi {
 
 export function _getPhasedRhythmComponents(
   api: _GetPhasedRhythmComponentsApi
-): Array<RhythmComponent<PhasedRhythmStructure>> {
+): Array<PhasedRhythmComponent> {
   const { somePhasedRhythmStructure } = api;
   return getRhythmComponents({
     someRecursiveRhythmStructure: somePhasedRhythmStructure,
@@ -47,7 +48,7 @@ export interface _GetAlignedRhythmComponentsApi {
 
 export function _getAlignedRhythmComponents(
   api: _GetAlignedRhythmComponentsApi
-): Array<RhythmComponent<AlignedRhythmStructure>> {
+): Array<AlignedRhythmStructure> {
   const { someAlignedRhythmStructure } = api;
   return getRhythmComponents({
     someRecursiveRhythmStructure: someAlignedRhythmStructure,
