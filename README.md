@@ -2,6 +2,12 @@
 
 a little library of helpful math utensils 🙂
 
+## installation
+
+```bash
+yarn add clumsy-math
+```
+
 ## documentation
 
 - **[rhythm _(concepts)_](#rhythm-concepts)**
