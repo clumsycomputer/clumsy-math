@@ -362,9 +362,9 @@ const resultRhythm = [false, true, false, true, false];
 
 > a recursive euclidean rhythm of a recursive euclidean rhythm
 
+<!--  prettier-ignore -->
 ```typescript
 const terminalComponentRhythm = [true, false, false, false, true, false, false];
-<!--  prettier-ignore -->
 const interposedComponentRhythm = [true, true, false, false, true, false, false];
 const initialComponentRhythm = [true, true, true, false, true, true, false];
 ```
