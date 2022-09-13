@@ -231,7 +231,7 @@ const initialComponentRhythm = [true, true, true, false, true, true, false];
 
 <sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm)</i></sup>
 
-<sup><i>&emsp;[RhythmComponent](#rhythmcomponent)</i></sup>
+<sup><i>&emsp;[PhasedRhythmComponent](#phasedrhythmcomponent),&emsp;[AlignedRhythmComponent](#alignedrhythmcomponent)</i></sup>
 
 <sup><i>&emsp;[getPhasedRhythmComponents](#getphasedrhythmcomponents),&emsp;[getAlignedRhythmComponents](#getalignedrhythmcomponents)</i></sup>
 
@@ -287,7 +287,7 @@ const terminalRhythm = [true, false, true];
 const resultRhythm = [true, false, false, true, false];
 ```
 
-<sup><i>&emsp;[euclidean rhythm](#euclidean-rhythm---white-paper),&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm resolution](#rhythm-resolution)</i></sup>
+<sup><i>&emsp;[rhythm component](#rhythm-component),&emsp;[euclidean rhythm](#euclidean-rhythm---white-paper),&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm resolution](#rhythm-resolution)</i></sup>
 
 ###### aligned recursive euclidean rhythm
 
@@ -594,13 +594,21 @@ const phasedRhythmStructure: PhasedRhythmStructure = {
 
 <sup><i>&emsp;[getPhasedRhythmId](#getphasedrhythmid)</i></sup>
 
-###### RhythmComponent<SomeRecursiveRhythmStructure extends [RecursiveRhythmStructure](#recursiverhythmstructure)>
+###### PhasedRhythmComponent
 
-> rhythm component as _SomeRecursiveRhythmStructure_
+> phased rhythm component as _[PhasedRhythmStructure](#phasedrhythmstructure)_
 
 <sup><i>&emsp;[rhythm component](#rhythm-component)</i></sup>
 
-<sup><i>&emsp;[getPhasedRhythmComponents](#getphasedrhythmcomponents),&emsp;[getAlignedRhythmComponents](#getalignedrhythmcomponents)</i></sup>
+<sup><i>&emsp;[getPhasedRhythmComponents](#getphasedrhythmcomponents)</i></sup>
+
+###### AlignedRhythmComponent
+
+> aligned rhythm component as _[AlignedRhythmStructure](#alignedrhythmstructure)_
+
+<sup><i>&emsp;[rhythm component](#rhythm-component)</i></sup>
+
+<sup><i>&emsp;[getAlignedRhythmComponents](#getalignedrhythmcomponents)</i></sup>
 
 ###### StackRhythmStructure
 
@@ -755,7 +763,7 @@ const relativeRhythmPoints = getRelativeRhythmPoints(
 
 ###### getPhasedRhythmComponents
 
-> computes _Array<[RhythmComponent<[PhasedRhythmStructure](#phasedrhythmstructure)>](#rhythmcomponentsomerecursiverhythmstructure-extends-recursiverhythmstructurerecursiverhythmstructure)>_ from _[PhasedRhythmStructure](#phasedrhythmstructure)_
+> computes _Array<[PhaseRhythmComponent](#phasedrhythmcomponent)>_ from _[PhasedRhythmStructure](#phasedrhythmstructure)_
 
 ```typescript
 const phasedRhythmComponents = getPhasedRhythmComponents({
@@ -809,7 +817,7 @@ const phasedRhythmComponents = getPhasedRhythmComponents({
 
 ###### getAlignedRhythmComponents
 
-> computes _Array<[RhythmComponent<[AlignedRhythmStructure](#alignedrhythmstructure)>](#rhythmcomponentsomerecursiverhythmstructure-extends-recursiverhythmstructurerecursiverhythmstructure)>_ from _[AlignedRhythmStructure](#alignedrhythmstructure)_
+> computes _Array<[AlignedRhythmComponent](#alignedrhythmcomponent)>_ from _[AlignedRhythmStructure](#alignedrhythmstructure)_
 
 ```typescript
 const alignedRhythmComponents = getAlignedRhythmComponents({

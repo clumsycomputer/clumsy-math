@@ -106,7 +106,11 @@ export type RecursiveRhythmStructure<
   }
 >;
 
-export type RhythmComponent<
+export type PhasedRhythmComponent = RhythmComponent<PhasedRhythmStructure>;
+
+export type AlignedRhythmComponent = RhythmComponent<AlignedRhythmStructure>;
+
+type RhythmComponent<
   SomeRecursiveRhythmStructure extends RecursiveRhythmStructure
 > = SomeRecursiveRhythmStructure;
 
