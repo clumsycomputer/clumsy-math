@@ -5,9 +5,170 @@ a little library of helpful math utensils 🙂
 ## documentation
 
 - **[rhythm _(concepts)_](#rhythm-concepts)**
+
+  - **[rhythm](#rhythm)**
+
+  - **[rhythm slot](#rhythm-slot)**
+
+  - **[rhythm resolution](#rhythm-resolution)**
+
+  - **[rhythm point](#rhythm-point)**
+
+  - **[rhythm density](#rhythm-density)**
+
+  - **[rhythm phase](#rhythm-phase)**
+
+  - **[rhythm orientation](#rhythm-orientation)**
+
+  - **[relative rhythm point](#relative-rhythm-point)**
+
+  - **[rhythm interval](#rhythm-interval)**
+
+  - **[rhythm slot weight](#rhythm-slot-weight)**
+
+  - **[rhythm point weight](#rhythm-point-weight)**
+
+  - **[rhythm weight](#rhythm-weight)**
+
+  - **[rhythm group](#rhythm-group)**
+
+  - **[rhythm component](#rhythm-component)**
+
+  - **[rhythm lineage](#rhythm-lineage)**
+
+  - **[euclidean rhythm](#euclidean-rhythm---white-paper)**
+
+  - **[recursive euclidean rhythm](#recursive-euclidean-rhythm)**
+
+  - **[aligned recursive euclidean rhythm](#aligned-recursive-euclidean-rhythm)**
+
+  - **[phased recursive euclidean rhythm](#phased-recursive-euclidean-rhythm)**
+
 - **[rhythm _(encodings)_](#rhythm-encodings)**
+
+  - **[RhythmSlot](#rhythmslot)**
+
+  - **[Rhythm](#rhythm)**
+
+  - **[RhythmString](#rhythmstring)**
+
+  - **[RhythmResolution](#rhythmresolution)**
+
+  - **[RhythmDensity](#rhythmdensity)**
+
+  - **[RhythmPoint](#rhythmpoint)**
+
+  - **[RelativeRhythmPoint](#relativerhythmpoint)**
+
+  - **[RhythmInterval](#rhythminterval)**
+
+  - **[RhythmPhase](#rhythmphase)**
+
+  - **[RhythmOrientation](#rhythmorientation)**
+
+  - **[RhythmSlotWeight](#rhythmslotweight)**
+
+  - **[RhythmPointWeight](#rhythmpointweight)**
+
+  - **[RhythmWeight](#rhythmweight)**
+
+  - **[EuclideanRhythm](#euclideanrhythm)**
+
+  - **[RecursiveEuclideanRhythm](#recursiveeuclideanrhythm)**
+
+  - **[AlignedRecursiveEuclideanRhythm](#alignedrecursiveeuclideanrhythm)**
+
+  - **[AlignedRecursiveEuclideanRhythmId](#alignedrecursiveeuclideanrhythmid)**
+
+  - **[PhasedRecursiveEuclideanRhythm](#phasedrecursiveeuclideanrhythm)**
+
+  - **[PhasedRecursiveEuclideanRhythmId](#phasedrecursiveeuclideanrhythmid)**
+
+  - **[RhythmGroup](#rhythmgroup)**
+
+  - **[RhythmGroupId](#rhythmgroupid)**
+
+  - **[RhythmLineage](#rhythmlineage)**
+
+  - **[RhythmMap](#rhythmmap)**
+
+  - **[SimpleRhythmStructure](#simplerhythmstructure)**
+
+  - **[GeneralRhythmStructure](#generalrhythmstructure)**
+
+  - **[RecursiveRhythmStructure](#recursiverhythmstructure)**
+
+  - **[AlignedRhythmStructure](#alignedrhythmstructure)**
+
+  - **[PhasedRhythmStructure](#phasedrhythmstructure)**
+
+  - **[PhasedRhythmComponent](#phasedrhythmcomponent)**
+
+  - **[AlignedRhythmComponent](#alignedrhythmcomponent)**
+
+  - **[StackRhythmStructure](#stackrhythmstructure)**
+
+  - **[RhythmGroupStructure](#rhythmgroupstructure)**
+
 - **[rhythm _(functions)_](#rhythm-functions)**
+
+  - **[getSimpleRhythm](#getsimplerhythm)**
+
+  - **[getStackRhythmStructure](#getstackrhythmstructure)**
+
+  - **[getPhasedRhythmMap](#getphasedrhythmmap)**
+
+  - **[getRelativeRhythmPoints](#getrelativerhythmpoints)**
+
+  - **[getPhasedRhythmComponents](#getphasedrhythmcomponents)**
+
+  - **[getAlignedRhythmComponents](#getalignedrhythmcomponents)**
+
+  - **[getRhythmGroupId](#getrhythmgroupid)**
+
+  - **[getRhythmGroup](#getrhythmgroup)**
+
+  - **[getAlignedRhythmId](#getalignedrhythmid)**
+
+  - **[getPhasedRhythmId](#getphasedrhythmid)**
+
+  - **[getRhythmIntervals](#getrhythmintervals)**
+
+  - **[getRhythmLineage](#getrhythmlineage)**
+
+  - **[getRhythmMap](#getrhythmmap)**
+
+  - **[getRhythmPointWeights](#getrhythmpointweights)**
+
+  - **[getRhythmSlotWeights](#getrhythmslotweights)**
+
+  - **[getRhythmString](#getrhythmstring)**
+
+  - **[getRhythmWeight](#getrhythmweight)**
+
 - **[primes _(functions)_](#primes-functions)**
+
+  - **[getNearestPrimes](#getnearestprimes)**
+
+  - **[getNumberGreaterThanPrime](#getnumbergreaterthanprime)**
+
+  - **[getPrime](#getprime)**
+
+  - **[getPrimeContainer](#getprimecontainer)**
+
+  - **[getPrimeContainers](#getprimecontainers)**
+
+  - **[getPrimes](#getprimes)**
+
+  - **[getPrimesRangeInclusive](#getprimesrangeinclusive)**
+
+  - **[getPrimesLessThanInclusive](#getprimeslessthaninclusive)**
+
+  - **[getPrimesSlice](#getprimesslice)**
+
+  - **[isPrime](#isprime)**
+
+  - **[isPrimeContainer](#isprimecontainer)**
 
 ## rhythm _(concepts)_
 
@@ -1264,14 +1425,4 @@ const isFourPrime = isPrime(4);
 ```typescript
 const isFourPrimeContainer = isPrimeContainer(4);
 // isFourPrimeContainer === true
-```
-
-## general _(models)_
-
-###### RecursiveSpatialStructure
-
->
-
-```typescript
-
 ```
