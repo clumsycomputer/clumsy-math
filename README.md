@@ -1228,14 +1228,19 @@ const rhythmMap = getRhythmMap({
   structureType: 'initial',
   rhythmResolution: 5,
   subStructure: {
-    structureType: 'terminal'
+    structureType: 'interposed'
     rhythmDensity: 3,
-    rhythmOrientation: 0
+    rhythmOrientation: 0,
+    subStructure: {
+      structureType: 'terminal',
+      rhythmDensity: 2,
+      rhythmOrientation: 1
+    }
   }
 })
 // rhythmMap === {
 //   rhythmResolution: 5,
-//   rhythmPoints: [0,1,3]
+//   rhythmPoints: [0,3]
 // }
 ```
 
