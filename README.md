@@ -334,7 +334,11 @@ const terminalRhythm = [true, false, true];
 const resultRhythm = [true, false, false, true, false];
 ```
 
-<sup><i>&emsp;[rhythm component](#rhythm-component),&emsp;[euclidean rhythm](#euclidean-rhythm---white-paper),&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm resolution](#rhythm-resolution)</i></sup>
+<sup><i>&emsp;[rhythm component](#rhythm-component),&emsp;[euclidean rhythm](#euclidean-rhythm---white-paper),&emsp;[rhythm point](#rhythm-point),&emsp;[rhythm resolution](#rhythm-resolution),&emsp;[aligned recursive euclidean rhythm](#alignedrecursiveeuclideanrhythm),&emsp;[phased recursive euclidean rhythm](#phasedrecursiveeuclideanrhythm)</i></sup>
+
+<sup><i>&emsp;[RecursiveEuclideanRhythm](#recursiveeuclideanrhythm),&emsp;[RecursiveRhythmStructure](#recursiverhythmstructure)</i></sup>
+
+<sup><i>&emsp;[getStackRhythmStructure](#getstackrhythmstructure)</i></sup>
 
 ###### aligned recursive euclidean rhythm
 
@@ -627,7 +631,7 @@ const generalRhythmStructure: GeneralRhythmStructure = {
 
 ###### RecursiveRhythmStructure
 
-> foundational encoding for _[RecursiveEuclideanRhythm](#recursive-euclidean-rhythm)_
+> foundational encoding for _[RecursiveEuclideanRhythm](#recursiveeuclideanrhythm)_
 
 <sup><i>&emsp;[recursive euclidean rhythm](#recursive-euclidean-rhythm)</i></sup>
 
