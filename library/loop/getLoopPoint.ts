@@ -80,7 +80,7 @@ function getUnitSubLoopPoint(api: GetUnitSubLoopPointApi) {
           baseCircle: unitSubCircle,
           baseStructure: baseStructure.subStructure,
         })
-      : getTerminalUnitSubLoopPoint({
+      : getUnitTerminalSubLoopPoint({
           inputAngle,
           unitSubCircle,
         });
@@ -124,23 +124,23 @@ function getUnitSubCircle(api: GetUnitSubCircleApi) {
   };
 }
 
-interface GetTerminalUnitSubLoopPointApi
+interface GetUnitTerminalSubLoopPointApi
   extends Pick<GetUnitSubLoopPointApi, "inputAngle">,
     Pick<ReturnType<typeof getUnitSubCircle>, "unitSubCircle"> {}
 
-function getTerminalUnitSubLoopPoint(api: GetTerminalUnitSubLoopPointApi) {
+function getUnitTerminalSubLoopPoint(api: GetUnitTerminalSubLoopPointApi) {
   const { unitSubCircle, inputAngle } = api;
   const unitSubCirclePoint = getCirclePoint({
     someCircle: unitSubCircle,
     pointAngle: inputAngle,
   });
-  const terminalUnitSubLoopPoint: LoopPoint = [
+  const unitTerminalSubLoopPoint: LoopPoint = [
     ...unitSubCirclePoint,
     unitSubCircle.center,
     unitSubCirclePoint,
     [NaN, NaN],
   ];
-  return terminalUnitSubLoopPoint;
+  return unitTerminalSubLoopPoint;
 }
 
 interface GetUnitBaseCirclePointApi
@@ -148,27 +148,30 @@ interface GetUnitBaseCirclePointApi
 
 function getUnitBaseCirclePoint(api: GetUnitBaseCirclePointApi) {
   const { unitSubLoopPoint } = api;
-  const deltaX = unitSubLoopPoint[2][0] - unitSubLoopPoint[0];
-  const otherDeltaX = unitSubLoopPoint[0] - unitSubLoopPoint[2][0];
-  const deltaY = unitSubLoopPoint[2][1] - unitSubLoopPoint[1];
-  const otherDeltaY = unitSubLoopPoint[1] - unitSubLoopPoint[2][1];
+  const unitOriginX = unitSubLoopPoint[2][0];
+  const unitOriginY = unitSubLoopPoint[2][1];
+  const unitSubLoopPointX = unitSubLoopPoint[0];
+  const unitSubLoopPointY = unitSubLoopPoint[1];
+  const deltaX = unitOriginX - unitSubLoopPointX;
+  const otherDeltaX = unitSubLoopPointX - unitOriginX;
+  const deltaY = unitOriginY - unitSubLoopPointY;
+  const otherDeltaY = unitSubLoopPointY - unitOriginY;
   const squaredDeltaX = deltaX * deltaX;
   const squaredDeltaY = deltaY * deltaY;
   const squaredDeltaAdded = squaredDeltaX + squaredDeltaY;
   const exprA =
-    (unitSubLoopPoint[2][0] * unitSubLoopPoint[2][0] -
-      unitSubLoopPoint[2][0] * unitSubLoopPoint[0] +
-      unitSubLoopPoint[2][1] * deltaY) /
+    (unitOriginX * unitOriginX -
+      unitOriginX * unitSubLoopPointX +
+      unitOriginY * deltaY) /
     squaredDeltaAdded;
   const exprB =
-    unitSubLoopPoint[2][1] * unitSubLoopPoint[0] -
-    unitSubLoopPoint[2][0] * unitSubLoopPoint[1];
+    unitOriginY * unitSubLoopPointX - unitOriginX * unitSubLoopPointY;
   const exprC =
     Math.sqrt(1 - (exprB * exprB) / squaredDeltaAdded) /
     Math.sqrt(squaredDeltaAdded);
   const unitBaseCirclePoint: Point2 = [
-    unitSubLoopPoint[2][0] - deltaX * exprA + otherDeltaX * exprC,
-    unitSubLoopPoint[2][1] + otherDeltaY * exprA + otherDeltaY * exprC,
+    unitOriginX - deltaX * exprA + otherDeltaX * exprC,
+    unitOriginY + otherDeltaY * exprA + otherDeltaY * exprC,
   ];
   return {
     unitBaseCirclePoint,
@@ -184,20 +187,18 @@ interface GetOrientedRotatedScaledTranslatedPointApi
 function getOrientedRotatedScaledTranslatedPoint(
   api: GetOrientedRotatedScaledTranslatedPointApi
 ): Point2 {
-  const { subjectUnitPoint, baseStructure, orientedUnitOrigin, baseCircle } =
+  const { baseCircle, orientedUnitOrigin, baseStructure, subjectUnitPoint } =
     api;
-  const orientedUnitPoint = getUnitRotatedPoint({
-    subjectPoint: subjectUnitPoint,
-    rotationAngle: baseStructure.subStructure.subOrientation,
-  });
-  const rotatedUnitPoint = getRotatedPoint({
-    subjectPoint: orientedUnitPoint,
-    anchorPoint: orientedUnitOrigin,
-    rotationAngle: baseStructure.loopRotation,
-  });
   return getScaledTranslatedPoint({
     baseCircle,
-    subjectUnitPoint: rotatedUnitPoint,
+    subjectUnitPoint: getRotatedPoint({
+      anchorPoint: orientedUnitOrigin,
+      rotationAngle: baseStructure.loopRotation,
+      subjectPoint: getUnitRotatedPoint({
+        subjectPoint: subjectUnitPoint,
+        rotationAngle: baseStructure.subStructure.subOrientation,
+      }),
+    }),
   });
 }
 
