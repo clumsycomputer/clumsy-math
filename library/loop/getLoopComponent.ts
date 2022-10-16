@@ -1,5 +1,5 @@
 import { LoopPoint } from "./encodings";
-import { getNormalizedAngleBetweenPoints } from "./geometry";
+import { getNormalizedAngleBetweenPoints } from "../geometry";
 
 export interface GetLoopCosineApi extends GetLoopComponentApiBase {}
 

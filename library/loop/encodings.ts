@@ -1,4 +1,5 @@
 import { RecursiveSpatialStructure } from "../general";
+import { Circle, Point2 } from "../geometry";
 
 export type LoopStructure = RecursiveSpatialStructure<
   { loopBase: Circle },
@@ -18,12 +19,3 @@ export type LoopPoint = [
   adjustedTerminalSubPoint: Point2,
   adjustedBaseCirclePoint: Point2
 ];
-
-export type Point2 = [x: number, y: number];
-
-export type GenericPoint2 = [...Point2, ...Array<unknown>];
-
-export interface Circle {
-  radius: number;
-  center: Point2;
-}

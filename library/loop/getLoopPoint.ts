@@ -1,10 +1,11 @@
 import { ExtractInterposedStructure } from "../general";
-import { Circle, LoopPoint, LoopStructure, Point2 } from "./encodings";
+import { Circle, Point2 } from "../geometry";
+import { LoopPoint, LoopStructure } from "./encodings";
 import {
   getCirclePoint,
   getRotatedPoint,
   getUnitRotatedPoint,
-} from "./geometry";
+} from "../geometry";
 
 export interface GetLoopPointApi {
   someLoopStructure: LoopStructure;
