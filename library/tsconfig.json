@@ -6,10 +6,10 @@
     "module": "commonjs",
     "target": "ES2019",
     "moduleResolution": "node",
-    "outDir": "./package",
+    "outDir": "./package_source",
     "declaration": true,
-    "declarationDir": "./package/types"
+    "declarationDir": "./package_source/types"
   },
-  "include": ["library/**/*"],
+  "include": ["./**/*"],
   "exclude": ["node_modules"]
 }
