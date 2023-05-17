@@ -1,16 +1,16 @@
 {
   "name": "clumsy-math",
-  "version": "3.1.0-alpha.0",
-  "description": "a little library of helpful math utensils",
+  "version": "4.0.0",
+  "description": "a math library for the clumsy and curious",
   "main": "./package/index.js",
   "types": "./package/types/index.js",
-  "license": "MIT",
+  "license": "tacoware",
   "repository": {
     "type": "git",
     "url": "https://github.com/clumsycomputer/clumsy-math"
   },
   "dependencies": {
-    "typescript": "^4.7.4"
+    "typescript": "^5.0.4"
   },
   "scripts": {
     "buildPackage": "tsc"

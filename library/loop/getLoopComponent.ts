@@ -1,42 +1,22 @@
 import { LoopPoint } from "./encodings";
-import { getNormalizedAngleBetweenPoints } from "../geometry";
 
-export interface GetLoopCosineApi extends GetLoopComponentApiBase {}
-
-export function getLoopCosine(api: GetLoopCosineApi) {
-  const { someLoopPoint } = api;
-  return someLoopPoint[0] - someLoopPoint[2][0];
+export function loopCosine(someLoopPoint: LoopPoint) {
+  return someLoopPoint[0] - someLoopPoint[6];
 }
 
-export interface GetLoopSineApi extends GetLoopComponentApiBase {}
-
-export function getLoopSine(api: GetLoopSineApi) {
-  const { someLoopPoint } = api;
-  return someLoopPoint[1] - someLoopPoint[2][1];
+export function loopSine(someLoopPoint: LoopPoint) {
+  return someLoopPoint[1] - someLoopPoint[7];
 }
 
-export interface GetLoopPendulumApi extends GetLoopComponentApiBase {}
-
-export function getLoopPendulum(api: GetLoopPendulumApi) {
-  const { someLoopPoint } = api;
-  const originPoint = someLoopPoint[2];
-  const baseCirclePoint = someLoopPoint[4];
-  const outputBaseAngle = getNormalizedAngleBetweenPoints({
-    originPoint: originPoint,
-    subjectPoint: baseCirclePoint,
-  });
-  const outputLoopAngle = getNormalizedAngleBetweenPoints({
-    originPoint: originPoint,
-    subjectPoint: someLoopPoint,
-  });
-  const pointPendulum = outputLoopAngle - outputBaseAngle;
-  return pointPendulum > Math.PI
-    ? outputLoopAngle - (2 * Math.PI + outputBaseAngle)
-    : pointPendulum < -Math.PI
-    ? 2 * Math.PI + outputLoopAngle - outputBaseAngle
-    : pointPendulum;
-}
-
-interface GetLoopComponentApiBase {
-  someLoopPoint: LoopPoint;
+export function loopPendulum(someLoopPoint: LoopPoint) {
+  return (
+    Math.atan2(
+      someLoopPoint[1] - someLoopPoint[7],
+      someLoopPoint[0] - someLoopPoint[6]
+    ) -
+    Math.atan2(
+      someLoopPoint[3] - someLoopPoint[7],
+      someLoopPoint[2] - someLoopPoint[6]
+    )
+  );
 }
