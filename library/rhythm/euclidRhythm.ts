@@ -1,19 +1,53 @@
+import { Rhythm, RhythmSequence } from "./encodings";
+import { orientatedRhythm, phasedRhythm } from "./rhythm";
+
 export function euclidRhythm(
   resolution: number,
-  density: number
-): Array<boolean> {
-  const coreRhythm = coreEuclidRhythm(resolution, density);
-  const wholeRhythm: Array<boolean> = [];
-  for (let slotIndex = 0; slotIndex < resolution; slotIndex++) {
-    wholeRhythm.push(coreRhythm[slotIndex % coreRhythm.length]!);
-  }
-  return wholeRhythm;
+  density: number,
+  orientation: number,
+  phase: number
+): Rhythm {
+  return phasedRhythm(
+    orientatedRhythm(simpleEuclidRhythm(resolution, density), orientation),
+    phase
+  );
 }
 
-export function coreEuclidRhythm(
+export function simpleEuclidRhythm(
   resolution: number,
   density: number
-): Array<boolean> {
+): Rhythm {
+  const coreRhythmSequence = coreEuclidSequence(resolution, density);
+  const rhythmPoints: Array<number> = [];
+  for (let slotIndex = 0; slotIndex < resolution; slotIndex++) {
+    if (coreRhythmSequence[slotIndex % coreRhythmSequence.length]!) {
+      rhythmPoints.push(slotIndex);
+    }
+  }
+  return {
+    resolution,
+    points: rhythmPoints,
+  };
+}
+
+export function coreEuclidRhythm(resolution: number, density: number): Rhythm {
+  const coreRhythmSequence = coreEuclidSequence(resolution, density);
+  const rhythmPoints: Array<number> = [];
+  for (let slotIndex = 0; slotIndex < coreRhythmSequence.length; slotIndex++) {
+    if (coreRhythmSequence[slotIndex]!) {
+      rhythmPoints.push(slotIndex);
+    }
+  }
+  return {
+    resolution,
+    points: rhythmPoints,
+  };
+}
+
+export function coreEuclidSequence(
+  resolution: number,
+  density: number
+): RhythmSequence {
   let lhsCount = density;
   let rhsCount = resolution - density;
   let lhsRhythm: Array<boolean> = [true];
