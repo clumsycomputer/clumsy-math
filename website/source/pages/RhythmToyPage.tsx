@@ -1,9 +1,4 @@
-import {
-  PhasedRhythmStructure,
-  euclidRhythm,
-  Rhythm,
-  rhythm,
-} from "clumsy-math";
+import { PhasedRhythmStructure, euclidRhythm, Rhythm } from "clumsy-math";
 import { JSX } from "preact";
 
 export function RhythmToyPage() {

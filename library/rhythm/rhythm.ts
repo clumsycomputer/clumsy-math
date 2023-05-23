@@ -31,3 +31,20 @@ export function rhythm<
   }
   return resultRhythm;
 }
+
+export function rhythmId<
+  SomeRhythmStructure extends AlignedRhythmStructure | PhasedRhythmStructure
+>(someRhythmStructure: SomeRhythmStructure): string {
+  const rhythmType =
+    someRhythmStructure[1].length === 2
+      ? "aligned"
+      : someRhythmStructure[1].length === 3
+      ? "phased"
+      : throwInvalidPathError("rhythmId");
+  const [rhythmResolution, ...rhythmLayers]: [number, ...Array<Array<number>>] =
+    someRhythmStructure;
+  return rhythmLayers.reduce(
+    (resultId, someRhythmLayer) => `${resultId}__${someRhythmLayer.join("_")}`,
+    `${rhythmType}__${rhythmResolution}`
+  );
+}

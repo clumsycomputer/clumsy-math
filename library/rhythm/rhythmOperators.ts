@@ -33,3 +33,27 @@ export function orientatedRhythm(
       throwInvalidPathError("orientatedRhythm")
   );
 }
+
+export function relativeRhythmPoints(someRhythm: Rhythm): Array<number> {
+  return someRhythm.points.map(
+    (someRhythmPoint) => someRhythmPoint / someRhythm.resolution
+  );
+}
+
+export function rhythmIntervals(someRhythm: Rhythm): Array<number> {
+  return someRhythm.points.map((currentPoint, pointIndex) => {
+    const nextPoint =
+      someRhythm.points[(pointIndex + 1) % someRhythm.points.length]!;
+    return (
+      (nextPoint - currentPoint + someRhythm.resolution) % someRhythm.resolution
+    );
+  });
+}
+
+export function rhythmString(someRhythm: Rhythm): string {
+  const rhythmDigitArray = new Array(someRhythm.resolution).fill(0);
+  for (const currentPoint of someRhythm.points) {
+    rhythmDigitArray[currentPoint] = 1;
+  }
+  return rhythmDigitArray.join("");
+}
