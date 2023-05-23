@@ -1,23 +1,31 @@
-import { RhythmStructure, euclidRhythm, Rhythm } from "clumsy-math";
+import {
+  PhasedRhythmStructure,
+  euclidRhythm,
+  Rhythm,
+  rhythm,
+} from "clumsy-math";
 import { JSX } from "preact";
 
 export function RhythmToyPage() {
-  const structureA: RhythmStructure = [
-    [48, 29, 0, 0],
+  const [resolutionA, ...layersA]: PhasedRhythmStructure = [
+    40,
+    [19, 0, 0],
     [11, 0, 0],
+    [7, 0, 0],
   ];
+  const cellPadding = 0.005;
+  const cellStepX = 1 / resolutionA;
+  const cellStepY = 1 / layersA.length;
+  const cellWidth = cellStepX - 2 * cellPadding;
+  const cellHeight = cellStepY - 2 * cellPadding;
   const rhythmCellElements: Array<JSX.Element> = [];
   let baseRhythm: Rhythm | null = null;
-  const cellStep = 1 / structureA[0][0];
-  const relativeCellPadding = 0.125;
-  const cellPadding = cellStep * relativeCellPadding;
-  const cellSize = cellStep - 2 * cellPadding;
-  for (let layerIndex = 0; layerIndex < structureA.length; layerIndex++) {
-    const rhythmLayer = structureA[layerIndex]!;
-    if (rhythmLayer.length === 4) {
-      const layerRhythm = euclidRhythm(...rhythmLayer);
+  for (let layerIndex = 0; layerIndex < layersA.length; layerIndex++) {
+    const rhythmLayer = layersA[layerIndex]!;
+    if (layerIndex === 0) {
+      const layerRhythm = euclidRhythm(resolutionA, ...rhythmLayer);
       baseRhythm = layerRhythm;
-    } else if (rhythmLayer.length === 3) {
+    } else {
       const layerRhythm = euclidRhythm(
         baseRhythm!.points.length,
         ...rhythmLayer
@@ -29,10 +37,10 @@ export function RhythmToyPage() {
     for (const layerPoint of baseRhythm!.points) {
       rhythmCellElements.push(
         <rect
-          x={cellStep * layerPoint + cellPadding}
-          y={cellStep * layerIndex + cellPadding}
-          width={cellSize}
-          height={cellSize}
+          x={cellStepX * layerPoint + cellPadding}
+          y={cellStepY * layerIndex + cellPadding}
+          width={cellWidth}
+          height={cellHeight}
         />
       );
     }

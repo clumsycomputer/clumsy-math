@@ -1,17 +1,19 @@
-export type RhythmStructure = [RootRhythmLayer, ...Array<SubRhythmLayer>];
+export type AlignedRhythmStructure = RhythmStructure<
+  [RhythmDensity, RhythmOrientation]
+>;
 
-export type RootRhythmLayer = [
-  resolution: number,
-  density: number,
-  orientation: number,
-  phase: number
-];
+export type PhasedRhythmStructure = RhythmStructure<
+  [RhythmDensity, RhythmOrientation, RhythmPhase]
+>;
 
-export type SubRhythmLayer = [
-  density: number,
-  orientation: number,
-  phase: number
-];
+type RhythmStructure<
+  RhythmLayer extends [RhythmDensity, RhythmOrientation, ...Array<number>]
+> = [RhythmResolution, RhythmLayer, ...Array<RhythmLayer>];
+
+type RhythmResolution = number;
+type RhythmDensity = number;
+type RhythmOrientation = number;
+type RhythmPhase = number;
 
 export interface Rhythm {
   resolution: number;

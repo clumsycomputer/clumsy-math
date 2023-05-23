@@ -10,7 +10,8 @@ export function euclidRhythm(
 ): Rhythm {
   const simpleRhythm = simpleEuclidRhythm(resolution, density);
   const orientationPhase =
-    simpleRhythm.points[orientation] ?? throwInvalidPathError("euclidRhythm");
+    simpleRhythm.points[orientation] ??
+    throwInvalidPathError("euclidRhythm/orientationPhase");
   return phasedRhythm(simpleRhythm, (orientationPhase + phase) % resolution);
 }
 
