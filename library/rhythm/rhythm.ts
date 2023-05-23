@@ -1,35 +1,20 @@
 import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
-import { Rhythm } from "./encodings";
+import { Rhythm, RhythmStructure } from "./encodings";
+import { euclidRhythm } from "./euclidRhythm";
 
-export function phasedRhythm(someRhythm: Rhythm, rhythmPhase: number): Rhythm {
-  let phaseWrapPointIndex: number | null = null;
-  return {
-    resolution: someRhythm.resolution,
-    points: someRhythm.points.reduce<Array<number>>(
-      (result, currentRhythmPoint, pointIndex) => {
-        if (rhythmPhase > currentRhythmPoint) {
-          const phasedRhythmPoint =
-            currentRhythmPoint - rhythmPhase + someRhythm.resolution;
-          result.push(phasedRhythmPoint);
-        } else {
-          phaseWrapPointIndex = phaseWrapPointIndex ?? pointIndex;
-          const phasedRhythmPoint = currentRhythmPoint - rhythmPhase;
-          result.splice(pointIndex - phaseWrapPointIndex, 0, phasedRhythmPoint);
-        }
-        return result;
-      },
-      []
-    ),
-  };
-}
-
-export function orientatedRhythm(
-  someRhythm: Rhythm,
-  rhythmOrientation: number
-): Rhythm {
-  return phasedRhythm(
-    someRhythm,
-    someRhythm.points[rhythmOrientation] ??
-      throwInvalidPathError("orientatedRhythm")
-  );
+export function rhythm(someRhythmStructure: RhythmStructure): Rhythm {
+  const [rootLayer, ...subLayers] = someRhythmStructure;
+  const resultRhythm = euclidRhythm(...rootLayer);
+  for (const currentSubLayer of subLayers) {
+    const layerRhythm = euclidRhythm(
+      resultRhythm.points.length,
+      ...currentSubLayer
+    );
+    resultRhythm.points = layerRhythm.points.map(
+      (someLayerPoint) =>
+        resultRhythm.points[someLayerPoint] ??
+        throwInvalidPathError("rhythm/layerRhythm")
+    );
+  }
+  return resultRhythm;
 }

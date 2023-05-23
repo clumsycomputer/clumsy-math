@@ -1,5 +1,6 @@
+import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
 import { Rhythm, RhythmSequence } from "./encodings";
-import { orientatedRhythm, phasedRhythm } from "./rhythm";
+import { phasedRhythm } from "./rhythmOperators";
 
 export function euclidRhythm(
   resolution: number,
@@ -7,10 +8,10 @@ export function euclidRhythm(
   orientation: number,
   phase: number
 ): Rhythm {
-  return phasedRhythm(
-    orientatedRhythm(simpleEuclidRhythm(resolution, density), orientation),
-    phase
-  );
+  const simpleRhythm = simpleEuclidRhythm(resolution, density);
+  const orientationPhase =
+    simpleRhythm.points[orientation] ?? throwInvalidPathError("euclidRhythm");
+  return phasedRhythm(simpleRhythm, (orientationPhase + phase) % resolution);
 }
 
 export function simpleEuclidRhythm(
