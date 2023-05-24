@@ -17,9 +17,11 @@ export type PhasedRhythmLayer = [
   phase: number
 ];
 
-type RhythmStructure<
-  RhythmLayer extends AlignedRhythmLayer | PhasedRhythmLayer
-> = [RhythmResolution, RhythmLayer, ...Array<RhythmLayer>];
+export type RhythmStructure<RhythmLayer extends Array<number>> = [
+  RhythmResolution,
+  RhythmLayer,
+  ...Array<RhythmLayer>
+];
 
 type RhythmResolution = number;
 

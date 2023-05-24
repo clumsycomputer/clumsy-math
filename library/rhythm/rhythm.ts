@@ -1,11 +1,14 @@
 import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
 import {
+  AlignedRhythmLayer,
   AlignedRhythmStructure,
   PhasedRhythmStructure,
   Rhythm,
-  RhythmSequence,
+  RhythmGroupMemberStructure,
+  RhythmGroupStructure,
+  RhythmStructure,
 } from "./encodings";
-import { phasedRhythm } from "./rhythmTransforms";
+import { euclidRhythm } from "./euclidRhythm";
 
 export function rhythm<
   SomeRhythmStructure extends AlignedRhythmStructure | PhasedRhythmStructure
@@ -50,66 +53,47 @@ export function rhythmId<
   );
 }
 
-export function euclidRhythm(
-  resolution: number,
-  density: number,
-  orientation: number,
-  phase: number
-): Rhythm {
-  const simpleRhythm = simpleEuclidRhythm(resolution, density);
-  const orientationPhase =
-    simpleRhythm.points[orientation] ??
-    throwInvalidPathError("euclidRhythm/orientationPhase");
-  return phasedRhythm(simpleRhythm, (orientationPhase + phase) % resolution);
+export function rhythmComponents<
+  SomeRhythmStructure extends RhythmStructure<Array<number>>
+>(someRhythmStructure: SomeRhythmStructure): Array<SomeRhythmStructure> {
+  const [rhythmResolution, ...rhythmLayers] = someRhythmStructure;
+  return rhythmLayers.map((_, layerIndex) => {
+    const currentComponentResult = [
+      rhythmResolution,
+    ] as unknown as SomeRhythmStructure;
+    for (
+      let componentLayerIndex = 0;
+      componentLayerIndex <= layerIndex;
+      componentLayerIndex++
+    ) {
+      const currentLayer = rhythmLayers[componentLayerIndex]!;
+      currentComponentResult.push([...currentLayer]);
+    }
+    return currentComponentResult;
+  });
 }
 
-export function simpleEuclidRhythm(
-  resolution: number,
-  density: number
-): Rhythm {
-  const coreRhythmSequence = coreEuclidSequence(resolution, density);
-  const rhythmPoints: Array<number> = [];
-  for (let slotIndex = 0; slotIndex < resolution; slotIndex++) {
-    if (coreRhythmSequence[slotIndex % coreRhythmSequence.length]!) {
-      rhythmPoints.push(slotIndex);
+export function rhythmLineage(
+  someAlignedRhythmStructure: AlignedRhythmStructure
+): Array<RhythmGroupStructure> {
+  const [rhythmResolution, ...alignedRhythmLayers] = someAlignedRhythmStructure;
+  return alignedRhythmLayers.map<RhythmGroupStructure>((_, layerIndex) => {
+    const baseLayers: Array<AlignedRhythmLayer> = [];
+    for (
+      let baseLayerIndex = 0;
+      baseLayerIndex < layerIndex;
+      baseLayerIndex++
+    ) {
+      baseLayers.push([...alignedRhythmLayers[baseLayerIndex]!]);
     }
-  }
-  return {
-    resolution,
-    points: rhythmPoints,
-  };
-}
-
-export function coreEuclidRhythm(resolution: number, density: number): Rhythm {
-  const coreRhythmSequence = coreEuclidSequence(resolution, density);
-  const rhythmPoints: Array<number> = [];
-  for (let slotIndex = 0; slotIndex < coreRhythmSequence.length; slotIndex++) {
-    if (coreRhythmSequence[slotIndex]!) {
-      rhythmPoints.push(slotIndex);
+    const memberLayers = [] as unknown as RhythmGroupMemberStructure;
+    for (
+      let memberLayerIndex = layerIndex;
+      memberLayerIndex < alignedRhythmLayers.length;
+      layerIndex++
+    ) {
+      memberLayers.push(alignedRhythmLayers[memberLayerIndex]![0]);
     }
-  }
-  return {
-    resolution,
-    points: rhythmPoints,
-  };
-}
-
-export function coreEuclidSequence(
-  resolution: number,
-  density: number
-): RhythmSequence {
-  let lhsCount = density;
-  let rhsCount = resolution - density;
-  let lhsRhythm: Array<boolean> = [true];
-  let rhsRhythm: Array<boolean> = [false];
-  while (rhsCount > 0) {
-    if (lhsCount > rhsCount) {
-      lhsCount = lhsCount - rhsCount;
-      rhsRhythm = [...lhsRhythm, ...rhsRhythm];
-    } else {
-      rhsCount = rhsCount - lhsCount;
-      lhsRhythm = [...lhsRhythm, ...rhsRhythm];
-    }
-  }
-  return lhsRhythm;
+    return [[rhythmResolution, ...baseLayers], memberLayers];
+  });
 }
