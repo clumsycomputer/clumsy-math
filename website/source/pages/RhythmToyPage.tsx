@@ -3,10 +3,12 @@ import {
   euclidRhythm,
   Rhythm,
   rhythmGroup,
+  rhythmGroupId,
 } from "clumsy-math";
 import { JSX } from "preact";
 
 export function RhythmToyPage() {
+  console.log(rhythmGroupId([[5], [3, 2]]));
   console.log(rhythmGroup([[5], [3, 2]]));
   const [resolutionA, ...layersA]: PhasedRhythmStructure = [
     40,

@@ -43,3 +43,20 @@ export function rhythmGroup(
   }
   return rhythmGroupResult;
 }
+
+export function rhythmGroupId(
+  someRhythmGroupStructure: RhythmGroupStructure
+): string {
+  const [baseStructure, memberStructure] = someRhythmGroupStructure;
+  const [groupResolution, ...groupBaseLayers] = baseStructure;
+  const baseIdPart = groupBaseLayers.reduce<string>(
+    (baseIdResult, currentBaseLayer) => {
+      return `${baseIdResult}__${currentBaseLayer[0]}_${currentBaseLayer[1]}`;
+    },
+    `group___${groupResolution}`
+  );
+  return memberStructure.reduce(
+    (resultId, someMemberDensity) => `${resultId}__${someMemberDensity}`,
+    `${baseIdPart}_`
+  );
+}
