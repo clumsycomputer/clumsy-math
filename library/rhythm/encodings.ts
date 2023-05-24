@@ -22,3 +22,15 @@ type RhythmStructure<
 > = [RhythmResolution, RhythmLayer, ...Array<RhythmLayer>];
 
 type RhythmResolution = number;
+
+export type RhythmGroupStructure = [
+  baseStructure: RhythmGroupBaseStructure,
+  memberStructure: RhythmGroupMemberStructure
+];
+
+export type RhythmGroupBaseStructure = [
+  RhythmResolution,
+  ...Array<AlignedRhythmLayer>
+];
+
+export type RhythmGroupMemberStructure = [number, ...Array<number>];

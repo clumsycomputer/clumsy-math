@@ -6,8 +6,8 @@ import { RhythmToyPage } from "./pages/RhythmToyPage";
 export function ClumsyMathApp() {
   return (
     <Router>
-      <RoutePage path={"/toy/loop"} Content={LoopToyPage} />
-      <RoutePage path={"toy/rhythm"} Content={RhythmToyPage} />
+      <RoutePage path={"/toys/loop"} Content={LoopToyPage} />
+      <RoutePage path={"/toys/rhythm"} Content={RhythmToyPage} />
     </Router>
   );
 }

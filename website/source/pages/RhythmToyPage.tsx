@@ -1,7 +1,13 @@
-import { PhasedRhythmStructure, euclidRhythm, Rhythm } from "clumsy-math";
+import {
+  PhasedRhythmStructure,
+  euclidRhythm,
+  Rhythm,
+  rhythmGroup,
+} from "clumsy-math";
 import { JSX } from "preact";
 
 export function RhythmToyPage() {
+  console.log(rhythmGroup([[5], [3, 2]]));
   const [resolutionA, ...layersA]: PhasedRhythmStructure = [
     40,
     [19, 0, 0],
