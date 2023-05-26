@@ -6,7 +6,7 @@ import {
   Rhythm,
   RhythmGroupMemberStructure,
   RhythmGroupStructure,
-  RhythmStructure,
+  RecursiveRhythmStructure,
 } from "./encodings";
 import { euclidRhythm } from "./euclidRhythm";
 
@@ -54,7 +54,7 @@ export function rhythmId<
 }
 
 export function rhythmComponents<
-  SomeRhythmStructure extends RhythmStructure<Array<number>>
+  SomeRhythmStructure extends RecursiveRhythmStructure<Array<number>>
 >(someRhythmStructure: SomeRhythmStructure): Array<SomeRhythmStructure> {
   const [rhythmResolution, ...rhythmLayers] = someRhythmStructure;
   return rhythmLayers.map((_, layerIndex) => {

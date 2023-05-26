@@ -5,10 +5,7 @@
     "noUncheckedIndexedAccess": true,
     "module": "commonjs",
     "target": "ES2019",
-    "moduleResolution": "node",
-    "outDir": "./package_source",
-    "declaration": true,
-    "declarationDir": "./package_source/types"
+    "moduleResolution": "node"
   },
   "include": ["./**/*"],
   "exclude": ["node_modules"]

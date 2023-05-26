@@ -5,7 +5,7 @@ import {
 } from "./constants";
 import { LoopPoint, LoopStructure } from "./encodings";
 
-export function unitLoopPoint(
+export function loopPoint(
   loopStructure: LoopStructure,
   inputAngle: number
 ): LoopPoint {

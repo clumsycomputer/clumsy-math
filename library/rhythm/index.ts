@@ -1,4 +1,5 @@
 export * from "./encodings";
+export * from "./euclidRhythm";
 export * from "./rhythm";
 export * from "./rhythmGroup";
 export * from "./rhythmSlotWeights";

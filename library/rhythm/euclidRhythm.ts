@@ -1,12 +1,19 @@
 import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
-import { Rhythm, RhythmSequence } from "./encodings";
+import {
+  Rhythm,
+  RhythmDensity,
+  RhythmOrientation,
+  RhythmPhase,
+  RhythmResolution,
+  RhythmMap,
+} from "./encodings";
 import { phasedRhythm } from "./rhythmTransforms";
 
 export function euclidRhythm(
-  resolution: number,
-  density: number,
-  orientation: number,
-  phase: number
+  resolution: RhythmResolution,
+  density: RhythmDensity,
+  orientation: RhythmOrientation,
+  phase: RhythmPhase
 ): Rhythm {
   const simpleRhythm = simpleEuclidRhythm(resolution, density);
   const orientationPhase =
@@ -19,10 +26,10 @@ export function simpleEuclidRhythm(
   resolution: number,
   density: number
 ): Rhythm {
-  const coreRhythmSequence = coreEuclidSequence(resolution, density);
+  const coreRhythmMap = coreEuclidMap(resolution, density);
   const rhythmPoints: Array<number> = [];
   for (let slotIndex = 0; slotIndex < resolution; slotIndex++) {
-    if (coreRhythmSequence[slotIndex % coreRhythmSequence.length]!) {
+    if (coreRhythmMap[slotIndex % coreRhythmMap.length]!) {
       rhythmPoints.push(slotIndex);
     }
   }
@@ -33,10 +40,10 @@ export function simpleEuclidRhythm(
 }
 
 export function coreEuclidRhythm(resolution: number, density: number): Rhythm {
-  const coreRhythmSequence = coreEuclidSequence(resolution, density);
+  const coreRhythmMap = coreEuclidMap(resolution, density);
   const rhythmPoints: Array<number> = [];
-  for (let slotIndex = 0; slotIndex < coreRhythmSequence.length; slotIndex++) {
-    if (coreRhythmSequence[slotIndex]!) {
+  for (let slotIndex = 0; slotIndex < coreRhythmMap.length; slotIndex++) {
+    if (coreRhythmMap[slotIndex]!) {
       rhythmPoints.push(slotIndex);
     }
   }
@@ -46,10 +53,7 @@ export function coreEuclidRhythm(resolution: number, density: number): Rhythm {
   };
 }
 
-export function coreEuclidSequence(
-  resolution: number,
-  density: number
-): RhythmSequence {
+export function coreEuclidMap(resolution: number, density: number): RhythmMap {
   let lhsCount = density;
   let rhsCount = resolution - density;
   let lhsRhythm: Array<boolean> = [true];

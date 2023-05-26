@@ -1,29 +1,85 @@
-export type RhythmSequence = Array<boolean>;
-
+/**
+ * the defacto encoding for working with rhythm
+ */
 export interface Rhythm {
-  resolution: number;
-  points: Array<number>;
+  resolution: RhythmResolution;
+  points: Array<RhythmPoint>;
 }
 
-export type AlignedRhythmStructure = RhythmStructure<AlignedRhythmLayer>;
+/**
+ * lossless encoding for rhythm
+ */
+export type RhythmMap = Array<RhythmSlot>;
 
-export type AlignedRhythmLayer = [density: number, orientation: number];
+export type RhythmString = string;
 
-export type PhasedRhythmStructure = RhythmStructure<PhasedRhythmLayer>;
+/**
+ * a rhythm's building block
+ */
+export type RhythmSlot = boolean;
 
-export type PhasedRhythmLayer = [
-  density: number,
-  orientation: number,
-  phase: number
+/**
+ * the index of a slot whose value is true (1)
+ */
+export type RhythmPoint = number;
+
+/**
+ * the number of slots in a rhythm
+ */
+export type RhythmResolution = number;
+
+/**
+ * the number of points in a rhythm
+ */
+export type RhythmDensity = number;
+
+/**
+ * the offset of a rhythm, measured in slots, relative to a base rhythm
+ */
+export type RhythmPhase = number;
+
+/**
+ * the offset of an aligned rhythm, measured in points, relative to a base rhythm
+ */
+export type RhythmOrientation = number;
+
+/**
+ * starting at a base point, the distance upto the next point
+ */
+export type RhythmInterval = number;
+
+/**
+ * a point whose value is normalized within the range of [0, 1)
+ */
+export type RelativeRhythmPoint = number;
+
+export type RhythmSlotWeight = number;
+
+export type RhythmPointWeight = number;
+
+export type RhythmWeight = number;
+
+export type AlignedRhythmStructure =
+  RecursiveRhythmStructure<AlignedRhythmLayer>;
+
+export type AlignedRhythmLayer = [
+  density: RhythmDensity,
+  orientation: RhythmOrientation
 ];
 
-export type RhythmStructure<RhythmLayer extends Array<number>> = [
+export type PhasedRhythmStructure = RecursiveRhythmStructure<PhasedRhythmLayer>;
+
+export type PhasedRhythmLayer = [
+  density: RhythmDensity,
+  orientation: RhythmOrientation,
+  phase: RhythmPhase
+];
+
+export type RecursiveRhythmStructure<RhythmLayer extends Array<number>> = [
   RhythmResolution,
   RhythmLayer,
   ...Array<RhythmLayer>
 ];
-
-type RhythmResolution = number;
 
 export type RhythmGroupStructure = [
   baseStructure: RhythmGroupBaseStructure,
@@ -35,4 +91,7 @@ export type RhythmGroupBaseStructure = [
   ...Array<AlignedRhythmLayer>
 ];
 
-export type RhythmGroupMemberStructure = [number, ...Array<number>];
+export type RhythmGroupMemberStructure = [
+  RhythmDensity,
+  ...Array<RhythmDensity>
+];
