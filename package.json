@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@microsoft/api-extractor": "^7.35.0",
-    "@microsoft/tsdoc": "^0.14.2"
+    "@microsoft/tsdoc": "^0.14.2",
+    "tsup": "^6.7.0"
   }
 }
