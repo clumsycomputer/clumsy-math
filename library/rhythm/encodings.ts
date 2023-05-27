@@ -20,6 +20,8 @@ export type RhythmSlot = boolean;
 
 /**
  * the index of a slot whose value is true (1)
+ *
+ * @concept
  */
 export type RhythmPoint = number;
 
