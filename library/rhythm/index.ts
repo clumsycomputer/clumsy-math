@@ -1,3 +1,4 @@
+export * from "./documentation";
 export * from "./encodings";
 export * from "./euclidRhythm";
 export * from "./rhythm";
