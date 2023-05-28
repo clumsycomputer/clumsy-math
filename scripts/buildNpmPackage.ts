@@ -46,9 +46,9 @@ try {
 } catch {
   // swallow false error
 }
-const documentationItems: Array<any> = [];
+const documentationItems: Array<DocumentationItem> = [];
 processPackageItem({
-  documentationItems,
+  resultDocumentationItems: documentationItems,
   somePackageItem: new ApiModel().loadPackage(
     "./temp_declarations/clumsy-math.api.json"
   ),
@@ -57,16 +57,18 @@ console.log(documentationItems);
 
 interface ProcessPackageItemApi {
   somePackageItem: ApiItem;
-  documentationItems: Array<{
-    itemName: string;
-    itemSummary: string;
-    itemDomain: string;
-    itemType: string;
-  }>;
+  resultDocumentationItems: Array<DocumentationItem>;
+}
+
+interface DocumentationItem {
+  itemName: string;
+  itemSummary: string;
+  itemDomain: string;
+  itemType: string;
 }
 
 function processPackageItem(api: ProcessPackageItemApi) {
-  const { somePackageItem, documentationItems } = api;
+  const { somePackageItem, resultDocumentationItems } = api;
   if (
     somePackageItem instanceof ApiDocumentedItem &&
     somePackageItem.tsdocComment &&
@@ -74,29 +76,36 @@ function processPackageItem(api: ProcessPackageItemApi) {
     somePackageItem.tsdocComment.customBlocks[0].blockTag.tagName ===
       "@attributes"
   ) {
-    const itemAttributes = getCommentAttributes(
-      somePackageItem.tsdocComment.customBlocks[0]
-    );
-    documentationItems.push({
+    const itemAttributes = getCommentAttributes({
+      someAttributesBlock: somePackageItem.tsdocComment.customBlocks[0],
+    });
+    resultDocumentationItems.push({
+      itemSummary: getCommentSummary({
+        someDocComment: somePackageItem.tsdocComment,
+      }),
       itemName: itemAttributes["name"] ?? somePackageItem.displayName,
-      itemSummary: getCommentSummary(somePackageItem.tsdocComment),
-      itemDomain:
-        itemAttributes["domain"] ??
-        throwInvalidPathError("processPackageItem.itemDomain"),
       itemType:
         itemAttributes["type"] ??
         throwInvalidPathError("processPackageItem.itemType"),
+      itemDomain:
+        itemAttributes["domain"] ??
+        throwInvalidPathError("processPackageItem.itemDomain"),
     });
   }
   for (const someMemberItem of somePackageItem.members) {
     processPackageItem({
-      documentationItems,
+      resultDocumentationItems,
       somePackageItem: someMemberItem,
     });
   }
 }
 
-function getCommentSummary(someDocComment: DocComment): string {
+interface GetCommentSummaryApi {
+  someDocComment: DocComment;
+}
+
+function getCommentSummary(api: GetCommentSummaryApi): string {
+  const { someDocComment } = api;
   let resultString = "";
   someDocComment.summarySection.getChildNodes().forEach((someSectionNode) => {
     if (someSectionNode instanceof DocParagraph) {
@@ -116,9 +125,13 @@ function getCommentSummary(someDocComment: DocComment): string {
   return resultString.trim();
 }
 
+interface GetCommentAttributesApi {
+  someAttributesBlock: DocBlock;
+}
 function getCommentAttributes(
-  someAttributesBlock: DocBlock
+  api: GetCommentAttributesApi
 ): Record<string, string> {
+  const { someAttributesBlock } = api;
   const attributesListTextNode = someAttributesBlock.content
     .getChildNodes()[0]
     ?.getChildNodes()[2];
