@@ -2,7 +2,6 @@ import {
   ApiDocumentedItem,
   ApiItem,
   ApiModel,
-  ApiPackage,
 } from "@microsoft/api-extractor-model";
 import {
   DocBlock,
@@ -47,34 +46,53 @@ try {
 } catch {
   // swallow false error
 }
-const apiModel: ApiModel = new ApiModel();
-const apiPackage: ApiPackage = apiModel.loadPackage(
-  "./temp_declarations/clumsy-math.api.json"
-);
-processExtractorItem(apiPackage);
+const documentationItems: Array<any> = [];
+processPackageItem({
+  documentationItems,
+  somePackageItem: new ApiModel().loadPackage(
+    "./temp_declarations/clumsy-math.api.json"
+  ),
+});
+console.log(documentationItems);
 
-function processExtractorItem(someExtractorItem: ApiItem) {
-  console.log(someExtractorItem.constructor.name);
-  console.log(someExtractorItem.containerKey);
-  console.log(someExtractorItem.displayName);
+interface ProcessPackageItemApi {
+  somePackageItem: ApiItem;
+  documentationItems: Array<{
+    itemName: string;
+    itemSummary: string;
+    itemDomain: string;
+    itemType: string;
+  }>;
+}
+
+function processPackageItem(api: ProcessPackageItemApi) {
+  const { somePackageItem, documentationItems } = api;
   if (
-    someExtractorItem instanceof ApiDocumentedItem &&
-    someExtractorItem.tsdocComment
+    somePackageItem instanceof ApiDocumentedItem &&
+    somePackageItem.tsdocComment &&
+    somePackageItem.tsdocComment.customBlocks[0] instanceof DocBlock &&
+    somePackageItem.tsdocComment.customBlocks[0].blockTag.tagName ===
+      "@attributes"
   ) {
-    console.log(getCommentSummary(someExtractorItem.tsdocComment));
-    if (
-      someExtractorItem.tsdocComment.customBlocks[0] instanceof DocBlock &&
-      someExtractorItem.tsdocComment.customBlocks[0].blockTag.tagName ===
-        "@labels"
-    ) {
-      console.log(
-        getCommentLabels(someExtractorItem.tsdocComment.customBlocks[0])
-      );
-    }
+    const itemAttributes = getCommentAttributes(
+      somePackageItem.tsdocComment.customBlocks[0]
+    );
+    documentationItems.push({
+      itemName: itemAttributes["name"] ?? somePackageItem.displayName,
+      itemSummary: getCommentSummary(somePackageItem.tsdocComment),
+      itemDomain:
+        itemAttributes["domain"] ??
+        throwInvalidPathError("processPackageItem.itemDomain"),
+      itemType:
+        itemAttributes["type"] ??
+        throwInvalidPathError("processPackageItem.itemType"),
+    });
   }
-  console.log("");
-  for (const someMemberItem of someExtractorItem.members) {
-    processExtractorItem(someMemberItem);
+  for (const someMemberItem of somePackageItem.members) {
+    processPackageItem({
+      documentationItems,
+      somePackageItem: someMemberItem,
+    });
   }
 }
 
@@ -98,15 +116,30 @@ function getCommentSummary(someDocComment: DocComment): string {
   return resultString.trim();
 }
 
-function getCommentLabels(someLabelsBlock: DocBlock): Array<string> {
-  const labelsListTextNode = someLabelsBlock.content
+function getCommentAttributes(
+  someAttributesBlock: DocBlock
+): Record<string, string> {
+  const attributesListTextNode = someAttributesBlock.content
     .getChildNodes()[0]
     ?.getChildNodes()[2];
-  if (labelsListTextNode instanceof DocPlainText) {
-    return labelsListTextNode.text
-      .split(",")
-      .map((someLabel) => someLabel.trim());
+  if (attributesListTextNode instanceof DocPlainText) {
+    return attributesListTextNode.text
+      .split("|")
+      .reduce<Record<string, string>>(
+        (resultAttributes, someAttributeString) => {
+          const attributeTokens = someAttributeString.split(":");
+          const attributeKey = attributeTokens[0]!.trim();
+          const attributeValue = attributeTokens[1]!.trim();
+          resultAttributes[attributeKey] = attributeValue;
+          return resultAttributes;
+        },
+        {}
+      );
   } else {
-    throw new Error("invalid path: getCommentLabels");
+    throw new Error("invalid path: getCommentAttributes");
   }
+}
+
+function throwInvalidPathError(errorPath: string): never {
+  throw new Error(`invalid path: ${errorPath}`);
 }

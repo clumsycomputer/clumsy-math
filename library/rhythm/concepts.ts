@@ -1,7 +1,7 @@
 /**
  * an example of concept documentation
  *
- * @labels
+ * @attributes
  * rhythm, concept
  */
 type FOO_CONCEPT = never;
@@ -9,7 +9,7 @@ type FOO_CONCEPT = never;
 /**
  * another example of concept documentation
  *
- * @labels
- * rhythm, concept
+ * @attributes
+ * domain: rhythm | type: concept | name: baz
  */
 export type BAZ_CONCEPT = never;

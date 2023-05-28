@@ -1,4 +1,4 @@
-export * from "./documentation";
+export * from "./concepts";
 export * from "./encodings";
 export * from "./euclidRhythm";
 export * from "./rhythm";
