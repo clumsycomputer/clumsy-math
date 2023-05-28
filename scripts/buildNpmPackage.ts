@@ -48,18 +48,24 @@ try {
 } catch {
   // swallow false error
 }
-const documentationItems: Array<DocumentationItem> = [];
+const documentationMap: DocumentationMap = {};
 processPackageItem({
-  resultDocumentationItems: documentationItems,
+  resultDocumentationMap: documentationMap,
   somePackageItem: new ApiModel().loadPackage(
     "./temp_declarations/clumsy-math.api.json"
   ),
 });
-console.log(documentationItems);
+console.log(documentationMap);
 
 interface ProcessPackageItemApi {
   somePackageItem: ApiItem;
-  resultDocumentationItems: Array<DocumentationItem>;
+  resultDocumentationMap: DocumentationMap;
+}
+
+interface DocumentationMap {
+  [domainKey: string]: {
+    [typeKey: string]: Array<DocumentationItem>;
+  };
 }
 
 interface DocumentationItem {
@@ -71,7 +77,7 @@ interface DocumentationItem {
 }
 
 function processPackageItem(api: ProcessPackageItemApi) {
-  const { somePackageItem, resultDocumentationItems } = api;
+  const { somePackageItem, resultDocumentationMap } = api;
   const itemDocComment =
     somePackageItem instanceof ApiDocumentedItem
       ? somePackageItem.tsdocComment
@@ -88,7 +94,7 @@ function processPackageItem(api: ProcessPackageItemApi) {
     const itemAttributes = getCommentAttributes({
       someAttributesBlock: lastCustomBlock,
     });
-    resultDocumentationItems.push({
+    const documentationItem = {
       itemSummary: getCommentSummary({
         someDocComment: itemDocComment,
       }),
@@ -102,11 +108,16 @@ function processPackageItem(api: ProcessPackageItemApi) {
       itemDomain:
         itemAttributes["domain"] ??
         throwInvalidPathError("processPackageItem.itemDomain"),
-    });
+    };
+    const domainMap = documentationMap[documentationItem.itemDomain] ?? {};
+    const typeDomainItems = domainMap[documentationItem.itemType] ?? [];
+    typeDomainItems.push(documentationItem);
+    domainMap[documentationItem.itemType] = typeDomainItems;
+    documentationMap[documentationItem.itemDomain] = domainMap;
   }
   for (const someMemberItem of somePackageItem.members) {
     processPackageItem({
-      resultDocumentationItems,
+      resultDocumentationMap,
       somePackageItem: someMemberItem,
     });
   }
