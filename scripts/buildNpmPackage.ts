@@ -6,8 +6,10 @@ import {
 import {
   DocBlock,
   DocComment,
+  DocFencedCode,
   DocParagraph,
   DocPlainText,
+  DocSection,
   DocSoftBreak,
 } from "@microsoft/tsdoc";
 import * as ChildProcess from "child_process";
@@ -65,23 +67,33 @@ interface DocumentationItem {
   itemSummary: string;
   itemDomain: string;
   itemType: string;
+  itemExamples: ReturnType<typeof getCommentExamples>;
 }
 
 function processPackageItem(api: ProcessPackageItemApi) {
   const { somePackageItem, resultDocumentationItems } = api;
+  const itemDocComment =
+    somePackageItem instanceof ApiDocumentedItem
+      ? somePackageItem.tsdocComment
+      : null;
+  const lastCustomBlock = itemDocComment?.customBlocks.length
+    ? itemDocComment.customBlocks[itemDocComment.customBlocks.length - 1] ??
+      throwInvalidPathError("processPackageItem.lastCustomBlock")
+    : null;
   if (
-    somePackageItem instanceof ApiDocumentedItem &&
-    somePackageItem.tsdocComment &&
-    somePackageItem.tsdocComment.customBlocks[0] instanceof DocBlock &&
-    somePackageItem.tsdocComment.customBlocks[0].blockTag.tagName ===
-      "@attributes"
+    itemDocComment instanceof DocComment &&
+    lastCustomBlock instanceof DocBlock &&
+    lastCustomBlock.blockTag.tagName === "@attributes"
   ) {
     const itemAttributes = getCommentAttributes({
-      someAttributesBlock: somePackageItem.tsdocComment.customBlocks[0],
+      someAttributesBlock: lastCustomBlock,
     });
     resultDocumentationItems.push({
       itemSummary: getCommentSummary({
-        someDocComment: somePackageItem.tsdocComment,
+        someDocComment: itemDocComment,
+      }),
+      itemExamples: getCommentExamples({
+        someDocComment: itemDocComment,
       }),
       itemName: itemAttributes["name"] ?? somePackageItem.displayName,
       itemType:
@@ -106,28 +118,60 @@ interface GetCommentSummaryApi {
 
 function getCommentSummary(api: GetCommentSummaryApi): string {
   const { someDocComment } = api;
-  let resultString = "";
-  someDocComment.summarySection.getChildNodes().forEach((someSectionNode) => {
-    if (someSectionNode instanceof DocParagraph) {
-      someSectionNode.getChildNodes().forEach((someParagraphNode) => {
-        if (someParagraphNode instanceof DocPlainText) {
-          resultString += someParagraphNode.text;
-        } else if (someParagraphNode instanceof DocSoftBreak) {
-          resultString += "\n";
-        } else {
-          throw new Error("invalid path: getCommentSummary");
-        }
-      });
-    } else {
-      console.log(someSectionNode.kind);
-    }
-  });
-  return resultString.trim();
+  const summaryParagraph = someDocComment.summarySection.getChildNodes()[0];
+  if (summaryParagraph instanceof DocParagraph) {
+    let resultSummary = "";
+    summaryParagraph.getChildNodes().forEach((someParagraphNode) => {
+      if (someParagraphNode instanceof DocPlainText) {
+        resultSummary += someParagraphNode.text;
+      } else if (someParagraphNode instanceof DocSoftBreak) {
+        resultSummary += "\n";
+      } else {
+        throwInvalidPathError("getCommentSummary.someParagraphNode");
+      }
+    });
+    return resultSummary.trim();
+  } else {
+    throwInvalidPathError("getCommentSummary.summaryParagraph");
+  }
+}
+
+interface GetCommentExamplesApi {
+  someDocComment: DocComment;
+}
+
+function getCommentExamples(api: GetCommentExamplesApi) {
+  const { someDocComment } = api;
+  return someDocComment.customBlocks
+    .filter(
+      (someCustomBlock) => someCustomBlock.blockTag.tagName === "@example"
+    )
+    .map((someExampleBlock) => {
+      const exampleSectionNode = someExampleBlock.getChildNodes()[1];
+      const exampleTitleNode = exampleSectionNode
+        ?.getChildNodes()[0]
+        ?.getChildNodes()[2];
+      const exampleCodeNode = exampleSectionNode?.getChildNodes()[1];
+      return exampleTitleNode instanceof DocPlainText &&
+        exampleCodeNode instanceof DocFencedCode
+        ? {
+            exampleTitle: exampleTitleNode.text,
+            exampleLanguage: exampleCodeNode.language,
+            exampleCode: exampleCodeNode.code,
+          }
+        : exampleCodeNode instanceof DocFencedCode
+        ? {
+            exampleLanguage: exampleCodeNode.language,
+            exampleCode: exampleCodeNode.code,
+          }
+        : throwInvalidPathError("getCommentExamples");
+    });
 }
 
 interface GetCommentAttributesApi {
   someAttributesBlock: DocBlock;
 }
+
 function getCommentAttributes(
   api: GetCommentAttributesApi
 ): Record<string, string> {

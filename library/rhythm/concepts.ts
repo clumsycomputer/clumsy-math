@@ -1,15 +1,14 @@
 /**
- * an example of concept documentation
+ * a rhythm's building block
+ *
+ * @example
+ * ```ts
+ * const rhythm = [true, true, false, true, false];
+ * const rhythmSlotZero = true; // rhythm[0]
+ * const rhythmSlotTwo = false; // rhythm[2]
+ * ```
  *
  * @attributes
- * rhythm, concept
+ * domain: rhythm | type: concept | name: rhythm slot
  */
-type FOO_CONCEPT = never;
-
-/**
- * another example of concept documentation
- *
- * @attributes
- * domain: rhythm | type: concept | name: baz
- */
-export type BAZ_CONCEPT = never;
+export type RHYTHM_SLOT_CONCEPT = never;
