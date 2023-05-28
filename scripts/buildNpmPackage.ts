@@ -1,16 +1,18 @@
 import {
+  ApiDocumentedItem,
+  ApiItem,
+  ApiModel,
+  ApiPackage,
+} from "@microsoft/api-extractor-model";
+import {
+  DocBlock,
   DocComment,
   DocParagraph,
   DocPlainText,
   DocSoftBreak,
-  TSDocParser,
-  TSDocTagDefinition,
-  TSDocTagSyntaxKind,
 } from "@microsoft/tsdoc";
 import * as ChildProcess from "child_process";
 import * as FileSystem from "fs";
-import { ApiItem, ApiModel, ApiPackage } from "@microsoft/api-extractor-model";
-import { ApiDocumentedItem } from "@microsoft/api-extractor-model";
 
 ChildProcess.execSync(`./node_modules/.bin/tsup-node`);
 ChildProcess.execSync(
@@ -38,24 +40,13 @@ FileSystem.writeFileSync(
     2
   )
 );
-
+// tsdoc stuff
 ChildProcess.execSync(`./node_modules/.bin/tsc`);
 try {
   ChildProcess.execSync(`./node_modules/.bin/api-extractor run`);
 } catch {
   // swallow false error
 }
-// manually configure parser configuration to match tsdoc.json
-const tsdocParser = new TSDocParser();
-tsdocParser.configuration.clear(true);
-tsdocParser.configuration.addTagDefinition(
-  new TSDocTagDefinition({
-    tagName: "@concept",
-    syntaxKind: TSDocTagSyntaxKind.ModifierTag,
-  })
-);
-//
-
 const apiModel: ApiModel = new ApiModel();
 const apiPackage: ApiPackage = apiModel.loadPackage(
   "./temp_declarations/clumsy-math.api.json"
@@ -71,6 +62,15 @@ function processExtractorItem(someExtractorItem: ApiItem) {
     someExtractorItem.tsdocComment
   ) {
     console.log(getCommentSummary(someExtractorItem.tsdocComment));
+    if (
+      someExtractorItem.tsdocComment.customBlocks[0] instanceof DocBlock &&
+      someExtractorItem.tsdocComment.customBlocks[0].blockTag.tagName ===
+        "@labels"
+    ) {
+      console.log(
+        getCommentLabels(someExtractorItem.tsdocComment.customBlocks[0])
+      );
+    }
   }
   console.log("");
   for (const someMemberItem of someExtractorItem.members) {
@@ -78,7 +78,7 @@ function processExtractorItem(someExtractorItem: ApiItem) {
   }
 }
 
-function getCommentSummary(someDocComment: DocComment) {
+function getCommentSummary(someDocComment: DocComment): string {
   let resultString = "";
   someDocComment.summarySection.getChildNodes().forEach((someSectionNode) => {
     if (someSectionNode instanceof DocParagraph) {
@@ -88,7 +88,7 @@ function getCommentSummary(someDocComment: DocComment) {
         } else if (someParagraphNode instanceof DocSoftBreak) {
           resultString += "\n";
         } else {
-          throw new Error("invalid path: getSummarySectionString");
+          throw new Error("invalid path: getCommentSummary");
         }
       });
     } else {
@@ -96,4 +96,17 @@ function getCommentSummary(someDocComment: DocComment) {
     }
   });
   return resultString.trim();
+}
+
+function getCommentLabels(someLabelsBlock: DocBlock): Array<string> {
+  const labelsListTextNode = someLabelsBlock.content
+    .getChildNodes()[0]
+    ?.getChildNodes()[2];
+  if (labelsListTextNode instanceof DocPlainText) {
+    return labelsListTextNode.text
+      .split(",")
+      .map((someLabel) => someLabel.trim());
+  } else {
+    throw new Error("invalid path: getCommentLabels");
+  }
 }

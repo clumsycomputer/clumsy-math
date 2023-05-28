@@ -1,13 +1,15 @@
 /**
  * an example of concept documentation
  *
- * @concept
+ * @labels
+ * rhythm, concept
  */
-export type FOO_CONCEPT = never;
+type FOO_CONCEPT = never;
 
 /**
  * another example of concept documentation
  *
- * @concept
+ * @labels
+ * rhythm, concept
  */
 export type BAZ_CONCEPT = never;
