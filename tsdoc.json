@@ -3,7 +3,13 @@
   "tagDefinitions": [
     {
       "tagName": "@attributes",
-      "syntaxKind": "block"
+      "syntaxKind": "block",
+      "allowMultiple": false
+    },
+    {
+      "tagName": "@relations",
+      "syntaxKind": "block",
+      "allowMultiple": true
     }
   ]
 }

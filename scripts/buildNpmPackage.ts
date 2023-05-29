@@ -6,16 +6,19 @@ import {
 import {
   DocBlock,
   DocComment,
+  DocDeclarationReference,
+  DocExcerpt,
   DocFencedCode,
+  DocLinkTag,
   DocParagraph,
   DocPlainText,
-  DocSection,
   DocSoftBreak,
 } from "@microsoft/tsdoc";
 import * as ChildProcess from "child_process";
 import * as FileSystem from "fs";
 
 ChildProcess.execSync(`./node_modules/.bin/tsup-node`);
+//
 ChildProcess.execSync(
   "cp ./README.md ./clumsy-math && cp ./LICENSE ./clumsy-math"
 );
@@ -41,6 +44,7 @@ FileSystem.writeFileSync(
     2
   )
 );
+//
 // tsdoc stuff
 ChildProcess.execSync(`./node_modules/.bin/tsc`);
 try {
@@ -55,7 +59,7 @@ processPackageItem({
     "./temp_declarations/clumsy-math.api.json"
   ),
 });
-console.log(documentationMap);
+console.log(JSON.stringify(documentationMap, null, 2));
 
 interface ProcessPackageItemApi {
   somePackageItem: ApiItem;
@@ -99,6 +103,9 @@ function processPackageItem(api: ProcessPackageItemApi) {
         someDocComment: itemDocComment,
       }),
       itemExamples: getCommentExamples({
+        someDocComment: itemDocComment,
+      }),
+      itemRelations: getCommentRelations({
         someDocComment: itemDocComment,
       }),
       itemName: itemAttributes["name"] ?? somePackageItem.displayName,
@@ -177,6 +184,39 @@ function getCommentExamples(api: GetCommentExamplesApi) {
           }
         : throwInvalidPathError("getCommentExamples");
     });
+}
+
+interface GetCommentRelationsApi {
+  someDocComment: DocComment;
+}
+
+function getCommentRelations(api: GetCommentRelationsApi) {
+  const { someDocComment } = api;
+  return someDocComment.customBlocks
+    .filter(
+      (someCustomBlock) => someCustomBlock.blockTag.tagName === "@relations"
+    )
+    .reduce<Record<string, Array<any>>>(
+      (resultItemRelations, someRelatedBlock) => {
+        const relationsListNode = someRelatedBlock.content
+          ?.getChildNodes()[0]
+          ?.getChildNodes()[2];
+        if (relationsListNode instanceof DocPlainText) {
+          const relationsTokens = relationsListNode.text.split(")");
+          const relationsType =
+            relationsTokens[0]?.slice(1) ??
+            throwInvalidPathError("getCommentRelations.relationsType");
+          const relationsItems =
+            relationsTokens[1]?.split("|").map((someItem) => someItem.trim()) ??
+            throwInvalidPathError("getCommentRelations.relationsItems");
+          resultItemRelations[relationsType] = relationsItems;
+        } else {
+          throwInvalidPathError("getCommentRelations");
+        }
+        return resultItemRelations;
+      },
+      {}
+    );
 }
 
 interface GetCommentAttributesApi {
