@@ -20,7 +20,8 @@
   ],
   "main": "./library/index.ts",
   "scripts": {
-    "buildNpmPackage": "node ./scripts/buildNpmPackage.js"
+    "buildNpmPackage": "ts-node ./scripts/buildNpmPackage.ts",
+    "generateReadme": "ts-node ./scripts/generateReadme.ts"
   },
   "dependencies": {
     "typescript": "^5.0.4"

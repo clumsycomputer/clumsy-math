@@ -14,73 +14,49 @@ import {
 } from "@microsoft/tsdoc";
 import { TSDocConfigFile } from "@microsoft/tsdoc-config";
 import * as ChildProcess from "child_process";
-import * as FileSystem from "fs";
 import * as Path from "path";
-import * as Tsup from "tsup";
+import { throwInvalidPathError } from "./helpers/throwInvalidPath";
 
-buildNpmPackage();
-
-async function buildNpmPackage() {
-  await transpileSource();
-  simplifyPackageJson();
-  copyLicense();
-  generateReadmeWithDocumentation();
+interface GenerateReadmeApi {
+  temporaryOutputDirectoryPath: string;
 }
 
-async function transpileSource() {
-  return Tsup.build({
-    entry: ["library/index.ts"],
-    outDir: "clumsy-math",
-    splitting: false,
-    clean: true,
-    minify: true,
-    dts: true,
-    skipNodeModulesBundle: true,
+generateReadme({
+  temporaryOutputDirectoryPath: "./temp_declarations",
+});
+
+function generateReadme(api: GenerateReadmeApi) {
+  const { temporaryOutputDirectoryPath } = api;
+  generateIntermediateFiles({
+    temporaryOutputDirectoryPath,
   });
+  const documentationMap: DocumentationMap = {};
+  processPackageItem({
+    resultDocumentationMap: documentationMap,
+    somePackageItem: new ApiModel().loadPackage(
+      `${temporaryOutputDirectoryPath}/clumsy-math.api.json`
+    ),
+  });
+  console.log(JSON.stringify(documentationMap, null, 2));
 }
 
-function simplifyPackageJson() {
-  const basePackageJson = JSON.parse(
-    FileSystem.readFileSync("./package.json", "utf-8")
-  );
-  const {
-    main,
-    scripts,
-    dependencies,
-    devDependencies,
-    ...unadjustedPackageJsonFields
-  } = basePackageJson;
-  FileSystem.writeFileSync(
-    "./clumsy-math/package.json",
-    JSON.stringify(
-      {
-        ...unadjustedPackageJsonFields,
-        main: "./index.js",
-        types: "./index.d.ts",
-      },
-      null,
-      2
-    )
-  );
-}
+interface GenerateIntermediateFilesApi
+  extends Pick<GenerateReadmeApi, "temporaryOutputDirectoryPath"> {}
 
-function copyLicense() {
-  ChildProcess.execSync("cp ./LICENSE ./clumsy-math");
-}
-
-function generateReadmeWithDocumentation() {
+function generateIntermediateFiles(api: GenerateIntermediateFilesApi) {
+  const { temporaryOutputDirectoryPath } = api;
   ChildProcess.execSync(
-    `./node_modules/.bin/tsc --emitDeclarationOnly --declaration --outDir ./temp_declarations`
+    `./node_modules/.bin/tsc --emitDeclarationOnly --declaration --outDir ${temporaryOutputDirectoryPath}`
   );
   Extractor.invoke(
     ExtractorConfig.prepare({
       configObjectFullPath: undefined,
       packageJsonFullPath: Path.resolve("./package.json"),
       configObject: {
-        mainEntryPointFilePath: "./temp_declarations/index.d.ts",
+        mainEntryPointFilePath: `${temporaryOutputDirectoryPath}/index.d.ts`,
         docModel: {
           enabled: true,
-          apiJsonFilePath: "./temp_declarations/clumsy-math.api.json",
+          apiJsonFilePath: `${temporaryOutputDirectoryPath}/clumsy-math.api.json`,
         },
         compiler: {
           tsconfigFilePath: "./tsconfig.json",
@@ -105,14 +81,6 @@ function generateReadmeWithDocumentation() {
       }),
     })
   );
-  const documentationMap: DocumentationMap = {};
-  processPackageItem({
-    resultDocumentationMap: documentationMap,
-    somePackageItem: new ApiModel().loadPackage(
-      "./temp_declarations/clumsy-math.api.json"
-    ),
-  });
-  console.log(JSON.stringify(documentationMap, null, 2));
 }
 
 interface ProcessPackageItemApi {
@@ -299,10 +267,6 @@ function getCommentAttributes(
         {}
       );
   } else {
-    throw new Error("invalid path: getCommentAttributes");
+    throwInvalidPathError("getCommentAttributes");
   }
-}
-
-function throwInvalidPathError(errorPath: string): never {
-  throw new Error(`invalid path: ${errorPath}`);
 }
