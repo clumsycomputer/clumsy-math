@@ -1,3 +1,4 @@
+import { Extractor, ExtractorConfig } from "@microsoft/api-extractor";
 import {
   ApiDocumentedItem,
   ApiItem,
@@ -6,60 +7,113 @@ import {
 import {
   DocBlock,
   DocComment,
-  DocDeclarationReference,
-  DocExcerpt,
   DocFencedCode,
-  DocLinkTag,
   DocParagraph,
   DocPlainText,
   DocSoftBreak,
 } from "@microsoft/tsdoc";
+import { TSDocConfigFile } from "@microsoft/tsdoc-config";
 import * as ChildProcess from "child_process";
 import * as FileSystem from "fs";
+import * as Path from "path";
+import * as Tsup from "tsup";
 
-ChildProcess.execSync(`./node_modules/.bin/tsup-node`);
-//
-ChildProcess.execSync(
-  "cp ./README.md ./clumsy-math && cp ./LICENSE ./clumsy-math"
-);
-const basePackageJson = JSON.parse(
-  FileSystem.readFileSync("./package.json", "utf-8")
-);
-const {
-  main,
-  scripts,
-  dependencies,
-  devDependencies,
-  ...unadjustedPackageJsonFields
-} = basePackageJson;
-FileSystem.writeFileSync(
-  "./clumsy-math/package.json",
-  JSON.stringify(
-    {
-      ...unadjustedPackageJsonFields,
-      main: "./index.js",
-      types: "./index.d.ts",
-    },
-    null,
-    2
-  )
-);
-//
-// tsdoc stuff
-ChildProcess.execSync(`./node_modules/.bin/tsc`);
-try {
-  ChildProcess.execSync(`./node_modules/.bin/api-extractor run`);
-} catch {
-  // swallow false error
+buildNpmPackage();
+
+async function buildNpmPackage() {
+  await transpileSource();
+  simplifyPackageJson();
+  copyLicense();
+  generateReadmeWithDocumentation();
 }
-const documentationMap: DocumentationMap = {};
-processPackageItem({
-  resultDocumentationMap: documentationMap,
-  somePackageItem: new ApiModel().loadPackage(
-    "./temp_declarations/clumsy-math.api.json"
-  ),
-});
-console.log(JSON.stringify(documentationMap, null, 2));
+
+async function transpileSource() {
+  return Tsup.build({
+    entry: ["library/index.ts"],
+    outDir: "clumsy-math",
+    splitting: false,
+    clean: true,
+    minify: true,
+    dts: true,
+    skipNodeModulesBundle: true,
+  });
+}
+
+function simplifyPackageJson() {
+  const basePackageJson = JSON.parse(
+    FileSystem.readFileSync("./package.json", "utf-8")
+  );
+  const {
+    main,
+    scripts,
+    dependencies,
+    devDependencies,
+    ...unadjustedPackageJsonFields
+  } = basePackageJson;
+  FileSystem.writeFileSync(
+    "./clumsy-math/package.json",
+    JSON.stringify(
+      {
+        ...unadjustedPackageJsonFields,
+        main: "./index.js",
+        types: "./index.d.ts",
+      },
+      null,
+      2
+    )
+  );
+}
+
+function copyLicense() {
+  ChildProcess.execSync("cp ./LICENSE ./clumsy-math");
+}
+
+function generateReadmeWithDocumentation() {
+  ChildProcess.execSync(
+    `./node_modules/.bin/tsc --emitDeclarationOnly --declaration --outDir ./temp_declarations`
+  );
+  Extractor.invoke(
+    ExtractorConfig.prepare({
+      configObjectFullPath: undefined,
+      packageJsonFullPath: Path.resolve("./package.json"),
+      configObject: {
+        mainEntryPointFilePath: "./temp_declarations/index.d.ts",
+        docModel: {
+          enabled: true,
+          apiJsonFilePath: "./temp_declarations/clumsy-math.api.json",
+        },
+        compiler: {
+          tsconfigFilePath: "./tsconfig.json",
+        },
+        projectFolder: Path.resolve("./"),
+      },
+      tsdocConfigFile: TSDocConfigFile.loadFromObject({
+        $schema:
+          "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
+        tagDefinitions: [
+          {
+            tagName: "@attributes",
+            syntaxKind: "block",
+            allowMultiple: false,
+          },
+          {
+            tagName: "@relations",
+            syntaxKind: "block",
+            allowMultiple: true,
+          },
+        ],
+      }),
+    })
+  );
+  const documentationMap: DocumentationMap = {};
+  processPackageItem({
+    resultDocumentationMap: documentationMap,
+    somePackageItem: new ApiModel().loadPackage(
+      "./temp_declarations/clumsy-math.api.json"
+    ),
+  });
+  console.log(JSON.stringify(documentationMap, null, 2));
+}
 
 interface ProcessPackageItemApi {
   somePackageItem: ApiItem;
@@ -116,11 +170,12 @@ function processPackageItem(api: ProcessPackageItemApi) {
         itemAttributes["domain"] ??
         throwInvalidPathError("processPackageItem.itemDomain"),
     };
-    const domainMap = documentationMap[documentationItem.itemDomain] ?? {};
+    const domainMap =
+      resultDocumentationMap[documentationItem.itemDomain] ?? {};
     const typeDomainItems = domainMap[documentationItem.itemType] ?? [];
     typeDomainItems.push(documentationItem);
     domainMap[documentationItem.itemType] = typeDomainItems;
-    documentationMap[documentationItem.itemDomain] = domainMap;
+    resultDocumentationMap[documentationItem.itemDomain] = domainMap;
   }
   for (const someMemberItem of somePackageItem.members) {
     processPackageItem({

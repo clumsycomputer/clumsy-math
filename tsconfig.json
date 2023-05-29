@@ -5,10 +5,7 @@
     "noUncheckedIndexedAccess": true,
     "module": "commonjs",
     "target": "ES2019",
-    "moduleResolution": "node",
-    "emitDeclarationOnly": true,
-    "declaration": true,
-    "outDir": "temp_declarations"
+    "moduleResolution": "node"
   },
   "include": ["./library/**/*"],
   "exclude": ["node_modules"]
