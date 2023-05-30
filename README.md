@@ -6,7 +6,6 @@ a math library for the clumsy and curious 🙂
 
 - **[rhythm _(concepts)_](#rhythm-concepts)**
 
-
 ## rhythm _(concepts)_
 
 ###### rhythm

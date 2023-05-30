@@ -40,7 +40,7 @@ function generateReadme(api: GenerateReadmeApi) {
   });
   FileSystem.writeFileSync(
     "./README.md",
-    getReadmeString({
+    getReadmeMarkdown({
       documentationMap,
     }),
     {
@@ -281,55 +281,39 @@ function getCommentAttributes(
   }
 }
 
-interface GetReadmeStringApi {
+interface GetReadmeMarkdownApi {
   documentationMap: DocumentationMap;
 }
 
-function getReadmeString(api: GetReadmeStringApi) {
+function getReadmeMarkdown(api: GetReadmeMarkdownApi) {
   const { documentationMap } = api;
-  let documentationIndexString = "";
-  let domainCategoryString = "";
+  let documentationIndexMarkdown = "";
+  const domainCategoryMarkdownItems: Array<DomainCategoryMarkdownItem> = [];
   for (const domainEntry of Object.entries(documentationMap)) {
     const [domainKey, domainMap] = domainEntry;
     for (const categoryEntry of Object.entries(domainMap)) {
-      const [categoryKey, categoryItems] = categoryEntry;
-      const pluralCategoryKey = `${categoryKey}s`;
+      const [domainCategoryKey, categoryDocumentationItems] = categoryEntry;
+      const pluralCategoryKey = `${domainCategoryKey}s`;
       const domainCategoryTitle = `${domainKey} _(${pluralCategoryKey})_`;
-      documentationIndexString += `- **[${domainCategoryTitle}](#${domainKey}-${pluralCategoryKey})**\n`;
-      domainCategoryString = `## ${domainCategoryTitle}\n\n`;
-      for (const currentCategoryItem of categoryItems) {
-        const itemExamplesString = currentCategoryItem.itemExamples.reduce(
-          (resultString, someItemExample) => {
-            // prettier-ignore
-            resultString += 
-`\`\`\`${someItemExample.exampleLanguage}
-${someItemExample.exampleCode}\`\`\``
-            return resultString;
-          },
-          ""
-        );
-        let itemRelationsString = "";
-        for (const [relationKey, relationItems] of Object.entries(
-          currentCategoryItem.itemRelationsMap
-        )) {
-          itemRelationsString += `<sup><i>${relationItems
-            .map((someRelationItem) => `&emsp;[${someRelationItem}](todo)`)
-            .join(",")}</i></sup>\n\n`;
-        }
-        // prettier-ignore
-        const itemString = 
-`###### ${currentCategoryItem.itemName}
-
-> ${currentCategoryItem.itemSummary}
-
-${itemExamplesString}
-
-${itemRelationsString}`
-        console.log(itemString);
-        domainCategoryString += itemString;
+      documentationIndexMarkdown += `- **[${domainCategoryTitle}](#${domainKey}-${pluralCategoryKey})**\n`;
+      let domainCategoryMarkdown = `## ${domainCategoryTitle}\n\n`;
+      for (const someCategoryDocumentationItem of categoryDocumentationItems) {
+        domainCategoryMarkdown += getDocumentationItemMarkdown({
+          someDocumentationItem: someCategoryDocumentationItem,
+        });
       }
+      domainCategoryMarkdownItems.push({
+        domainCategoryTitle,
+        domainCategoryMarkdown,
+      });
     }
   }
+  const domainCategoriesMarkdown = domainCategoryMarkdownItems
+    .map(
+      (someCategoryMarkdownItem) =>
+        someCategoryMarkdownItem.domainCategoryMarkdown
+    )
+    .join("\n");
   // prettier-ignore
   return (
 `# clumsy-math
@@ -338,8 +322,63 @@ a math library for the clumsy and curious 🙂
 
 ## documentation
 
-${documentationIndexString}
-
-${domainCategoryString}
+${documentationIndexMarkdown}
+${domainCategoriesMarkdown}
 `);
+}
+
+interface DomainCategoryMarkdownItem {
+  domainCategoryTitle: string;
+  domainCategoryMarkdown: string;
+}
+
+interface GetDocumentationItemMarkdownApi {
+  someDocumentationItem: DocumentationItem;
+}
+
+function getDocumentationItemMarkdown(api: GetDocumentationItemMarkdownApi) {
+  const { someDocumentationItem } = api;
+  // prettier-ignore
+  return (
+`###### ${someDocumentationItem.itemName}
+
+> ${someDocumentationItem.itemSummary}
+
+${getDocumentationExamplesMarkdown({someDocumentationItem})}
+
+${getDocumentationRelationsMarkdown({someDocumentationItem})}`);
+}
+
+interface GetDocumentationExamplesMarkdownApi
+  extends Pick<GetDocumentationItemMarkdownApi, "someDocumentationItem"> {}
+
+function getDocumentationExamplesMarkdown(
+  api: GetDocumentationExamplesMarkdownApi
+) {
+  const { someDocumentationItem } = api;
+  return someDocumentationItem.itemExamples.reduce(
+    (resultString, someItemExample) => {
+      resultString += `\`\`\`${someItemExample.exampleLanguage}\n${someItemExample.exampleCode}\`\`\``;
+      return resultString;
+    },
+    ""
+  );
+}
+
+interface GetDocumentationRelationsMarkdownApi
+  extends Pick<GetDocumentationItemMarkdownApi, "someDocumentationItem"> {}
+
+function getDocumentationRelationsMarkdown(
+  api: GetDocumentationRelationsMarkdownApi
+) {
+  const { someDocumentationItem } = api;
+  return Object.entries(someDocumentationItem.itemRelationsMap).reduce(
+    (relationResult, [relationKey, relationItems]) => {
+      relationResult += `<sup><i>${relationItems
+        .map((someRelationItem) => `&emsp;[${someRelationItem}](todo)`)
+        .join(",")}</i></sup>\n\n`;
+      return relationResult;
+    },
+    ""
+  );
 }
