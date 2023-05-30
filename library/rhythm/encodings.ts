@@ -1,5 +1,8 @@
 /**
  * the defacto encoding for working with rhythm
+ *
+ * @attributes
+ * domain: rhythm | type: encoding | name: RhythmMap
  */
 export interface Rhythm {
   resolution: RhythmResolution;
@@ -8,6 +11,9 @@ export interface Rhythm {
 
 /**
  * lossless encoding for rhythm
+ *
+ * @attributes
+ * domain: rhythm | type: encoding | name: RhythmMap
  */
 export type RhythmMap = Array<RhythmSlot>;
 
