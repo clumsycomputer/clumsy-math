@@ -15,6 +15,7 @@ import {
 import { TSDocConfigFile } from "@microsoft/tsdoc-config";
 import * as ChildProcess from "child_process";
 import * as Path from "path";
+import * as FileSystem from "fs";
 import { throwInvalidPathError } from "./helpers/throwInvalidPath";
 
 interface GenerateReadmeApi {
@@ -37,7 +38,15 @@ function generateReadme(api: GenerateReadmeApi) {
       `${temporaryOutputDirectoryPath}/clumsy-math.api.json`
     ),
   });
-  console.log(JSON.stringify(documentationMap, null, 2));
+  FileSystem.writeFileSync(
+    "./README.md",
+    getReadmeString({
+      documentationMap,
+    }),
+    {
+      encoding: "utf-8",
+    }
+  );
 }
 
 interface GenerateIntermediateFilesApi
@@ -100,6 +109,7 @@ interface DocumentationItem {
   itemDomain: string;
   itemType: string;
   itemExamples: ReturnType<typeof getCommentExamples>;
+  itemRelationsMap: Record<string, Array<string>>;
 }
 
 function processPackageItem(api: ProcessPackageItemApi) {
@@ -127,7 +137,7 @@ function processPackageItem(api: ProcessPackageItemApi) {
       itemExamples: getCommentExamples({
         someDocComment: itemDocComment,
       }),
-      itemRelations: getCommentRelations({
+      itemRelationsMap: getCommentRelations({
         someDocComment: itemDocComment,
       }),
       itemName: itemAttributes["name"] ?? somePackageItem.displayName,
@@ -219,7 +229,7 @@ function getCommentRelations(api: GetCommentRelationsApi) {
     .filter(
       (someCustomBlock) => someCustomBlock.blockTag.tagName === "@relations"
     )
-    .reduce<Record<string, Array<any>>>(
+    .reduce<Record<string, Array<string>>>(
       (resultItemRelations, someRelatedBlock) => {
         const relationsListNode = someRelatedBlock.content
           ?.getChildNodes()[0]
@@ -269,4 +279,67 @@ function getCommentAttributes(
   } else {
     throwInvalidPathError("getCommentAttributes");
   }
+}
+
+interface GetReadmeStringApi {
+  documentationMap: DocumentationMap;
+}
+
+function getReadmeString(api: GetReadmeStringApi) {
+  const { documentationMap } = api;
+  let documentationIndexString = "";
+  let domainCategoryString = "";
+  for (const domainEntry of Object.entries(documentationMap)) {
+    const [domainKey, domainMap] = domainEntry;
+    for (const categoryEntry of Object.entries(domainMap)) {
+      const [categoryKey, categoryItems] = categoryEntry;
+      const pluralCategoryKey = `${categoryKey}s`;
+      const domainCategoryTitle = `${domainKey} _(${pluralCategoryKey})_`;
+      documentationIndexString += `- **[${domainCategoryTitle}](#${domainKey}-${pluralCategoryKey})**\n`;
+      domainCategoryString = `## ${domainCategoryTitle}\n\n`;
+      for (const currentCategoryItem of categoryItems) {
+        const itemExamplesString = currentCategoryItem.itemExamples.reduce(
+          (resultString, someItemExample) => {
+            // prettier-ignore
+            resultString += 
+`\`\`\`${someItemExample.exampleLanguage}
+${someItemExample.exampleCode}\`\`\``
+            return resultString;
+          },
+          ""
+        );
+        let itemRelationsString = "";
+        for (const [relationKey, relationItems] of Object.entries(
+          currentCategoryItem.itemRelationsMap
+        )) {
+          itemRelationsString += `<sup><i>${relationItems
+            .map((someRelationItem) => `&emsp;[${someRelationItem}](todo)`)
+            .join(",")}</i></sup>\n\n`;
+        }
+        // prettier-ignore
+        const itemString = 
+`###### ${currentCategoryItem.itemName}
+
+> ${currentCategoryItem.itemSummary}
+
+${itemExamplesString}
+
+${itemRelationsString}`
+        console.log(itemString);
+        domainCategoryString += itemString;
+      }
+    }
+  }
+  // prettier-ignore
+  return (
+`# clumsy-math
+
+a math library for the clumsy and curious 🙂
+
+## documentation
+
+${documentationIndexString}
+
+${domainCategoryString}
+`);
 }
