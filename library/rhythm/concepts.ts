@@ -85,9 +85,9 @@ export type _RHYTHM_DENSITY_CONCEPT = never;
  *
  * @example
  * ```typescript
- * const rhythm = [true, true, false, true, false];
+ * const rhythmMap = [true, true, false, true, false];
  * const rhythmPhase = -1;
- * const phasedRhythm = [false, true, true, false, true];
+ * const phasedRhythmMap = [false, true, true, false, true];
  * ```
  *
  * @relations (concept)
@@ -107,9 +107,9 @@ export type _RHYTHM_PHASE_CONCEPT = never;
  * @example
  * ```typescript
  * const orientationA = 0;
- * const rhythmA = [true, true, false, true, false];
+ * const rhythmMapA = [true, true, false, true, false];
  * const orientationB = 1;
- * const rhythmB = [true, false, true, false, true];
+ * const rhythmMapB = [true, false, true, false, true];
  * ```
  *
  * @relations (concept)
@@ -128,7 +128,8 @@ export type _RHYTHM_ORIENTATION_CONCEPT = never;
  *
  * @example
  * ```typescript
- * const rhythm = [true, true, false, true, false];
+ * const rhythmMap = [true, true, false, true, false];
+ * const rhythm = { resolution: 5, points: [0, 1, 3] }
  * ```
  *
  * @relations (encoding)
@@ -138,3 +139,41 @@ export type _RHYTHM_ORIENTATION_CONCEPT = never;
  * domain: rhythm | type: concept | name: rhythm
  */
 export type _RHYTHM_CONCEPT = never;
+
+/**
+ * a rhythm who's points are as evenly distributed as possible throughout a discrete space
+ *
+ * ```typescript
+ * const rhythmMapA = [true, false, true, false];
+ * const rhythmMapB = [true, true, false, true, false];
+ * const rhythmMapC = [true, false, true, false, true];
+ * ```
+ *
+ * @remarks
+ * [og white paper](http://cgm.cs.mcgill.ca/~godfried/publications/banff.pdf)
+ *
+ * @relations (concept)
+ * rhythm | rhythm point
+ *
+ * @relations (function)
+ * euclidRhythm | simpleEuclidRhythm | coreEuclidRhythm | coreEuclidMap
+ *
+ * @attributes
+ * domain: rhythm | type: concept | name: euclid rhythm
+ */
+export type _EUCLID_RHYTHM_CONCEPT = never;
+
+/**
+ * a rhythm where euclid rhythms are stacked on top of one another such that the base rhythm's density / points determines the next rhythm's resolution / space
+ *
+ * @example
+ * ```typescript
+ * const baseRhythm = [true, true, false, true, false];
+ * const terminalRhythm = [true, false, true];
+ * const resultRhythm = [true, false, false, true, false];
+ * ```
+ *
+ * @attributes
+ * domain: rhythm | type: concept | name: recursive euclid rhythm
+ */
+export type _RECURSIVE_EUCLID_RHYTHM_CONCEPT = never;

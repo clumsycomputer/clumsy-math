@@ -1,13 +1,49 @@
 /**
  * the defacto encoding for working with rhythm
  *
+ * @example
+ * ```typescript
+ * const rhythm: Rhythm = {
+ *   resolution: 5,
+ *   points: [0, 1, 3]
+ * }
+ * ```
+ *
+ * @relations (concept)
+ * rhythm resolution | rhythm point
+ *
+ * @relations (function)
+ * rhythm | phasedRhythm | orientatedRhythm | relativeRhythmPoints | rhythmIntervals | rhythmString
+ *
  * @attributes
- * domain: rhythm | type: encoding | name: RhythmMap
+ * domain: rhythm | type: encoding | name: Rhythm
  */
 export interface Rhythm {
   resolution: RhythmResolution;
   points: Array<RhythmPoint>;
 }
+
+/**
+ * euclid rhythm as Rhythm
+ *
+ * @relations (concept)
+ * euclid rhythm
+ *
+ * @attributes
+ * domain: rhythm | type: encoding | name: EuclidRhythm
+ */
+export type EuclidRhythm = Rhythm;
+
+/**
+ * recursive euclid rhythm as Rhythm
+ *
+ * @relations (concept)
+ * recursive euclid rhythm
+ *
+ * @attributes
+ * domain: rhythm | type: encoding | name: RecursiveEuclidRhythm
+ */
+export type RecursiveEuclidRhythm = Rhythm;
 
 /**
  * lossless encoding for rhythm
@@ -16,6 +52,14 @@ export interface Rhythm {
  * domain: rhythm | type: encoding | name: RhythmMap
  */
 export type RhythmMap = Array<RhythmSlot>;
+
+/**
+ * lossless encoding for euclid rhythm
+ *
+ * @attributes
+ * domain: rhythm | type: encoding | name: EuclidRhythmMap
+ */
+export type EuclidRhythmMap = RhythmMap;
 
 export type RhythmString = string;
 
@@ -82,6 +126,9 @@ export type PhasedRhythmLayer = [
   phase: RhythmPhase
 ];
 
+/**
+ *
+ */
 export type RecursiveRhythmStructure<RhythmLayer extends Array<number>> = [
   RhythmResolution,
   RhythmLayer,

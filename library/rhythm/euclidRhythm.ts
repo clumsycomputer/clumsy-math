@@ -1,11 +1,12 @@
 import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
 import {
-  Rhythm,
+  EuclidRhythm,
+  EuclidRhythmMap,
   RhythmDensity,
   RhythmOrientation,
   RhythmPhase,
+  RhythmPoint,
   RhythmResolution,
-  RhythmMap,
 } from "./encodings";
 import { phasedRhythm } from "./rhythmTransforms";
 
@@ -14,7 +15,7 @@ export function euclidRhythm(
   density: RhythmDensity,
   orientation: RhythmOrientation,
   phase: RhythmPhase
-): Rhythm {
+): EuclidRhythm {
   const simpleRhythm = simpleEuclidRhythm(resolution, density);
   const orientationPhase =
     simpleRhythm.points[orientation] ??
@@ -23,11 +24,11 @@ export function euclidRhythm(
 }
 
 export function simpleEuclidRhythm(
-  resolution: number,
-  density: number
-): Rhythm {
+  resolution: RhythmResolution,
+  density: RhythmDensity
+): EuclidRhythm {
   const coreRhythmMap = coreEuclidMap(resolution, density);
-  const rhythmPoints: Array<number> = [];
+  const rhythmPoints: Array<RhythmPoint> = [];
   for (let slotIndex = 0; slotIndex < resolution; slotIndex++) {
     if (coreRhythmMap[slotIndex % coreRhythmMap.length]!) {
       rhythmPoints.push(slotIndex);
@@ -39,21 +40,27 @@ export function simpleEuclidRhythm(
   };
 }
 
-export function coreEuclidRhythm(resolution: number, density: number): Rhythm {
+export function coreEuclidRhythm(
+  resolution: RhythmResolution,
+  density: RhythmDensity
+): EuclidRhythm {
   const coreRhythmMap = coreEuclidMap(resolution, density);
-  const rhythmPoints: Array<number> = [];
+  const rhythmPoints: Array<RhythmPoint> = [];
   for (let slotIndex = 0; slotIndex < coreRhythmMap.length; slotIndex++) {
     if (coreRhythmMap[slotIndex]!) {
       rhythmPoints.push(slotIndex);
     }
   }
   return {
-    resolution,
+    resolution: coreRhythmMap.length,
     points: rhythmPoints,
   };
 }
 
-export function coreEuclidMap(resolution: number, density: number): RhythmMap {
+export function coreEuclidMap(
+  resolution: number,
+  density: number
+): EuclidRhythmMap {
   let lhsCount = density;
   let rhsCount = resolution - density;
   let lhsRhythm: Array<boolean> = [true];

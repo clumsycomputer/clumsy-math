@@ -295,8 +295,8 @@ function getReadmeMarkdown(api: GetReadmeMarkdownApi) {
       const [domainCategoryKey, categoryDocumentationItems] = categoryEntry;
       const pluralCategoryKey = `${domainCategoryKey}s`;
       const domainCategoryTitle = `${domainKey} _(${pluralCategoryKey})_`;
-      documentationIndexMarkdown += `- **[${domainCategoryTitle}](#${domainKey}-${pluralCategoryKey})**\n`;
-      let domainCategoryMarkdown = `## ${domainCategoryTitle}\n\n`;
+      documentationIndexMarkdown += `\n- **[${domainCategoryTitle}](#${domainKey}-${pluralCategoryKey})**\n`;
+      let domainCategoryMarkdown = `## ${domainCategoryTitle}\n`;
       for (const someCategoryDocumentationItem of categoryDocumentationItems) {
         domainCategoryMarkdown += getDocumentationItemMarkdown({
           someDocumentationItem: someCategoryDocumentationItem,
@@ -321,7 +321,6 @@ function getReadmeMarkdown(api: GetReadmeMarkdownApi) {
 a math library for the clumsy and curious 🙂
 
 ## documentation
-
 ${documentationIndexMarkdown}
 ${domainCategoriesMarkdown}
 `);
@@ -340,12 +339,11 @@ function getDocumentationItemMarkdown(api: GetDocumentationItemMarkdownApi) {
   const { someDocumentationItem } = api;
   // prettier-ignore
   return (
-`###### ${someDocumentationItem.itemName}
+`\n###### ${someDocumentationItem.itemName}
 
 > ${someDocumentationItem.itemSummary}
 
 ${getDocumentationExamplesMarkdown({someDocumentationItem})}
-
 ${getDocumentationRelationsMarkdown({someDocumentationItem})}`);
 }
 
@@ -374,9 +372,9 @@ function getDocumentationRelationsMarkdown(
   const { someDocumentationItem } = api;
   return Object.entries(someDocumentationItem.itemRelationsMap).reduce(
     (relationResult, [relationKey, relationItems]) => {
-      relationResult += `<sup><i>${relationItems
+      relationResult += `\n<sup><i>${relationItems
         .map((someRelationItem) => `&emsp;[${someRelationItem}](todo)`)
-        .join(",")}</i></sup>\n\n`;
+        .join(",")}</i></sup>\n`;
       return relationResult;
     },
     ""

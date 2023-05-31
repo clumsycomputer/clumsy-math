@@ -10,9 +10,26 @@ import {
 } from "./encodings";
 import { euclidRhythm } from "./euclidRhythm";
 
-export function rhythm<
-  SomeRhythmStructure extends AlignedRhythmStructure | PhasedRhythmStructure
->(someRhythmStructure: SomeRhythmStructure): Rhythm {
+/**
+ * computes RecursiveEuclidRhythm from RecursiveRhythmStructure
+ *
+ * @example
+ * ```typescript
+ * const rhythmA = rhythm([
+ *   5, [3, 0], [2, 1]
+ * ])
+ * // rhythmA === {
+ * //   resolution: 5,
+ * //   points: [0, 3]
+ * // }
+ * ```
+ *
+ * @attributes
+ * domain: rhythm | type: function | name: rhythm
+ */
+export function rhythm(
+  someRhythmStructure: AlignedRhythmStructure | PhasedRhythmStructure
+): Rhythm {
   const [rhythmResolution, rootLayer, ...subLayers] = someRhythmStructure;
   const resultRhythm = euclidRhythm(
     rhythmResolution,
