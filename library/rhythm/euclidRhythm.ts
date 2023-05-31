@@ -7,6 +7,7 @@ import {
   RhythmPhase,
   RhythmPoint,
   RhythmResolution,
+  RhythmSlot,
 } from "./encodings";
 import { phasedRhythm } from "./rhythmTransforms";
 
@@ -58,13 +59,13 @@ export function coreEuclidRhythm(
 }
 
 export function coreEuclidMap(
-  resolution: number,
-  density: number
+  resolution: RhythmResolution,
+  density: RhythmDensity
 ): EuclidRhythmMap {
   let lhsCount = density;
   let rhsCount = resolution - density;
-  let lhsRhythm: Array<boolean> = [true];
-  let rhsRhythm: Array<boolean> = [false];
+  let lhsRhythm: Array<RhythmSlot> = [true];
+  let rhsRhythm: Array<RhythmSlot> = [false];
   while (rhsCount > 0) {
     if (lhsCount > rhsCount) {
       lhsCount = lhsCount - rhsCount;

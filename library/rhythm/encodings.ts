@@ -1,22 +1,8 @@
 /**
- * the defacto encoding for working with rhythm
- *
- * @example
- * ```typescript
- * const rhythm: Rhythm = {
- *   resolution: 5,
- *   points: [0, 1, 3]
- * }
- * ```
- *
- * @relations (concept)
- * rhythm resolution | rhythm point
- *
- * @relations (function)
- * rhythm | phasedRhythm | orientatedRhythm | relativeRhythmPoints | rhythmIntervals | rhythmString
+ * defacto encoding for {@link _RHYTHM_CONCEPT}
  *
  * @attributes
- * domain: rhythm | type: encoding | name: Rhythm
+ * domain: rhythm | category: encoding | name: Rhythm
  */
 export interface Rhythm {
   resolution: RhythmResolution;
@@ -24,84 +10,96 @@ export interface Rhythm {
 }
 
 /**
- * euclid rhythm as Rhythm
- *
- * @relations (concept)
- * euclid rhythm
+ * {@link _EUCLID_RHYTHM_CONCEPT} as {@link Rhythm}
  *
  * @attributes
- * domain: rhythm | type: encoding | name: EuclidRhythm
+ * domain: rhythm | category: encoding | name: EuclidRhythm
  */
 export type EuclidRhythm = Rhythm;
 
 /**
- * recursive euclid rhythm as Rhythm
- *
- * @relations (concept)
- * recursive euclid rhythm
+ * {@link _RECURSIVE_EUCLID_RHYTHM_CONCEPT} as {@link Rhythm}
  *
  * @attributes
- * domain: rhythm | type: encoding | name: RecursiveEuclidRhythm
+ * domain: rhythm | category: encoding | name: RecursiveEuclidRhythm
  */
 export type RecursiveEuclidRhythm = Rhythm;
 
 /**
- * lossless encoding for rhythm
+ * {@link _ALIGNED_RECURSIVE_EUCLID_RHYTHM_CONCEPT} as {@link RecursiveEuclidRhythm}
  *
  * @attributes
- * domain: rhythm | type: encoding | name: RhythmMap
+ * domain: rhythm | category: encoding | name: AlignedRecursiveEuclidRhythm
  */
-export type RhythmMap = Array<RhythmSlot>;
+export type AlignedRecursiveEuclidRhythm = RecursiveEuclidRhythm;
 
 /**
- * lossless encoding for euclid rhythm
+ * {@link _PHASED_RECURSIVE_EUCLID_RHYTHM_CONCEPT} as {@link RecursiveEuclidRhythm}
  *
  * @attributes
- * domain: rhythm | type: encoding | name: EuclidRhythmMap
+ * domain: rhythm | category: encoding | name: PhasedRecursiveEuclidRhythm
  */
+export type PhasedRecursiveEuclidRhythm = RecursiveEuclidRhythm;
+
+/**
+ * ergonomic encoding for {@link _RECURSIVE_EUCLID_RHYTHM_CONCEPT}
+ *
+ * @attributes
+ * domain: rhythm | category: encoding | name: RecursiveEuclidRhythmStructure
+ */
+export type RecursiveEuclidRhythmStructure<
+  EuclidRhythmLayer extends Array<number>
+> = [RhythmResolution, EuclidRhythmLayer, ...Array<EuclidRhythmLayer>];
+
+/**
+ * ergonomic encoding for {@link _ALIGNED_RECURSIVE_EUCLID_RHYTHM_CONCEPT}
+ *
+ * @attributes
+ * domain: rhythm | category: encoding | name: AlignedEuclidRhythmStructure
+ */
+export type AlignedEuclidRhythmStructure =
+  RecursiveEuclidRhythmStructure<AlignedEuclidRhythmLayer>;
+
+export type AlignedEuclidRhythmLayer = [
+  density: RhythmDensity,
+  orientation: RhythmOrientation
+];
+
+/**
+ * ergonomic encoding for {@link _PHASED_RECURSIVE_EUCLID_RHYTHM_CONCEPT}
+ *
+ * @attributes
+ * domain: rhythm | category: encoding | name: PhasedEuclidRhythmStructure
+ */
+export type PhasedEuclidRhythmStructure =
+  RecursiveEuclidRhythmStructure<PhasedEuclidRhythmLayer>;
+
+export type PhasedEuclidRhythmLayer = [
+  density: RhythmDensity,
+  orientation: RhythmOrientation,
+  phase: RhythmPhase
+];
+
+export type RhythmMap = Array<RhythmSlot>;
+
 export type EuclidRhythmMap = RhythmMap;
 
 export type RhythmString = string;
 
-/**
- * a rhythm's building block
- */
 export type RhythmSlot = boolean;
 
-/**
- * the index of a slot whose value is true (1)
- *
- */
 export type RhythmPoint = number;
 
-/**
- * the number of slots in a rhythm
- */
 export type RhythmResolution = number;
 
-/**
- * the number of points in a rhythm
- */
 export type RhythmDensity = number;
 
-/**
- * the offset of a rhythm, measured in slots, relative to a base rhythm
- */
 export type RhythmPhase = number;
 
-/**
- * the offset of an aligned rhythm, measured in points, relative to a base rhythm
- */
 export type RhythmOrientation = number;
 
-/**
- * starting at a base point, the distance upto the next point
- */
 export type RhythmInterval = number;
 
-/**
- * a point whose value is normalized within the range of [0, 1)
- */
 export type RelativeRhythmPoint = number;
 
 export type RhythmSlotWeight = number;
@@ -110,31 +108,6 @@ export type RhythmPointWeight = number;
 
 export type RhythmWeight = number;
 
-export type AlignedRhythmStructure =
-  RecursiveRhythmStructure<AlignedRhythmLayer>;
-
-export type AlignedRhythmLayer = [
-  density: RhythmDensity,
-  orientation: RhythmOrientation
-];
-
-export type PhasedRhythmStructure = RecursiveRhythmStructure<PhasedRhythmLayer>;
-
-export type PhasedRhythmLayer = [
-  density: RhythmDensity,
-  orientation: RhythmOrientation,
-  phase: RhythmPhase
-];
-
-/**
- *
- */
-export type RecursiveRhythmStructure<RhythmLayer extends Array<number>> = [
-  RhythmResolution,
-  RhythmLayer,
-  ...Array<RhythmLayer>
-];
-
 export type RhythmGroupStructure = [
   baseStructure: RhythmGroupBaseStructure,
   memberStructure: RhythmGroupMemberStructure
@@ -142,7 +115,7 @@ export type RhythmGroupStructure = [
 
 export type RhythmGroupBaseStructure = [
   RhythmResolution,
-  ...Array<AlignedRhythmLayer>
+  ...Array<AlignedEuclidRhythmLayer>
 ];
 
 export type RhythmGroupMemberStructure = [

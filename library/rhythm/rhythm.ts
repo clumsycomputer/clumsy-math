@@ -1,17 +1,21 @@
 import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
 import {
-  AlignedRhythmLayer,
-  AlignedRhythmStructure,
-  PhasedRhythmStructure,
-  Rhythm,
+  AlignedEuclidRhythmStructure,
+  AlignedEuclidRhythmLayer,
+  PhasedEuclidRhythmStructure,
+  RecursiveEuclidRhythm,
+  RecursiveEuclidRhythmStructure,
   RhythmGroupMemberStructure,
   RhythmGroupStructure,
-  RecursiveRhythmStructure,
+  RhythmResolution,
+  RhythmDensity,
+  RhythmOrientation,
+  RhythmPhase,
 } from "./encodings";
 import { euclidRhythm } from "./euclidRhythm";
 
 /**
- * computes RecursiveEuclidRhythm from RecursiveRhythmStructure
+ * computes {@link RecursiveEuclidRhythm} from a {@link RecursiveEuclidRhythmStructure}
  *
  * @example
  * ```typescript
@@ -25,11 +29,13 @@ import { euclidRhythm } from "./euclidRhythm";
  * ```
  *
  * @attributes
- * domain: rhythm | type: function | name: rhythm
+ * domain: rhythm | category: function | name: rhythm
  */
 export function rhythm(
-  someRhythmStructure: AlignedRhythmStructure | PhasedRhythmStructure
-): Rhythm {
+  someRhythmStructure:
+    | AlignedEuclidRhythmStructure
+    | PhasedEuclidRhythmStructure
+): RecursiveEuclidRhythm {
   const [rhythmResolution, rootLayer, ...subLayers] = someRhythmStructure;
   const resultRhythm = euclidRhythm(
     rhythmResolution,
@@ -54,7 +60,9 @@ export function rhythm(
 }
 
 export function rhythmId<
-  SomeRhythmStructure extends AlignedRhythmStructure | PhasedRhythmStructure
+  SomeRhythmStructure extends
+    | AlignedEuclidRhythmStructure
+    | PhasedEuclidRhythmStructure
 >(someRhythmStructure: SomeRhythmStructure): string {
   const rhythmType =
     someRhythmStructure[1].length === 2
@@ -62,8 +70,10 @@ export function rhythmId<
       : someRhythmStructure[1].length === 3
       ? "phased"
       : throwInvalidPathError("rhythmId");
-  const [rhythmResolution, ...rhythmLayers]: [number, ...Array<Array<number>>] =
-    someRhythmStructure;
+  const [rhythmResolution, ...rhythmLayers]: [
+    RhythmResolution,
+    ...Array<Array<RhythmDensity | RhythmOrientation | RhythmPhase>>
+  ] = someRhythmStructure;
   return rhythmLayers.reduce(
     (resultId, someRhythmLayer) => `${resultId}__${someRhythmLayer.join("_")}`,
     `${rhythmType}__${rhythmResolution}`
@@ -71,7 +81,7 @@ export function rhythmId<
 }
 
 export function rhythmComponents<
-  SomeRhythmStructure extends RecursiveRhythmStructure<Array<number>>
+  SomeRhythmStructure extends RecursiveEuclidRhythmStructure<Array<number>>
 >(someRhythmStructure: SomeRhythmStructure): Array<SomeRhythmStructure> {
   const [rhythmResolution, ...rhythmLayers] = someRhythmStructure;
   return rhythmLayers.map((_, layerIndex) => {
@@ -91,11 +101,11 @@ export function rhythmComponents<
 }
 
 export function rhythmLineage(
-  someAlignedRhythmStructure: AlignedRhythmStructure
+  someAlignedRhythmStructure: AlignedEuclidRhythmStructure
 ): Array<RhythmGroupStructure> {
   const [rhythmResolution, ...alignedRhythmLayers] = someAlignedRhythmStructure;
   return alignedRhythmLayers.map<RhythmGroupStructure>((_, layerIndex) => {
-    const baseLayers: Array<AlignedRhythmLayer> = [];
+    const baseLayers: Array<AlignedEuclidRhythmLayer> = [];
     for (
       let baseLayerIndex = 0;
       baseLayerIndex < layerIndex;

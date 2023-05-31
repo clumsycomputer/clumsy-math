@@ -8,6 +8,7 @@ import {
   DocBlock,
   DocComment,
   DocFencedCode,
+  DocLinkTag,
   DocParagraph,
   DocPlainText,
   DocSoftBreak,
@@ -98,22 +99,23 @@ interface ProcessPackageItemApi {
 }
 
 interface DocumentationMap {
-  [domainKey: string]: {
-    [typeKey: string]: Array<DocumentationItem>;
-  };
+  [itemId: string]: DocumentationItem;
 }
 
 interface DocumentationItem {
+  itemId: string;
   itemName: string;
   itemSummary: string;
   itemDomain: string;
-  itemType: string;
+  itemCategory: string;
   itemExamples: ReturnType<typeof getCommentExamples>;
-  itemRelationsMap: Record<string, Array<string>>;
+  // itemRelationsMap: Record<string, Array<string>>;
 }
 
 function processPackageItem(api: ProcessPackageItemApi) {
   const { somePackageItem, resultDocumentationMap } = api;
+  const itemId =
+    somePackageItem.canonicalReference.symbol?.componentPath?.component.toString();
   const itemDocComment =
     somePackageItem instanceof ApiDocumentedItem
       ? somePackageItem.tsdocComment
@@ -123,6 +125,7 @@ function processPackageItem(api: ProcessPackageItemApi) {
       throwInvalidPathError("processPackageItem.lastCustomBlock")
     : null;
   if (
+    itemId &&
     itemDocComment instanceof DocComment &&
     lastCustomBlock instanceof DocBlock &&
     lastCustomBlock.blockTag.tagName === "@attributes"
@@ -131,29 +134,25 @@ function processPackageItem(api: ProcessPackageItemApi) {
       someAttributesBlock: lastCustomBlock,
     });
     const documentationItem = {
+      itemId,
       itemSummary: getCommentSummary({
         someDocComment: itemDocComment,
       }),
       itemExamples: getCommentExamples({
         someDocComment: itemDocComment,
       }),
-      itemRelationsMap: getCommentRelations({
-        someDocComment: itemDocComment,
-      }),
+      // itemRelationsMap: getCommentRelations({
+      //   someDocComment: itemDocComment,
+      // }),
       itemName: itemAttributes["name"] ?? somePackageItem.displayName,
-      itemType:
-        itemAttributes["type"] ??
-        throwInvalidPathError("processPackageItem.itemType"),
+      itemCategory:
+        itemAttributes["category"] ??
+        throwInvalidPathError("processPackageItem.itemCategory"),
       itemDomain:
         itemAttributes["domain"] ??
         throwInvalidPathError("processPackageItem.itemDomain"),
     };
-    const domainMap =
-      resultDocumentationMap[documentationItem.itemDomain] ?? {};
-    const typeDomainItems = domainMap[documentationItem.itemType] ?? [];
-    typeDomainItems.push(documentationItem);
-    domainMap[documentationItem.itemType] = typeDomainItems;
-    resultDocumentationMap[documentationItem.itemDomain] = domainMap;
+    resultDocumentationMap[documentationItem.itemId] = documentationItem;
   }
   for (const someMemberItem of somePackageItem.members) {
     processPackageItem({
@@ -175,6 +174,15 @@ function getCommentSummary(api: GetCommentSummaryApi): string {
     summaryParagraph.getChildNodes().forEach((someParagraphNode) => {
       if (someParagraphNode instanceof DocPlainText) {
         resultSummary += someParagraphNode.text;
+      } else if (
+        someParagraphNode instanceof DocLinkTag &&
+        someParagraphNode.codeDestination?.memberReferences[0] &&
+        someParagraphNode.codeDestination?.memberReferences[0].memberIdentifier
+      ) {
+        const linkedItemId =
+          someParagraphNode.codeDestination?.memberReferences[0]
+            .memberIdentifier.identifier;
+        resultSummary += `@${linkedItemId}`;
       } else if (someParagraphNode instanceof DocSoftBreak) {
         resultSummary += "\n";
       } else {
@@ -219,38 +227,38 @@ function getCommentExamples(api: GetCommentExamplesApi) {
     });
 }
 
-interface GetCommentRelationsApi {
-  someDocComment: DocComment;
-}
+// interface GetCommentRelationsApi {
+//   someDocComment: DocComment;
+// }
 
-function getCommentRelations(api: GetCommentRelationsApi) {
-  const { someDocComment } = api;
-  return someDocComment.customBlocks
-    .filter(
-      (someCustomBlock) => someCustomBlock.blockTag.tagName === "@relations"
-    )
-    .reduce<Record<string, Array<string>>>(
-      (resultItemRelations, someRelatedBlock) => {
-        const relationsListNode = someRelatedBlock.content
-          ?.getChildNodes()[0]
-          ?.getChildNodes()[2];
-        if (relationsListNode instanceof DocPlainText) {
-          const relationsTokens = relationsListNode.text.split(")");
-          const relationsType =
-            relationsTokens[0]?.slice(1) ??
-            throwInvalidPathError("getCommentRelations.relationsType");
-          const relationsItems =
-            relationsTokens[1]?.split("|").map((someItem) => someItem.trim()) ??
-            throwInvalidPathError("getCommentRelations.relationsItems");
-          resultItemRelations[relationsType] = relationsItems;
-        } else {
-          throwInvalidPathError("getCommentRelations");
-        }
-        return resultItemRelations;
-      },
-      {}
-    );
-}
+// function getCommentRelations(api: GetCommentRelationsApi) {
+//   const { someDocComment } = api;
+//   return someDocComment.customBlocks
+//     .filter(
+//       (someCustomBlock) => someCustomBlock.blockTag.tagName === "@relations"
+//     )
+//     .reduce<Record<string, Array<string>>>(
+//       (resultItemRelations, someRelatedBlock) => {
+//         const relationsListNode = someRelatedBlock.content
+//           ?.getChildNodes()[0]
+//           ?.getChildNodes()[2];
+//         if (relationsListNode instanceof DocPlainText) {
+//           const relationsTokens = relationsListNode.text.split(")");
+//           const relationsType =
+//             relationsTokens[0]?.slice(1) ??
+//             throwInvalidPathError("getCommentRelations.relationsType");
+//           const relationsItems =
+//             relationsTokens[1]?.split("|").map((someItem) => someItem.trim()) ??
+//             throwInvalidPathError("getCommentRelations.relationsItems");
+//           resultItemRelations[relationsType] = relationsItems;
+//         } else {
+//           throwInvalidPathError("getCommentRelations");
+//         }
+//         return resultItemRelations;
+//       },
+//       {}
+//     );
+// }
 
 interface GetCommentAttributesApi {
   someAttributesBlock: DocBlock;
@@ -287,19 +295,35 @@ interface GetReadmeMarkdownApi {
 
 function getReadmeMarkdown(api: GetReadmeMarkdownApi) {
   const { documentationMap } = api;
+  const markdownItemsMap = Object.values(documentationMap).reduce<{
+    [domainKey: string]: {
+      [categoryKey: string]: {
+        [itemKey: string]: DocumentationItem;
+      };
+    };
+  }>((resultMarkdownItemsMap, someDocumentationItem) => {
+    const domainMap =
+      resultMarkdownItemsMap[someDocumentationItem.itemDomain] ?? {};
+    const categoryMap = domainMap[someDocumentationItem.itemCategory] ?? {};
+    categoryMap[someDocumentationItem.itemId] = someDocumentationItem;
+    domainMap[someDocumentationItem.itemCategory] = categoryMap;
+    resultMarkdownItemsMap[someDocumentationItem.itemDomain] = domainMap;
+    return resultMarkdownItemsMap;
+  }, {});
   let documentationIndexMarkdown = "";
   const domainCategoryMarkdownItems: Array<DomainCategoryMarkdownItem> = [];
-  for (const domainEntry of Object.entries(documentationMap)) {
+  for (const domainEntry of Object.entries(markdownItemsMap)) {
     const [domainKey, domainMap] = domainEntry;
     for (const categoryEntry of Object.entries(domainMap)) {
-      const [domainCategoryKey, categoryDocumentationItems] = categoryEntry;
+      const [domainCategoryKey, categoryItems] = categoryEntry;
       const pluralCategoryKey = `${domainCategoryKey}s`;
       const domainCategoryTitle = `${domainKey} _(${pluralCategoryKey})_`;
       documentationIndexMarkdown += `\n- **[${domainCategoryTitle}](#${domainKey}-${pluralCategoryKey})**\n`;
       let domainCategoryMarkdown = `## ${domainCategoryTitle}\n`;
-      for (const someCategoryDocumentationItem of categoryDocumentationItems) {
+      for (const someCategoryItem of Object.values(categoryItems)) {
         domainCategoryMarkdown += getDocumentationItemMarkdown({
-          someDocumentationItem: someCategoryDocumentationItem,
+          documentationMap,
+          someDocumentationItem: someCategoryItem,
         });
       }
       domainCategoryMarkdownItems.push({
@@ -331,20 +355,39 @@ interface DomainCategoryMarkdownItem {
   domainCategoryMarkdown: string;
 }
 
-interface GetDocumentationItemMarkdownApi {
+interface GetDocumentationItemMarkdownApi
+  extends Pick<GetReadmeMarkdownApi, "documentationMap"> {
   someDocumentationItem: DocumentationItem;
 }
 
 function getDocumentationItemMarkdown(api: GetDocumentationItemMarkdownApi) {
-  const { someDocumentationItem } = api;
+  const { someDocumentationItem, documentationMap } = api;
   // prettier-ignore
   return (
 `\n###### ${someDocumentationItem.itemName}
 
-> ${someDocumentationItem.itemSummary}
+${getDocumentationSummaryMarkdown({someDocumentationItem,documentationMap})}
+${getDocumentationExamplesMarkdown({someDocumentationItem})}`);
+  // ${getDocumentationRelationsMarkdown({someDocumentationItem})}`);
+}
 
-${getDocumentationExamplesMarkdown({someDocumentationItem})}
-${getDocumentationRelationsMarkdown({someDocumentationItem})}`);
+interface GetDocumentationSummaryMarkdownApi
+  extends Pick<GetDocumentationItemMarkdownApi, "documentationMap"> {
+  someDocumentationItem: DocumentationItem;
+}
+
+function getDocumentationSummaryMarkdown(
+  api: GetDocumentationSummaryMarkdownApi
+) {
+  const { someDocumentationItem, documentationMap } = api;
+  let summaryMarkdown = `> ${someDocumentationItem.itemSummary}`;
+  for (const [matchedLinkItemText] of summaryMarkdown.matchAll(/@\w+/g)) {
+    summaryMarkdown = summaryMarkdown.replace(
+      matchedLinkItemText,
+      `[${documentationMap[matchedLinkItemText.slice(1)]!.itemName}](todo)`
+    );
+  }
+  return summaryMarkdown;
 }
 
 interface GetDocumentationExamplesMarkdownApi
@@ -363,20 +406,20 @@ function getDocumentationExamplesMarkdown(
   );
 }
 
-interface GetDocumentationRelationsMarkdownApi
-  extends Pick<GetDocumentationItemMarkdownApi, "someDocumentationItem"> {}
+// interface GetDocumentationRelationsMarkdownApi
+//   extends Pick<GetDocumentationItemMarkdownApi, "someDocumentationItem"> {}
 
-function getDocumentationRelationsMarkdown(
-  api: GetDocumentationRelationsMarkdownApi
-) {
-  const { someDocumentationItem } = api;
-  return Object.entries(someDocumentationItem.itemRelationsMap).reduce(
-    (relationResult, [relationKey, relationItems]) => {
-      relationResult += `\n<sup><i>${relationItems
-        .map((someRelationItem) => `&emsp;[${someRelationItem}](todo)`)
-        .join(",")}</i></sup>\n`;
-      return relationResult;
-    },
-    ""
-  );
-}
+// function getDocumentationRelationsMarkdown(
+//   api: GetDocumentationRelationsMarkdownApi
+// ) {
+//   const { someDocumentationItem } = api;
+//   return Object.entries(someDocumentationItem.itemRelationsMap).reduce(
+//     (relationResult, [relationKey, relationItems]) => {
+//       relationResult += `\n<sup><i>${relationItems
+//         .map((someRelationItem) => `&emsp;[${someRelationItem}](todo)`)
+//         .join(",")}</i></sup>\n`;
+//       return relationResult;
+//     },
+//     ""
+//   );
+// }

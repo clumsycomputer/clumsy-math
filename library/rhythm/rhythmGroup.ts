@@ -1,16 +1,16 @@
 import {
-  AlignedRhythmLayer,
-  AlignedRhythmStructure,
+  AlignedEuclidRhythmLayer,
+  AlignedEuclidRhythmStructure,
   RhythmGroupBaseStructure,
   RhythmGroupStructure,
 } from "./encodings";
 
 export function rhythmGroup(
   someRhythmGroupStructure: RhythmGroupStructure
-): Array<AlignedRhythmStructure> {
+): Array<AlignedEuclidRhythmStructure> {
   const [baseStructure, memberStructure] = someRhythmGroupStructure;
   const [groupResolution, ...groupBaseLayers] = baseStructure;
-  const rhythmGroupResult: Array<AlignedRhythmStructure> = [];
+  const rhythmGroupResult: Array<AlignedEuclidRhythmStructure> = [];
   const iterationStack = memberStructure.map<
     [orientationIndex: number, layerDensity: number]
   >((currentLayerDensity) => [0, currentLayerDensity]);
@@ -18,12 +18,12 @@ export function rhythmGroup(
     if (iterationStack.length === memberStructure.length) {
       const clonedBaseStructure: RhythmGroupBaseStructure = [
         groupResolution,
-        ...groupBaseLayers.map<AlignedRhythmLayer>((currentBaseLayer) => [
+        ...groupBaseLayers.map<AlignedEuclidRhythmLayer>((currentBaseLayer) => [
           ...currentBaseLayer,
         ]),
       ];
       rhythmGroupResult.push(
-        iterationStack.reduce<AlignedRhythmStructure>(
+        iterationStack.reduce<AlignedEuclidRhythmStructure>(
           (resultMember, someIterationLayer) => {
             resultMember.push([someIterationLayer[1], someIterationLayer[0]]);
             return resultMember;
