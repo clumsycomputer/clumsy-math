@@ -43,41 +43,41 @@ const rhythm = { resolution: 5, points: [0, 1, 3] }
 
 ###### AlignedEuclidRhythmStructure
 
-> ergonomic encoding for [aligned recursive euclid rhythm](todo)
+> ergonomic encoding for [aligned recursive euclid rhythm](#aligned-recursive-euclid-rhythm)
 
 ###### AlignedRecursiveEuclidRhythm
 
-> [aligned recursive euclid rhythm](todo) as [RecursiveEuclidRhythm](todo)
+> [aligned recursive euclid rhythm](#aligned-recursive-euclid-rhythm) as [RecursiveEuclidRhythm](#recursiveeuclidrhythm)
 
 ###### EuclidRhythm
 
-> [euclid rhythm](todo) as [Rhythm](todo)
+> [euclid rhythm](#euclid-rhythm) as [Rhythm](#rhythm-1)
 
 ###### PhasedEuclidRhythmStructure
 
-> ergonomic encoding for [phased recursive euclid rhythm](todo)
+> ergonomic encoding for [phased recursive euclid rhythm](#phased-recursive-euclid-rhythm)
 
 ###### PhasedRecursiveEuclidRhythm
 
-> [phased recursive euclid rhythm](todo) as [RecursiveEuclidRhythm](todo)
+> [phased recursive euclid rhythm](#phased-recursive-euclid-rhythm) as [RecursiveEuclidRhythm](#recursiveeuclidrhythm)
 
 ###### RecursiveEuclidRhythm
 
-> [recursive euclid rhythm](todo) as [Rhythm](todo)
+> [recursive euclid rhythm](#recursive-euclid-rhythm) as [Rhythm](#rhythm-1)
 
 ###### RecursiveEuclidRhythmStructure
 
-> ergonomic encoding for [recursive euclid rhythm](todo)
+> ergonomic encoding for [recursive euclid rhythm](#recursive-euclid-rhythm)
 
 ###### Rhythm
 
-> defacto encoding for [rhythm](todo)
+> defacto encoding for [rhythm](#rhythm)
 
 ## rhythm _(functions)_
 
 ###### rhythm
 
-> computes [RecursiveEuclidRhythm](todo) from a [RecursiveEuclidRhythmStructure](todo)
+> computes [RecursiveEuclidRhythm](#recursiveeuclidrhythm) from a [RecursiveEuclidRhythmStructure](#recursiveeuclidrhythmstructure)
 ```typescript
 const rhythmA = rhythm([
   5, [3, 0], [2, 1]

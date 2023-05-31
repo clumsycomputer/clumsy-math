@@ -310,6 +310,40 @@ function getReadmeMarkdown(api: GetReadmeMarkdownApi) {
     resultMarkdownItemsMap[someDocumentationItem.itemDomain] = domainMap;
     return resultMarkdownItemsMap;
   }, {});
+  const linkCollisions = Object.values(documentationMap).reduce<
+    Record<string, Array<string>>
+  >((collisionsResult, someDocumentationItem) => {
+    const defaultLinkId = someDocumentationItem.itemName
+      .toLowerCase()
+      .replace(/\s/g, "-");
+    const itemCollisions = collisionsResult[defaultLinkId] ?? [];
+    itemCollisions.push(someDocumentationItem.itemId);
+    collisionsResult[defaultLinkId] = itemCollisions;
+    return collisionsResult;
+  }, {});
+  const linkIdentifiersMap = Object.entries(
+    linkCollisions
+  ).reduce<LinkIdentifiersMap>((result, [defaultLinkKey, collisionItemIds]) => {
+    if (collisionItemIds.length > 1) {
+      collisionItemIds
+        .sort((itemIdA, itemIdB) => {
+          const itemA = documentationMap[itemIdA]!;
+          const itemB = documentationMap[itemIdB]!;
+          const itemStringA = `${itemA.itemDomain} ${itemA.itemCategory}`;
+          const itemStringB = `${itemB.itemDomain} ${itemB.itemCategory}`;
+          return itemStringA.localeCompare(itemStringB);
+        })
+        .forEach((someCollisionItemId, collisionIndex) => {
+          result[someCollisionItemId] =
+            collisionIndex === 0
+              ? defaultLinkKey
+              : `${defaultLinkKey}-${collisionIndex}`;
+        });
+    } else {
+      result[collisionItemIds[0]!] = defaultLinkKey;
+    }
+    return result;
+  }, {});
   let documentationIndexMarkdown = "";
   const domainCategoryMarkdownItems: Array<DomainCategoryMarkdownItem> = [];
   for (const domainEntry of Object.entries(markdownItemsMap)) {
@@ -323,6 +357,7 @@ function getReadmeMarkdown(api: GetReadmeMarkdownApi) {
       for (const someCategoryItem of Object.values(categoryItems)) {
         domainCategoryMarkdown += getDocumentationItemMarkdown({
           documentationMap,
+          linkIdentifiersMap,
           someDocumentationItem: someCategoryItem,
         });
       }
@@ -350,6 +385,10 @@ ${domainCategoriesMarkdown}
 `);
 }
 
+interface LinkIdentifiersMap {
+  [itemId: string]: string;
+}
+
 interface DomainCategoryMarkdownItem {
   domainCategoryTitle: string;
   domainCategoryMarkdown: string;
@@ -358,15 +397,16 @@ interface DomainCategoryMarkdownItem {
 interface GetDocumentationItemMarkdownApi
   extends Pick<GetReadmeMarkdownApi, "documentationMap"> {
   someDocumentationItem: DocumentationItem;
+  linkIdentifiersMap: LinkIdentifiersMap;
 }
 
 function getDocumentationItemMarkdown(api: GetDocumentationItemMarkdownApi) {
-  const { someDocumentationItem, documentationMap } = api;
+  const { someDocumentationItem, documentationMap, linkIdentifiersMap } = api;
   // prettier-ignore
   return (
 `\n###### ${someDocumentationItem.itemName}
 
-${getDocumentationSummaryMarkdown({someDocumentationItem,documentationMap})}
+${getDocumentationSummaryMarkdown({someDocumentationItem,documentationMap,linkIdentifiersMap})}
 ${getDocumentationExamplesMarkdown({someDocumentationItem})}`);
   // ${getDocumentationRelationsMarkdown({someDocumentationItem})}`);
 }
@@ -374,17 +414,22 @@ ${getDocumentationExamplesMarkdown({someDocumentationItem})}`);
 interface GetDocumentationSummaryMarkdownApi
   extends Pick<GetDocumentationItemMarkdownApi, "documentationMap"> {
   someDocumentationItem: DocumentationItem;
+  linkIdentifiersMap: LinkIdentifiersMap;
 }
 
 function getDocumentationSummaryMarkdown(
   api: GetDocumentationSummaryMarkdownApi
 ) {
-  const { someDocumentationItem, documentationMap } = api;
+  const { someDocumentationItem, documentationMap, linkIdentifiersMap } = api;
   let summaryMarkdown = `> ${someDocumentationItem.itemSummary}`;
   for (const [matchedLinkItemText] of summaryMarkdown.matchAll(/@\w+/g)) {
+    const matchedDocumentationItem =
+      documentationMap[matchedLinkItemText.slice(1)]!;
     summaryMarkdown = summaryMarkdown.replace(
       matchedLinkItemText,
-      `[${documentationMap[matchedLinkItemText.slice(1)]!.itemName}](todo)`
+      `[${matchedDocumentationItem.itemName}](#${
+        linkIdentifiersMap[matchedDocumentationItem.itemId]
+      })`
     );
   }
   return summaryMarkdown;
