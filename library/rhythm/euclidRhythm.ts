@@ -8,9 +8,28 @@ import {
   RhythmPoint,
   RhythmResolution,
   RhythmSlot,
+  SimpleEuclidRhythm,
 } from "./encodings";
 import { phasedRhythm } from "./rhythmTransforms";
 
+/**
+ * computes {@link EuclidRhythm} from {@link RhythmResolution}, {@link RhythmDensity}, {@link RhythmOrientation}, and {@link RhythmPhase}
+ *
+ * @example
+ * ```typescript
+ * const rhythmA = euclidRhythm(5, 3, 0, 0)
+ * // rhythmA === {
+ * //   resolution: 5,
+ * //   points: [0, 1, 3]
+ * // }
+ * ```
+ *
+ * @relations concept
+ * {@link _EUCLID_RHYTHM_CONCEPT}
+ *
+ * @attributes
+ * domain: rhythm | category: function | name: euclidRhythm
+ */
 export function euclidRhythm(
   resolution: RhythmResolution,
   density: RhythmDensity,
@@ -24,10 +43,19 @@ export function euclidRhythm(
   return phasedRhythm(simpleRhythm, (orientationPhase + phase) % resolution);
 }
 
+/**
+ * computes {@link SimpleEuclidRhythm} from {@link RhythmResolution} and {@link RhythmDensity}
+ *
+ * @relations concept
+ * {@link _SIMPLE_EUCLID_RHYTHM_CONCEPT}
+ *
+ * @attributes
+ * domain: rhythm | category: function | name: simpleEuclidRhythm
+ */
 export function simpleEuclidRhythm(
   resolution: RhythmResolution,
   density: RhythmDensity
-): EuclidRhythm {
+): SimpleEuclidRhythm {
   const coreRhythmMap = coreEuclidMap(resolution, density);
   const rhythmPoints: Array<RhythmPoint> = [];
   for (let slotIndex = 0; slotIndex < resolution; slotIndex++) {

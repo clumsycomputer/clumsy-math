@@ -7,8 +7,8 @@
  * const rhythm = { resolution: 5, points: [0, 1, 3] }
  * ```
  *
- * @relations (encoding)
- * RhythmSequence | Rhythm
+ * @relations encoding
+ * {@link RhythmMap} | {@link Rhythm}
  *
  * @attributes
  * domain: rhythm | category: concept | name: rhythm
@@ -27,16 +27,33 @@ export type _RHYTHM_CONCEPT = never;
  * @remarks
  * [og white paper](http://cgm.cs.mcgill.ca/~godfried/publications/banff.pdf)
  *
- * @relations (concept)
- * rhythm | rhythm point
+ * @relations concept
+ * {@link _RHYTHM_CONCEPT} | {@link _RHYTHM_POINT_CONCEPT}
  *
- * @relations (function)
- * euclidRhythm | simpleEuclidRhythm | coreEuclidRhythm | coreEuclidMap
+ * @relations function
+ * {@link euclidRhythm} | {@link simpleEuclidRhythm} | {@link coreEuclidRhythm} | {@link coreEuclidMap}
  *
  * @attributes
  * domain: rhythm | category: concept | name: euclid rhythm
  */
 export type _EUCLID_RHYTHM_CONCEPT = never;
+
+/**
+ * a euclid rhythm that has an orientation and phase of zero (default layout) (most dense left)
+ *
+ * @relations concept
+ * {@link _EUCLID_RHYTHM_CONCEPT}
+ *
+ * @relations encoding
+ * {@link SimpleEuclidRhythm}
+ *
+ * @relations function
+ * {@link simpleEuclidRhythm}
+ *
+ * @attributes
+ * domain: rhythm | category: concept | name: simple euclid rhythm
+ */
+export type _SIMPLE_EUCLID_RHYTHM_CONCEPT = never;
 
 /**
  * a rhythm where euclid rhythms are stacked on top of one another such that the base rhythm's density / points determines the next rhythm's resolution / space

@@ -109,7 +109,7 @@ interface DocumentationItem {
   itemDomain: string;
   itemCategory: string;
   itemExamples: ReturnType<typeof getCommentExamples>;
-  // itemRelationsMap: Record<string, Array<string>>;
+  itemRelationsMap: Record<string, Array<string>>;
 }
 
 function processPackageItem(api: ProcessPackageItemApi) {
@@ -141,9 +141,9 @@ function processPackageItem(api: ProcessPackageItemApi) {
       itemExamples: getCommentExamples({
         someDocComment: itemDocComment,
       }),
-      // itemRelationsMap: getCommentRelations({
-      //   someDocComment: itemDocComment,
-      // }),
+      itemRelationsMap: getCommentRelations({
+        someDocComment: itemDocComment,
+      }),
       itemName: itemAttributes["name"] ?? somePackageItem.displayName,
       itemCategory:
         itemAttributes["category"] ??
@@ -227,38 +227,45 @@ function getCommentExamples(api: GetCommentExamplesApi) {
     });
 }
 
-// interface GetCommentRelationsApi {
-//   someDocComment: DocComment;
-// }
+interface GetCommentRelationsApi {
+  someDocComment: DocComment;
+}
 
-// function getCommentRelations(api: GetCommentRelationsApi) {
-//   const { someDocComment } = api;
-//   return someDocComment.customBlocks
-//     .filter(
-//       (someCustomBlock) => someCustomBlock.blockTag.tagName === "@relations"
-//     )
-//     .reduce<Record<string, Array<string>>>(
-//       (resultItemRelations, someRelatedBlock) => {
-//         const relationsListNode = someRelatedBlock.content
-//           ?.getChildNodes()[0]
-//           ?.getChildNodes()[2];
-//         if (relationsListNode instanceof DocPlainText) {
-//           const relationsTokens = relationsListNode.text.split(")");
-//           const relationsType =
-//             relationsTokens[0]?.slice(1) ??
-//             throwInvalidPathError("getCommentRelations.relationsType");
-//           const relationsItems =
-//             relationsTokens[1]?.split("|").map((someItem) => someItem.trim()) ??
-//             throwInvalidPathError("getCommentRelations.relationsItems");
-//           resultItemRelations[relationsType] = relationsItems;
-//         } else {
-//           throwInvalidPathError("getCommentRelations");
-//         }
-//         return resultItemRelations;
-//       },
-//       {}
-//     );
-// }
+function getCommentRelations(api: GetCommentRelationsApi) {
+  const { someDocComment } = api;
+  return someDocComment.customBlocks
+    .filter(
+      (someCustomBlock) => someCustomBlock.blockTag.tagName === "@relations"
+    )
+    .reduce<Record<string, Array<string>>>(
+      (resultItemRelations, someRelatedBlock) => {
+        const relationsBlockContentNodes = someRelatedBlock.content
+          ?.getChildNodes()[0]
+          ?.getChildNodes();
+        if (
+          relationsBlockContentNodes &&
+          relationsBlockContentNodes[2] instanceof DocPlainText
+        ) {
+          const relationsCategoryKey = relationsBlockContentNodes[2].text;
+          for (const someContentNode of relationsBlockContentNodes.slice(3)) {
+            if (someContentNode instanceof DocLinkTag) {
+              const relationsLinks =
+                resultItemRelations[relationsCategoryKey] ?? [];
+              relationsLinks.push(
+                someContentNode.codeDestination?.memberReferences[0]
+                  ?.memberIdentifier?.identifier!
+              );
+              resultItemRelations[relationsCategoryKey] = relationsLinks;
+            }
+          }
+        } else {
+          throwInvalidPathError("getCommentRelations");
+        }
+        return resultItemRelations;
+      },
+      {}
+    );
+}
 
 interface GetCommentAttributesApi {
   someAttributesBlock: DocBlock;
@@ -404,16 +411,29 @@ function getDocumentationItemMarkdown(api: GetDocumentationItemMarkdownApi) {
   const { someDocumentationItem, documentationMap, linkIdentifiersMap } = api;
   // prettier-ignore
   return (
-`\n###### ${someDocumentationItem.itemName}
-
+`${getDocumentationHeaderMarkdown({someDocumentationItem})}
 ${getDocumentationSummaryMarkdown({someDocumentationItem,documentationMap,linkIdentifiersMap})}
-${getDocumentationExamplesMarkdown({someDocumentationItem})}`);
-  // ${getDocumentationRelationsMarkdown({someDocumentationItem})}`);
+${getDocumentationExamplesMarkdown({someDocumentationItem})}
+${getDocumentationRelationsMarkdown({someDocumentationItem,documentationMap,linkIdentifiersMap})}`);
+}
+
+interface GetDocumentationHeaderMarkdownApi
+  extends Pick<GetDocumentationItemMarkdownApi, "someDocumentationItem"> {
+  someDocumentationItem: DocumentationItem;
+}
+
+function getDocumentationHeaderMarkdown(
+  api: GetDocumentationHeaderMarkdownApi
+) {
+  const { someDocumentationItem } = api;
+  return `\n###### ${someDocumentationItem.itemName}\n`;
 }
 
 interface GetDocumentationSummaryMarkdownApi
-  extends Pick<GetDocumentationItemMarkdownApi, "documentationMap"> {
-  someDocumentationItem: DocumentationItem;
+  extends Pick<
+    GetDocumentationItemMarkdownApi,
+    "someDocumentationItem" | "documentationMap"
+  > {
   linkIdentifiersMap: LinkIdentifiersMap;
 }
 
@@ -424,11 +444,11 @@ function getDocumentationSummaryMarkdown(
   let summaryMarkdown = `> ${someDocumentationItem.itemSummary}`;
   for (const [matchedLinkItemText] of summaryMarkdown.matchAll(/@\w+/g)) {
     const matchedDocumentationItem =
-      documentationMap[matchedLinkItemText.slice(1)]!;
+      documentationMap[matchedLinkItemText.slice(1)];
     summaryMarkdown = summaryMarkdown.replace(
       matchedLinkItemText,
-      `[${matchedDocumentationItem.itemName}](#${
-        linkIdentifiersMap[matchedDocumentationItem.itemId]
+      `[${matchedDocumentationItem?.itemName}](#${
+        linkIdentifiersMap[matchedDocumentationItem?.itemId ?? -1]
       })`
     );
   }
@@ -451,20 +471,28 @@ function getDocumentationExamplesMarkdown(
   );
 }
 
-// interface GetDocumentationRelationsMarkdownApi
-//   extends Pick<GetDocumentationItemMarkdownApi, "someDocumentationItem"> {}
+interface GetDocumentationRelationsMarkdownApi
+  extends Pick<
+    GetDocumentationItemMarkdownApi,
+    "someDocumentationItem" | "documentationMap"
+  > {
+  linkIdentifiersMap: LinkIdentifiersMap;
+}
 
-// function getDocumentationRelationsMarkdown(
-//   api: GetDocumentationRelationsMarkdownApi
-// ) {
-//   const { someDocumentationItem } = api;
-//   return Object.entries(someDocumentationItem.itemRelationsMap).reduce(
-//     (relationResult, [relationKey, relationItems]) => {
-//       relationResult += `\n<sup><i>${relationItems
-//         .map((someRelationItem) => `&emsp;[${someRelationItem}](todo)`)
-//         .join(",")}</i></sup>\n`;
-//       return relationResult;
-//     },
-//     ""
-//   );
-// }
+function getDocumentationRelationsMarkdown(
+  api: GetDocumentationRelationsMarkdownApi
+) {
+  const { someDocumentationItem, linkIdentifiersMap, documentationMap } = api;
+  return Object.entries(someDocumentationItem.itemRelationsMap).reduce(
+    (relationResult, [relationKey, relationItems]) => {
+      relationResult += `\n<sup><i>${relationItems
+        .map(
+          (someRelationItemId) =>
+            `&emsp;[${documentationMap[someRelationItemId]?.itemName}](#${linkIdentifiersMap[someRelationItemId]})`
+        )
+        .join(",")}</i></sup>\n`;
+      return relationResult;
+    },
+    ""
+  );
+}

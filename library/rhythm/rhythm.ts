@@ -28,6 +28,15 @@ import { euclidRhythm } from "./euclidRhythm";
  * // }
  * ```
  *
+ * @relations concept
+ * {@link _RECURSIVE_EUCLID_RHYTHM_CONCEPT}
+ *
+ * @relations encoding
+ * {@link AlignedEuclidRhythmStructure} {@link PhasedEuclidRhythmStructure}
+ *
+ * @relations function
+ * {@link rhythmId} {@link rhythmComponents} {@link rhythmLineage}
+ *
  * @attributes
  * domain: rhythm | category: function | name: rhythm
  */

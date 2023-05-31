@@ -18,6 +18,14 @@ export interface Rhythm {
 export type EuclidRhythm = Rhythm;
 
 /**
+ * {@link _SIMPLE_EUCLID_RHYTHM_CONCEPT} as {@link EuclidRhythm}
+ *
+ * @attributes
+ * domain: rhythm | category: encoding | name: SimpleEuclidRhythm
+ */
+export type SimpleEuclidRhythm = EuclidRhythm;
+
+/**
  * {@link _RECURSIVE_EUCLID_RHYTHM_CONCEPT} as {@link Rhythm}
  *
  * @attributes
