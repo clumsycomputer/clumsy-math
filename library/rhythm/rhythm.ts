@@ -1,49 +1,23 @@
 import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
 import {
   AlignedEuclidRhythmStructure,
-  AlignedEuclidRhythmLayer,
   PhasedEuclidRhythmStructure,
   RecursiveEuclidRhythm,
   RecursiveEuclidRhythmStructure,
+  RhythmDensity,
   RhythmGroupMemberStructure,
   RhythmGroupStructure,
-  RhythmResolution,
-  RhythmDensity,
   RhythmOrientation,
   RhythmPhase,
+  RhythmResolution,
 } from "./encodings";
 import { euclidRhythm } from "./euclidRhythm";
 
 /**
- * computes {@link RecursiveEuclidRhythm} from a {@link RecursiveEuclidRhythmStructure}
- *
- * @example
- * ```typescript
- * const rhythmA = rhythm([
- *   5, [3, 0], [2, 1]
- * ])
- * // rhythmA === {
- * //   resolution: 5,
- * //   points: [0, 3]
- * // }
- * ```
- *
- * @relations concept
- * {@link _RECURSIVE_EUCLID_RHYTHM_CONCEPT}
- *
- * @relations encoding
- * {@link AlignedEuclidRhythmStructure} {@link PhasedEuclidRhythmStructure}
- *
- * @relations function
- * {@link rhythmId} {@link rhythmComponents} {@link rhythmLineage}
- *
- * @attributes
- * domain: rhythm | category: function | name: rhythm
+ * primary function for working with rhythm
  */
 export function rhythm(
-  someRhythmStructure:
-    | AlignedEuclidRhythmStructure
-    | PhasedEuclidRhythmStructure
+  someRhythmStructure: RecursiveEuclidRhythmStructure
 ): RecursiveEuclidRhythm {
   const [rhythmResolution, rootLayer, ...subLayers] = someRhythmStructure;
   const resultRhythm = euclidRhythm(
@@ -68,11 +42,12 @@ export function rhythm(
   return resultRhythm;
 }
 
-export function rhythmId<
-  SomeRhythmStructure extends
-    | AlignedEuclidRhythmStructure
-    | PhasedEuclidRhythmStructure
->(someRhythmStructure: SomeRhythmStructure): string {
+/**
+ * great for logging and working with datasets of rhythm structures
+ */
+export function rhythmId(
+  someRhythmStructure: RecursiveEuclidRhythmStructure
+): string {
   const rhythmType =
     someRhythmStructure[1].length === 2
       ? "aligned"
@@ -89,47 +64,39 @@ export function rhythmId<
   );
 }
 
+/**
+ * great for destructuring a rhythm structure
+ */
 export function rhythmComponents<
-  SomeRhythmStructure extends RecursiveEuclidRhythmStructure<Array<number>>
+  SomeRhythmStructure extends RecursiveEuclidRhythmStructure
 >(someRhythmStructure: SomeRhythmStructure): Array<SomeRhythmStructure> {
   const [rhythmResolution, ...rhythmLayers] = someRhythmStructure;
-  return rhythmLayers.map((_, layerIndex) => {
-    const currentComponentResult = [
-      rhythmResolution,
-    ] as unknown as SomeRhythmStructure;
-    for (
-      let componentLayerIndex = 0;
-      componentLayerIndex <= layerIndex;
-      componentLayerIndex++
-    ) {
-      const currentLayer = rhythmLayers[componentLayerIndex]!;
-      currentComponentResult.push([...currentLayer]);
-    }
-    return currentComponentResult;
-  });
+  return rhythmLayers.map(
+    (_, layerIndex) =>
+      [
+        rhythmResolution,
+        ...rhythmLayers
+          .slice(0, layerIndex + 1)
+          .map((someRhythmLayer) => [...someRhythmLayer]),
+      ] as SomeRhythmStructure
+  );
 }
 
 export function rhythmLineage(
   someAlignedRhythmStructure: AlignedEuclidRhythmStructure
 ): Array<RhythmGroupStructure> {
   const [rhythmResolution, ...alignedRhythmLayers] = someAlignedRhythmStructure;
-  return alignedRhythmLayers.map<RhythmGroupStructure>((_, layerIndex) => {
-    const baseLayers: Array<AlignedEuclidRhythmLayer> = [];
-    for (
-      let baseLayerIndex = 0;
-      baseLayerIndex < layerIndex;
-      baseLayerIndex++
-    ) {
-      baseLayers.push([...alignedRhythmLayers[baseLayerIndex]!]);
-    }
-    const memberLayers = [] as unknown as RhythmGroupMemberStructure;
-    for (
-      let memberLayerIndex = layerIndex;
-      memberLayerIndex < alignedRhythmLayers.length;
-      layerIndex++
-    ) {
-      memberLayers.push(alignedRhythmLayers[memberLayerIndex]![0]);
-    }
-    return [[rhythmResolution, ...baseLayers], memberLayers];
-  });
+  return alignedRhythmLayers.map<RhythmGroupStructure>((_, layerIndex) => [
+    [
+      rhythmResolution,
+      ...alignedRhythmLayers
+        .slice(0, layerIndex)
+        .map((someAlignedRhythmLayer) => someAlignedRhythmLayer),
+    ],
+    alignedRhythmLayers
+      .slice(layerIndex)
+      .map(
+        (someAlignedRhythmLayer) => someAlignedRhythmLayer[0]
+      ) as RhythmGroupMemberStructure,
+  ]);
 }

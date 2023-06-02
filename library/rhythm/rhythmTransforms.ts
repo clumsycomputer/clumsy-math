@@ -1,11 +1,25 @@
 import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
-import { Rhythm } from "./encodings";
+import {
+  RelativeRhythmPoint,
+  Rhythm,
+  RhythmInterval,
+  RhythmOrientation,
+  RhythmPhase,
+  RhythmPoint,
+  RhythmString,
+} from "./encodings";
 
-export function phasedRhythm(someRhythm: Rhythm, rhythmPhase: number): Rhythm {
+/**
+ * great for phasing a rhythm after it's been created
+ */
+export function phasedRhythm(
+  someRhythm: Rhythm,
+  rhythmPhase: RhythmPhase
+): Rhythm {
   let phaseWrapPointIndex: number | null = null;
   return {
     resolution: someRhythm.resolution,
-    points: someRhythm.points.reduce<Array<number>>(
+    points: someRhythm.points.reduce<Array<RhythmPoint>>(
       (result, currentRhythmPoint, pointIndex) => {
         if (rhythmPhase > currentRhythmPoint) {
           const phasedRhythmPoint =
@@ -23,9 +37,12 @@ export function phasedRhythm(someRhythm: Rhythm, rhythmPhase: number): Rhythm {
   };
 }
 
+/**
+ * great for reorienting an aligned rhythm after it's been created
+ */
 export function orientatedRhythm(
   someRhythm: Rhythm,
-  rhythmOrientation: number
+  rhythmOrientation: RhythmOrientation
 ): Rhythm {
   return phasedRhythm(
     someRhythm,
@@ -34,13 +51,21 @@ export function orientatedRhythm(
   );
 }
 
-export function relativeRhythmPoints(someRhythm: Rhythm): Array<number> {
+/**
+ * great for normalizing rhythms across different resolutions
+ */
+export function relativeRhythmPoints(
+  someRhythm: Rhythm
+): Array<RelativeRhythmPoint> {
   return someRhythm.points.map(
     (someRhythmPoint) => someRhythmPoint / someRhythm.resolution
   );
 }
 
-export function rhythmIntervals(someRhythm: Rhythm): Array<number> {
+/**
+ * great for making calculations between rhythm points
+ */
+export function rhythmIntervals(someRhythm: Rhythm): Array<RhythmInterval> {
   return someRhythm.points.map((currentPoint, pointIndex) => {
     const nextPoint =
       someRhythm.points[(pointIndex + 1) % someRhythm.points.length]!;
@@ -50,7 +75,10 @@ export function rhythmIntervals(someRhythm: Rhythm): Array<number> {
   });
 }
 
-export function rhythmString(someRhythm: Rhythm): string {
+/**
+ * great for logging and visualizing short rhythms
+ */
+export function rhythmString(someRhythm: Rhythm): RhythmString {
   const rhythmDigitArray = new Array(someRhythm.resolution).fill(0);
   for (const currentPoint of someRhythm.points) {
     rhythmDigitArray[currentPoint] = 1;

@@ -1,8 +1,8 @@
-import { Rhythm } from "./encodings";
+import { Rhythm, RhythmSlotWeight, RhythmWeight } from "./encodings";
 
 export function rhythmSlotWeights(
   someRhythms: [Rhythm, ...Array<Rhythm>]
-): Array<number> {
+): Array<RhythmSlotWeight> {
   const resultSlotWeights = new Array(someRhythms[0].resolution).fill(0);
   for (const currentRhythm of someRhythms) {
     for (const currentPoint of currentRhythm.points) {
@@ -13,9 +13,9 @@ export function rhythmSlotWeights(
 }
 
 export function rhythmPointWeights(
-  baseSlotWeights: Array<number>,
+  baseSlotWeights: Array<RhythmSlotWeight>,
   memberRhythm: Rhythm
-): Array<number> {
+): Array<RhythmSlotWeight> {
   return memberRhythm.points.map(
     (currentMemberPoint) => baseSlotWeights[currentMemberPoint]!
   );
@@ -24,7 +24,7 @@ export function rhythmPointWeights(
 export function rhythmWeight(
   baseSlotWeights: Array<number>,
   memberRhythm: Rhythm
-): number {
+): RhythmWeight {
   return memberRhythm.points.reduce(
     (resultWeight, currentMemberPoint) =>
       resultWeight + baseSlotWeights[currentMemberPoint]!,

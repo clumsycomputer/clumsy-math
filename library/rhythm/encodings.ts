@@ -1,92 +1,47 @@
 /**
  * defacto encoding for {@link _RHYTHM_CONCEPT}
- *
- * @attributes
- * domain: rhythm | category: encoding | name: Rhythm
  */
 export interface Rhythm {
   resolution: RhythmResolution;
   points: Array<RhythmPoint>;
 }
 
-/**
- * {@link _EUCLID_RHYTHM_CONCEPT} as {@link Rhythm}
- *
- * @attributes
- * domain: rhythm | category: encoding | name: EuclidRhythm
- */
 export type EuclidRhythm = Rhythm;
 
-/**
- * {@link _SIMPLE_EUCLID_RHYTHM_CONCEPT} as {@link EuclidRhythm}
- *
- * @attributes
- * domain: rhythm | category: encoding | name: SimpleEuclidRhythm
- */
-export type SimpleEuclidRhythm = EuclidRhythm;
+export type BasicEuclidRhythm = EuclidRhythm;
 
-/**
- * {@link _RECURSIVE_EUCLID_RHYTHM_CONCEPT} as {@link Rhythm}
- *
- * @attributes
- * domain: rhythm | category: encoding | name: RecursiveEuclidRhythm
- */
+export type CoreEuclidRhythm = BasicEuclidRhythm;
+
 export type RecursiveEuclidRhythm = Rhythm;
 
-/**
- * {@link _ALIGNED_RECURSIVE_EUCLID_RHYTHM_CONCEPT} as {@link RecursiveEuclidRhythm}
- *
- * @attributes
- * domain: rhythm | category: encoding | name: AlignedRecursiveEuclidRhythm
- */
 export type AlignedRecursiveEuclidRhythm = RecursiveEuclidRhythm;
 
-/**
- * {@link _PHASED_RECURSIVE_EUCLID_RHYTHM_CONCEPT} as {@link RecursiveEuclidRhythm}
- *
- * @attributes
- * domain: rhythm | category: encoding | name: PhasedRecursiveEuclidRhythm
- */
 export type PhasedRecursiveEuclidRhythm = RecursiveEuclidRhythm;
 
-/**
- * ergonomic encoding for {@link _RECURSIVE_EUCLID_RHYTHM_CONCEPT}
- *
- * @attributes
- * domain: rhythm | category: encoding | name: RecursiveEuclidRhythmStructure
- */
-export type RecursiveEuclidRhythmStructure<
-  EuclidRhythmLayer extends Array<number>
-> = [RhythmResolution, EuclidRhythmLayer, ...Array<EuclidRhythmLayer>];
+export type RecursiveEuclidRhythmStructure =
+  | AlignedEuclidRhythmStructure
+  | PhasedEuclidRhythmStructure;
 
-/**
- * ergonomic encoding for {@link _ALIGNED_RECURSIVE_EUCLID_RHYTHM_CONCEPT}
- *
- * @attributes
- * domain: rhythm | category: encoding | name: AlignedEuclidRhythmStructure
- */
 export type AlignedEuclidRhythmStructure =
-  RecursiveEuclidRhythmStructure<AlignedEuclidRhythmLayer>;
+  RecursiveEuclidRhythmStructureBase<AlignedEuclidRhythmLayer>;
 
 export type AlignedEuclidRhythmLayer = [
   density: RhythmDensity,
   orientation: RhythmOrientation
 ];
 
-/**
- * ergonomic encoding for {@link _PHASED_RECURSIVE_EUCLID_RHYTHM_CONCEPT}
- *
- * @attributes
- * domain: rhythm | category: encoding | name: PhasedEuclidRhythmStructure
- */
 export type PhasedEuclidRhythmStructure =
-  RecursiveEuclidRhythmStructure<PhasedEuclidRhythmLayer>;
+  RecursiveEuclidRhythmStructureBase<PhasedEuclidRhythmLayer>;
 
 export type PhasedEuclidRhythmLayer = [
   density: RhythmDensity,
   orientation: RhythmOrientation,
   phase: RhythmPhase
 ];
+
+export type RecursiveEuclidRhythmStructureBase<
+  EuclidRhythmLayer extends Array<number>
+> = [RhythmResolution, EuclidRhythmLayer, ...Array<EuclidRhythmLayer>];
 
 export type RhythmMap = Array<RhythmSlot>;
 

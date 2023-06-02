@@ -44,6 +44,9 @@ export function rhythmGroup(
   return rhythmGroupResult;
 }
 
+/**
+ * great for logging and working with datasets of rhythm groups
+ */
 export function rhythmGroupId(
   someRhythmGroupStructure: RhythmGroupStructure
 ): string {

@@ -17,6 +17,28 @@ a math library for the clumsy and curious 🙂
 > a recursive euclid rhythm where each layer has a point at zero (slot)
 
 
+###### basic euclid rhythm
+
+> a euclid rhythm that has an orientation and phase of zero (default layout) (most dense left)
+
+
+<sup><i>&emsp;[euclid rhythm](#euclid-rhythm)</i></sup>
+
+<sup><i>&emsp;[BasicEuclidRhythm](#basiceuclidrhythm)</i></sup>
+
+<sup><i>&emsp;[basicEuclidRhythm](#basiceuclidrhythm-1)</i></sup>
+
+###### core euclid rhythm
+
+> a basic euclid rhythm that doesn't have a repeating pattern within itself
+
+
+<sup><i>&emsp;[basic euclid rhythm](#basic-euclid-rhythm)</i></sup>
+
+<sup><i>&emsp;[CoreEuclidRhythm](#coreeuclidrhythm)</i></sup>
+
+<sup><i>&emsp;[coreEuclidRhythm](#coreeuclidrhythm-1),&emsp;[undefined](#undefined)</i></sup>
+
 ###### euclid rhythm
 
 > a rhythm whose points are as evenly distributed as possible throughout a discrete space
@@ -24,7 +46,7 @@ a math library for the clumsy and curious 🙂
 
 <sup><i>&emsp;[rhythm](#rhythm),&emsp;[undefined](#undefined)</i></sup>
 
-<sup><i>&emsp;[euclidRhythm](#euclidrhythm-1),&emsp;[simpleEuclidRhythm](#simpleeuclidrhythm-1),&emsp;[undefined](#undefined),&emsp;[undefined](#undefined)</i></sup>
+<sup><i>&emsp;[euclidRhythm](#euclidrhythm-1),&emsp;[undefined](#undefined),&emsp;[coreEuclidRhythm](#coreeuclidrhythm-1),&emsp;[undefined](#undefined)</i></sup>
 
 ###### phased recursive euclid rhythm
 
@@ -50,17 +72,6 @@ const rhythm = { resolution: 5, points: [0, 1, 3] }
 
 <sup><i>&emsp;[undefined](#undefined),&emsp;[Rhythm](#rhythm-1)</i></sup>
 
-###### simple euclid rhythm
-
-> a euclid rhythm that has an orientation and phase of zero (default layout) (most dense left)
-
-
-<sup><i>&emsp;[euclid rhythm](#euclid-rhythm)</i></sup>
-
-<sup><i>&emsp;[SimpleEuclidRhythm](#simpleeuclidrhythm)</i></sup>
-
-<sup><i>&emsp;[simpleEuclidRhythm](#simpleeuclidrhythm-1)</i></sup>
-
 ## rhythm _(encodings)_
 
 ###### AlignedEuclidRhythmStructure
@@ -71,6 +82,16 @@ const rhythm = { resolution: 5, points: [0, 1, 3] }
 ###### AlignedRecursiveEuclidRhythm
 
 > [aligned recursive euclid rhythm](#aligned-recursive-euclid-rhythm) as [RecursiveEuclidRhythm](#recursiveeuclidrhythm)
+
+
+###### BasicEuclidRhythm
+
+> [basic euclid rhythm](#basic-euclid-rhythm) as [EuclidRhythm](#euclidrhythm)
+
+
+###### CoreEuclidRhythm
+
+> [core euclid rhythm](#core-euclid-rhythm) as [undefined](#undefined)
 
 
 ###### EuclidRhythm
@@ -103,21 +124,42 @@ const rhythm = { resolution: 5, points: [0, 1, 3] }
 > defacto encoding for [rhythm](#rhythm)
 
 
-###### SimpleEuclidRhythm
-
-> [simple euclid rhythm](#simple-euclid-rhythm) as [EuclidRhythm](#euclidrhythm)
-
-
 ## rhythm _(functions)_
+
+###### basicEuclidRhythm
+
+> computes [BasicEuclidRhythm](#basiceuclidrhythm) from [undefined](#undefined) and [undefined](#undefined)
+```typescript
+const rhythmA = basicEuclidRhythm(5, 3)
+// rhythmA === {
+//   resolution: 5,
+//   points: [0, 1, 3]
+// }
+```
+
+<sup><i>&emsp;[basic euclid rhythm](#basic-euclid-rhythm)</i></sup>
+
+###### coreEuclidRhythm
+
+> computes [CoreEuclidRhythm](#coreeuclidrhythm) from [undefined](#undefined) and [undefined](#undefined)
+```typescript
+rhythmA = coreEuclidRhythm(8, 4)
+// rhythmA === {
+//   resolution: 2,
+//   points: [1]
+// }
+```
+
+<sup><i>&emsp;[core euclid rhythm](#core-euclid-rhythm)</i></sup>
 
 ###### euclidRhythm
 
 > computes [EuclidRhythm](#euclidrhythm) from [undefined](#undefined), [undefined](#undefined), [undefined](#undefined), and [undefined](#undefined)
 ```typescript
-const rhythmA = euclidRhythm(5, 3, 0, 0)
+const rhythmA = euclidRhythm(5, 3, 1, 0)
 // rhythmA === {
 //   resolution: 5,
-//   points: [0, 1, 3]
+//   points: [0, 2, 4]
 // }
 ```
 
@@ -141,11 +183,4 @@ const rhythmA = rhythm([
 <sup><i>&emsp;[AlignedEuclidRhythmStructure](#alignedeuclidrhythmstructure),&emsp;[PhasedEuclidRhythmStructure](#phasedeuclidrhythmstructure)</i></sup>
 
 <sup><i>&emsp;[undefined](#undefined),&emsp;[undefined](#undefined),&emsp;[undefined](#undefined)</i></sup>
-
-###### simpleEuclidRhythm
-
-> computes [SimpleEuclidRhythm](#simpleeuclidrhythm) from [undefined](#undefined) and [undefined](#undefined)
-
-
-<sup><i>&emsp;[simple euclid rhythm](#simple-euclid-rhythm)</i></sup>
 

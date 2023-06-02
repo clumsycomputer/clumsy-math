@@ -1,6 +1,8 @@
 import { Extractor, ExtractorConfig } from "@microsoft/api-extractor";
 import {
   ApiDocumentedItem,
+  ApiFunction,
+  ApiInterface,
   ApiItem,
   ApiModel,
 } from "@microsoft/api-extractor-model";
@@ -18,6 +20,8 @@ import * as ChildProcess from "child_process";
 import * as Path from "path";
 import * as FileSystem from "fs";
 import { throwInvalidPathError } from "./helpers/throwInvalidPath";
+import { Encoding } from "crypto";
+import { ApiDeclaredItem } from "@microsoft/api-extractor-model";
 
 interface GenerateReadmeApi {
   temporaryOutputDirectoryPath: string;
@@ -130,6 +134,23 @@ function processPackageItem(api: ProcessPackageItemApi) {
     lastCustomBlock instanceof DocBlock &&
     lastCustomBlock.blockTag.tagName === "@attributes"
   ) {
+    if (somePackageItem instanceof ApiFunction) {
+      console.log(somePackageItem.fileUrlPath);
+      console.log(somePackageItem.getScopedNameWithinPackage());
+      for (const foo of somePackageItem.parameters) {
+        console.log(foo.name);
+        console.log(foo.parameterTypeExcerpt.text);
+      }
+      console.log(somePackageItem.returnTypeExcerpt.text);
+      // console.log(
+      //   somePackageItem.parameters[0]?.parameterTypeExcerpt.spannedTokens
+      // );
+      // console.log(
+      //   somePackageItem.parameters[0]?.parameterTypeExcerpt.spannedTokens
+      // );
+    }
+    // console.log(somePackageItem.getScopedNameWithinPackage());
+    // console.log(somePackageItem)
     const itemAttributes = getCommentAttributes({
       someAttributesBlock: lastCustomBlock,
     });

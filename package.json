@@ -21,7 +21,7 @@
   "main": "./library/index.ts",
   "scripts": {
     "buildNpmPackage": "ts-node ./scripts/buildNpmPackage.ts",
-    "generateReadme": "ts-node ./scripts/generateReadme.ts"
+    "generateReadme": "ts-node ./scripts/generateReadme/main.ts"
   },
   "dependencies": {
     "typescript": "^5.0.4"
