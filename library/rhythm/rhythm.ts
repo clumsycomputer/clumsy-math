@@ -64,9 +64,9 @@ export function rhythmId(
 }
 
 /**
- * great for destructuring a rhythm structure
+ * great for destructuring a rhythm structure into its constituent rhythms
  */
-export function rhythmComponents<
+export function componentRhythms<
   SomeRhythmStructure extends RecursiveEuclidRhythmStructure
 >(someRhythmStructure: SomeRhythmStructure): Array<SomeRhythmStructure> {
   const [rhythmResolution, ...rhythmLayers] = someRhythmStructure;

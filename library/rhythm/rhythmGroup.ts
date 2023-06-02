@@ -6,7 +6,7 @@ import {
 } from "./encodings";
 
 /**
- * great for defining a set of related rhythms at a desired altitude / scope / (balance of baseStructureDepth vs memberStructureDepth)
+ * great for defining a set of related rhythms at a desired altitude / scope
  */
 export function rhythmGroup(
   someRhythmGroupStructure: RhythmGroupStructure
