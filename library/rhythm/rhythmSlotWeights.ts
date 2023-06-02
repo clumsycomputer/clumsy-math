@@ -1,5 +1,8 @@
 import { Rhythm, RhythmSlotWeight, RhythmWeight } from "./encodings";
 
+/**
+ * great for understanding point distribution across a set of rhythms
+ */
 export function rhythmSlotWeights(
   someRhythms: [Rhythm, ...Array<Rhythm>]
 ): Array<RhythmSlotWeight> {
@@ -12,6 +15,9 @@ export function rhythmSlotWeights(
   return resultSlotWeights;
 }
 
+/**
+ * great for working with a rhythm's points in the context of a set of rhythms
+ */
 export function rhythmPointWeights(
   baseSlotWeights: Array<RhythmSlotWeight>,
   memberRhythm: Rhythm
@@ -21,6 +27,9 @@ export function rhythmPointWeights(
   );
 }
 
+/**
+ * great for differentiating a rhythm against a set of rhythms
+ */
 export function rhythmWeight(
   baseSlotWeights: Array<number>,
   memberRhythm: Rhythm

@@ -1,7 +1,6 @@
 import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
 import {
   AlignedEuclidRhythmStructure,
-  PhasedEuclidRhythmStructure,
   RecursiveEuclidRhythm,
   RecursiveEuclidRhythmStructure,
   RhythmDensity,
@@ -82,6 +81,9 @@ export function rhythmComponents<
   );
 }
 
+/**
+ * great for getting related rhythms at a given altitude / scope / lineageIndex
+ */
 export function rhythmLineage(
   someAlignedRhythmStructure: AlignedEuclidRhythmStructure
 ): Array<RhythmGroupStructure> {

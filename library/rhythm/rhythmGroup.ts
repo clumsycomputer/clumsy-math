@@ -5,6 +5,9 @@ import {
   RhythmGroupStructure,
 } from "./encodings";
 
+/**
+ * great for defining a set of related rhythms at a desired altitude / scope / (balance of baseStructureDepth vs memberStructureDepth)
+ */
 export function rhythmGroup(
   someRhythmGroupStructure: RhythmGroupStructure
 ): Array<AlignedEuclidRhythmStructure> {
