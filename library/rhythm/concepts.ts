@@ -9,12 +9,12 @@ export type _RHYTHM_CONCEPT = never;
 export type _EUCLID_RHYTHM_CONCEPT = never;
 
 /**
- * a euclid rhythm that has an orientation and phase of zero (default layout) (most dense left)
+ * a euclid rhythm that has an orientation and phase of zero (default layout) (most left dense)
  */
 export type _BASIC_EUCLID_RHYTHM_CONCEPT = never;
 
 /**
- * a basic euclid rhythm in its simplest form
+ * a basic euclid rhythm that is reduced to its simplest form
  */
 export type _CORE_EUCLID_RHYTHM_CONCEPT = never;
 

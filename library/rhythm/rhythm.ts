@@ -1,6 +1,6 @@
 import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
 import {
-  AlignedEuclidRhythmStructure,
+  AlignedRecursiveEuclidRhythmStructure,
   RecursiveEuclidRhythm,
   RecursiveEuclidRhythmStructure,
   RhythmDensity,
@@ -85,7 +85,7 @@ export function rhythmComponents<
  * great for getting related rhythms at a given altitude / scope / lineageIndex
  */
 export function rhythmLineage(
-  someAlignedRhythmStructure: AlignedEuclidRhythmStructure
+  someAlignedRhythmStructure: AlignedRecursiveEuclidRhythmStructure
 ): Array<RhythmGroupStructure> {
   const [rhythmResolution, ...alignedRhythmLayers] = someAlignedRhythmStructure;
   return alignedRhythmLayers.map<RhythmGroupStructure>((_, layerIndex) => [

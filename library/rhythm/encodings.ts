@@ -1,5 +1,5 @@
 /**
- * defacto encoding for {@link _RHYTHM_CONCEPT}
+ * defacto encoding for working with rhythm
  */
 export interface Rhythm {
   resolution: RhythmResolution;
@@ -19,10 +19,12 @@ export type AlignedRecursiveEuclidRhythm = RecursiveEuclidRhythm;
 export type PhasedRecursiveEuclidRhythm = RecursiveEuclidRhythm;
 
 export type RecursiveEuclidRhythmStructure =
-  | AlignedEuclidRhythmStructure
-  | PhasedEuclidRhythmStructure;
+  | AlignedRecursiveEuclidRhythmStructure
+  | PhasedRecursiveEuclidRhythmStructure;
 
-export type AlignedEuclidRhythmStructure =
+export type AlignedRhythmStructure = AlignedRecursiveEuclidRhythmStructure;
+
+export type AlignedRecursiveEuclidRhythmStructure =
   RecursiveEuclidRhythmStructureBase<AlignedEuclidRhythmLayer>;
 
 export type AlignedEuclidRhythmLayer = [
@@ -30,7 +32,9 @@ export type AlignedEuclidRhythmLayer = [
   orientation: RhythmOrientation
 ];
 
-export type PhasedEuclidRhythmStructure =
+export type PhaseRhythmStructure = PhasedRecursiveEuclidRhythmStructure;
+
+export type PhasedRecursiveEuclidRhythmStructure =
   RecursiveEuclidRhythmStructureBase<PhasedEuclidRhythmLayer>;
 
 export type PhasedEuclidRhythmLayer = [
@@ -39,7 +43,7 @@ export type PhasedEuclidRhythmLayer = [
   phase: RhythmPhase
 ];
 
-export type RecursiveEuclidRhythmStructureBase<
+type RecursiveEuclidRhythmStructureBase<
   EuclidRhythmLayer extends Array<number>
 > = [RhythmResolution, EuclidRhythmLayer, ...Array<EuclidRhythmLayer>];
 
