@@ -162,36 +162,84 @@ export type _RHYTHM_CONCEPT = never;
 
 /**
  * a rhythm whose points are as evenly distributed as possible throughout a discrete space
+ *
+ * @example
+ * ```typescript
+ * const euclidMapA = [true, true, false, true, false]
+ * const euclidMapB = [true, false, true, false, true]
+ * const euclidMapC = [true, false, true, true, false]
+ * ```
  */
 export type _EUCLID_RHYTHM_CONCEPT = never;
 
 /**
  * a euclid rhythm that has an orientation and phase of zero (default layout) (most left dense)
+ *
+ * @example
+ * ```typescript
+ * const euclidMapA = [true, true, false, true, false] // basic
+ * const euclidMapB = [true, false, true, false, true] // not basic
+ * const euclidMapC = [true, false, true, true, false] // not basic
+ * ```
  */
 export type _BASIC_EUCLID_RHYTHM_CONCEPT = never;
 
 /**
  * a basic euclid rhythm that is reduced to its simplest form
+ *
+ * @example
+ * ```typescript
+ * const fullEuclidMap = [true, false, true, false]
+ * const coreEuclidMap = [true, false]
+ * ```
  */
 export type _CORE_EUCLID_RHYTHM_CONCEPT = never;
 
 /**
  * a rhythm where euclid rhythms are stacked on top of one another such that the base rhythm's density / points determines the next rhythm's resolution / space
+ *
+ * @example
+ * ```typescript
+ * const baseEuclidMap = [true, true, false, true, false]
+ * const terminalEuclidMap = [true, true, flase]
+ * const resultEuclidMap = [true, true, false, false, false]
+ * ```
  */
 export type _RECURSIVE_EUCLID_RHYTHM_CONCEPT = never;
 
 /**
  * a recursive euclid rhythm where each layer has a point at the zero slot
+ *
+ * @example
+ * ```typescript
+ * const baseEuclidMap = [true, true, false, true, false]
+ * const terminalEuclidMap = [true, false, true]
+ * const resultEuclidMap = [true, false, false, true, false]
+ * ```
  */
 export type _ALIGNED_RECURSIVE_EUCLID_RHYTHM_CONCEPT = never;
 
 /**
  * a recursive euclid rhythm where all of the individual layers are phaseable
+ *
+ * @example
+ * ```typescript
+ * const baseEuclidMap = [true, true, false, true, false]
+ * const terminalEuclidMap = [false, true, true]
+ * const resultEuclidMap = [false, true, false, true, false]
+ * ```
  */
 export type _PHASED_RECURSIVE_EUCLID_RHYTHM_CONCEPT = never;
 
 /**
  * a recursive euclidean rhythm of a recursive euclidean rhythm
+ *
+ * @example
+ * ```typescript
+ * const baseComponentMap = [true, true, false, true, false]
+ * const interposedComponentMap = [true, false, false, true, false]
+ * const terminalComponentMap = [true, false, false, false, false]
+ * ```
  */
 export type _COMPONENT_RHYTHM_CONCEPT = never;
 
@@ -200,11 +248,39 @@ export type _COMPONENT_RHYTHM_CONCEPT = never;
 //
 
 /**
- * a set of recursive euclidean rhythms that share a static base structure and a dynamic member structure where the density structure is the same but orientations are different
+ * a set of aligned recursive euclidean rhythms that share a static base structure and a dynamic member structure where the density structure is the same but orientations are different
+ *
+ * @example
+ * ```typescript
+ * const groupBase = [true, true, false, true, false]
+ * const groupMapsA = [
+ *   [true, true, false, true, false],
+ *   [true, false, false, true, false],
+ * ]
+ * ```
  */
 export type _RHYTHM_GROUP_CONCEPT = never;
 
 /**
  * all rhythm groups an aligned recursive euclidean rhythm belongs to
+ *
+ * @example
+ * ```typescript
+ * const rhythmMapA = [true, false, false, true, false]
+ * const lineageMapsA = [
+ *   [
+ *     [true, true, false, false, false],
+ *     [true, false, false, true, false],
+ *     [true, false, true, false, false],
+ *     [true, false, false, false, true],
+ *     [true, false, true, false, false],
+ *     [true, false, false, true, false],
+ *   ],
+ *   [
+ *     [true, true, false, false, false],
+ *     [true, false, false, true, false],
+ *   ],
+ * ];
+ * ```
  */
 export type _RHYTHM_LINEAGE_CONCEPT = never;

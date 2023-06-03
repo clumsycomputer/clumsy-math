@@ -7,6 +7,16 @@ import {
 
 /**
  * great for defining a set of related rhythms at a desired altitude / scope
+ *
+ * @example
+ * ```typescript
+ * const groupA = rhythmGroup([[5], [3]])
+ * // groupA === [
+ * //   [5, [3, 0]],
+ * //   [5, [3, 1]],
+ * //   [5, [3, 2]]
+ * // ]
+ * ```
  */
 export function rhythmGroup(
   someRhythmGroupStructure: RhythmGroupStructure
@@ -49,6 +59,12 @@ export function rhythmGroup(
 
 /**
  * great for logging and working with datasets of rhythm groups
+ *
+ * @example
+ * ```typescript
+ * const groupIdA = rhythmGroupId([[5, [3, 1]], [2]])
+ * // groupIdA === "group___5__3_1___2"
+ * ```
  */
 export function rhythmGroupId(
   someRhythmGroupStructure: RhythmGroupStructure

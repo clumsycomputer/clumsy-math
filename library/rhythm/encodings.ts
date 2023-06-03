@@ -8,52 +8,52 @@
 export type RhythmSlot = boolean;
 
 /**
- * an integer in the range of [1,∞)
+ * an integer in the range of [1, ∞)
  */
 export type RhythmResolution = number;
 
 /**
- * an integer in the range of [0,rhythmResolution)
+ * an integer in the range of [0, rhythmResolution)
  */
 export type RhythmPoint = number;
 
 /**
- * an integer in the range of [0,rhythmResolution]
+ * an integer in the range of [0, rhythmResolution]
  */
 export type RhythmDensity = number;
 
 /**
- * an integer in the range of (-rhythmResolution,rhythmResolution)
+ * an integer in the range of (-rhythmResolution, rhythmResolution)
  */
 export type RhythmPhase = number;
 
 /**
- * an integer in the range of [0,rhythmDensity)
+ * an integer in the range of [0, rhythmDensity)
  */
 export type RhythmOrientation = number;
 
 /**
- * a real number in the range of [0,1)
+ * a real number in the range of [0, 1)
  */
 export type RelativeRhythmPoint = number;
 
 /**
- * an integer in the range of [1,rhythmResolution]
+ * an integer in the range of [1, rhythmResolution]
  */
 export type RhythmInterval = number;
 
 /**
- * an integer in the range of [0,∞)
+ * an integer in the range of [0, ∞)
  */
 export type RhythmSlotWeight = number;
 
 /**
- * an integer in the range of [0,∞)
+ * an integer in the range of [0, ∞)
  */
 export type RhythmPointWeight = number;
 
 /**
- * an integer in the range of [0,∞)
+ * an integer in the range of [0, ∞)
  */
 export type RhythmWeight = number;
 

@@ -15,6 +15,15 @@ import { phasedRhythm } from "./rhythmTransforms";
 
 /**
  * great for working with unlayered euclid rhythms
+ *
+ * @example
+ * ```typescript
+ * const rhythmA = euclidRhythm(5, 3, 1, 0)
+ * // rhythmA === {
+ * //   resolution: 5,
+ * //   points: [0, 2, 4]
+ * // }
+ * ```
  */
 export function euclidRhythm(
   resolution: RhythmResolution,
@@ -31,6 +40,15 @@ export function euclidRhythm(
 
 /**
  * great for working with euclid rhythms where orientation and phase are not needed
+ *
+ * @example
+ * ```typescript
+ * const rhythmA = basicEuclidRhythm(5, 3)
+ * // rhythmA === {
+ * //   resolution: 5,
+ * //   points: [0, 1, 3]
+ * // }
+ * ```
  */
 export function basicEuclidRhythm(
   resolution: RhythmResolution,
@@ -51,6 +69,15 @@ export function basicEuclidRhythm(
 
 /**
  * great for working with simplified euclid rhythms
+ *
+ * @example
+ * ```typescript
+ * const rhythmA = coreEuclidRhythm(8, 4)
+ * // rhythmA === {
+ * //   resolution: 2,
+ * //   points: [0]
+ * // }
+ * ```
  */
 export function coreEuclidRhythm(
   resolution: RhythmResolution,
@@ -71,6 +98,12 @@ export function coreEuclidRhythm(
 
 /**
  * most important rhythm function, but rarely invoked by itself
+ *
+ * @example
+ * ```typescript
+ * const rhythmMapA = coreEuclidMap(5, 3)
+ * // rhythmMapA === [true, true, false, true, false]
+ * ```
  */
 export function coreEuclidMap(
   resolution: RhythmResolution,
