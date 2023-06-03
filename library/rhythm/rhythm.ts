@@ -55,8 +55,8 @@ export function rhythm(
  *
  * @example
  * ```typescript
- * const rhythmIdA = rhythmId([5, [3, 1, 0]])
- * // const rhythmIdA === "phased__5__3_1_0"
+ * const idA = rhythmId([5, [3, 1, 0]])
+ * // const idA === "phased__5__3_1_0"
  * ```
  */
 export function rhythmId(
@@ -83,8 +83,8 @@ export function rhythmId(
  *
  * @example
  * ```typescript
- * const rhythmComponentsA = rhythmComponents([5, [3, 1, 0], [2, 0, 0]])
- * // const rhythmComponentsA === [
+ * const componentsA = rhythmComponents([5, [3, 1, 0], [2, 0, 0]])
+ * // const componentsA === [
  * //   [5, [3, 1, 0]], // baseRhythmStructure
  * //   [5, [3, 1, 0], [2, 0, 0]]
  * // ]
@@ -110,8 +110,8 @@ export function componentRhythms<
  *
  * @example
  * ```typescript
- * const rhythmLineageA = rhythmLineage([5, [3, 1], [2, 0]])
- * // rhythmLineageA === [
+ * const lineageA = rhythmLineage([5, [3, 1], [2, 0]])
+ * // lineageA === [
  * //   [[5], [3, 2]], // high-altitude or zoomed-out
  * //   [[5, [3, 1]], [2]] // low-altitude or zoomed-in
  * // ]

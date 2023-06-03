@@ -11,6 +11,18 @@ import {
 
 /**
  * great for phasing a rhythm after it's been created
+ *
+ * @example
+ * ```typescript
+ * const  rhythmB = phasedRhythm(
+ *   rhythm([5, [3, 1]]),
+ *   1
+ * )
+ * // rhythmB === {
+ * //   resolution: 5,
+ * //   points: [1, 3, 4]
+ * // }
+ * ```
  */
 export function phasedRhythm(
   someRhythm: Rhythm,
@@ -39,6 +51,18 @@ export function phasedRhythm(
 
 /**
  * great for reorienting an aligned rhythm after it's been created
+ *
+ * @example
+ * ```typescript
+ * const rhythmB = orientatedRhythm(
+ *   rhythm(5, [3, 1]),
+ *   1
+ * )
+ * // rhythmB === {
+ * //   resolution: 5,
+ * //   points: [0, 2, 3]
+ * // }
+ * ```
  */
 export function orientatedRhythm(
   someRhythm: Rhythm,
@@ -53,6 +77,14 @@ export function orientatedRhythm(
 
 /**
  * great for normalizing rhythms across different resolutions
+ *
+ * @example
+ * ```typescript
+ * const relativePointsA = relativeRhythmPoints(
+ *   rhythm([5, [3, 1]])
+ * )
+ * // relativePointsA === [0, 0.4, 0.8]
+ * ```
  */
 export function relativeRhythmPoints(
   someRhythm: Rhythm
@@ -64,6 +96,14 @@ export function relativeRhythmPoints(
 
 /**
  * great for making calculations between rhythm points
+ *
+ * @example
+ * ```typescript
+ * const intervalsA = rhythmIntervals(
+ *   rhythm([5, [3, 1]])
+ * )
+ * // intervalsA === [2, 2, 1]
+ * ```
  */
 export function rhythmIntervals(someRhythm: Rhythm): Array<RhythmInterval> {
   return someRhythm.points.map((currentPoint, pointIndex) => {
@@ -77,6 +117,14 @@ export function rhythmIntervals(someRhythm: Rhythm): Array<RhythmInterval> {
 
 /**
  * great for logging and visualizing short rhythms
+ *
+ * @example
+ * ```typescript
+ * const stringA = rhythmString(
+ *   rhythm([5, [3, 1]])
+ * )
+ * // stringA === "10101"
+ * ```
  */
 export function rhythmString(someRhythm: Rhythm): RhythmString {
   const rhythmDigitArray = new Array(someRhythm.resolution).fill(0);
