@@ -1,4 +1,6 @@
 // rhythm attributes
+//
+//
 
 /**
  * the building block of rhythm
@@ -56,6 +58,8 @@ export type _RHYTHM_POINT_WEIGHT = never;
 export type _RHYTHM_WEIGHT = never;
 
 // rhythm types
+//
+//
 
 /**
  * a discrete sequence / cycle of binary values (slots)
@@ -98,6 +102,8 @@ export type _PHASED_RECURSIVE_EUCLID_RHYTHM_CONCEPT = never;
 export type _COMPONENT_RHYTHM_CONCEPT = never;
 
 // rhythm group
+//
+//
 
 /**
  * a set of recursive euclidean rhythms that share a static base structure and a dynamic member structure where the density structure is the same but orientations are different
