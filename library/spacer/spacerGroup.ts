@@ -1,16 +1,16 @@
 import {
-  AlignedEuclidRhythmLayer,
-  AlignedRecursiveEuclidRhythmStructure,
-  RhythmGroupBaseStructure,
-  RhythmGroupStructure,
+  AlignedEuclidSpacerLayer,
+  AlignedRecursiveEuclidSpacerStructure,
+  SpacerGroupBaseStructure,
+  SpacerGroupStructure,
 } from "./encodings";
 
 /**
- * great for defining a set of related rhythms at a desired altitude / scope
+ * great for defining a set of related spacers at a desired altitude / scope
  *
  * @example
  * ```typescript
- * const groupA = rhythmGroup([[5], [3]])
+ * const groupA = spacerGroup([[5], [3]])
  * // groupA === [
  * //   [5, [3, 0]],
  * //   [5, [3, 1]],
@@ -18,25 +18,25 @@ import {
  * // ]
  * ```
  */
-export function rhythmGroup(
-  someRhythmGroupStructure: RhythmGroupStructure
-): Array<AlignedRecursiveEuclidRhythmStructure> {
-  const [baseStructure, memberStructure] = someRhythmGroupStructure;
+export function spacerGroup(
+  someSpacerGroupStructure: SpacerGroupStructure
+): Array<AlignedRecursiveEuclidSpacerStructure> {
+  const [baseStructure, memberStructure] = someSpacerGroupStructure;
   const [groupResolution, ...groupBaseLayers] = baseStructure;
-  const rhythmGroupResult: Array<AlignedRecursiveEuclidRhythmStructure> = [];
+  const spacerGroupResult: Array<AlignedRecursiveEuclidSpacerStructure> = [];
   const iterationStack = memberStructure.map<
     [orientationIndex: number, layerDensity: number]
   >((currentLayerDensity) => [0, currentLayerDensity]);
   while (iterationStack.length > 0) {
     if (iterationStack.length === memberStructure.length) {
-      const clonedBaseStructure: RhythmGroupBaseStructure = [
+      const clonedBaseStructure: SpacerGroupBaseStructure = [
         groupResolution,
-        ...groupBaseLayers.map<AlignedEuclidRhythmLayer>((currentBaseLayer) => [
+        ...groupBaseLayers.map<AlignedEuclidSpacerLayer>((currentBaseLayer) => [
           ...currentBaseLayer,
         ]),
       ];
-      rhythmGroupResult.push(
-        iterationStack.reduce<AlignedRecursiveEuclidRhythmStructure>(
+      spacerGroupResult.push(
+        iterationStack.reduce<AlignedRecursiveEuclidSpacerStructure>(
           (resultMember, someIterationLayer) => {
             resultMember.push([someIterationLayer[1], someIterationLayer[0]]);
             return resultMember;
@@ -54,22 +54,22 @@ export function rhythmGroup(
       iterationStack.push([0, nextLayerDensity]);
     }
   }
-  return rhythmGroupResult;
+  return spacerGroupResult;
 }
 
 /**
- * great for logging and working with datasets of rhythm groups
+ * great for logging and working with datasets of spacer groups
  *
  * @example
  * ```typescript
- * const groupIdA = rhythmGroupId([[5, [3, 1]], [2]])
+ * const groupIdA = spacerGroupId([[5, [3, 1]], [2]])
  * // groupIdA === "group___5__3_1___2"
  * ```
  */
-export function rhythmGroupId(
-  someRhythmGroupStructure: RhythmGroupStructure
+export function spacerGroupId(
+  someSpacerGroupStructure: SpacerGroupStructure
 ): string {
-  const [baseStructure, memberStructure] = someRhythmGroupStructure;
+  const [baseStructure, memberStructure] = someSpacerGroupStructure;
   const [groupResolution, ...groupBaseLayers] = baseStructure;
   const baseIdPart = groupBaseLayers.reduce<string>(
     (baseIdResult, currentBaseLayer) => {
