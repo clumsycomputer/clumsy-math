@@ -14,6 +14,15 @@ import { euclidRhythm } from "./euclidRhythm";
 
 /**
  * primary function for working with rhythm
+ *
+ * @example
+ * ```typescript
+ * const rhythmA = rhythm([5, [3, 1, 0]])
+ * // const rhythmA === {
+ * //   resolution: 5,
+ * //   points: [0, 2, 4]
+ * // }
+ * ```
  */
 export function rhythm(
   someRhythmStructure: RecursiveEuclidRhythmStructure
@@ -43,6 +52,12 @@ export function rhythm(
 
 /**
  * great for logging and working with datasets of rhythm structures
+ *
+ * @example
+ * ```typescript
+ * const rhythmIdA = rhythmId([5, [3, 1, 0]])
+ * // const rhythmIdA === "phased__5__3_1_0"
+ * ```
  */
 export function rhythmId(
   someRhythmStructure: RecursiveEuclidRhythmStructure
@@ -65,6 +80,15 @@ export function rhythmId(
 
 /**
  * great for destructuring a rhythm structure into its constituent rhythms
+ *
+ * @example
+ * ```typescript
+ * const rhythmComponentsA = rhythmComponents([5, [3, 1, 0], [2, 0, 0]])
+ * // const rhythmComponentsA === [
+ * //   [5, [3, 1, 0]], // baseRhythmStructure
+ * //   [5, [3, 1, 0], [2, 0, 0]]
+ * // ]
+ * ```
  */
 export function componentRhythms<
   SomeRhythmStructure extends RecursiveEuclidRhythmStructure
@@ -83,6 +107,15 @@ export function componentRhythms<
 
 /**
  * great for getting related rhythms at a given altitude / scope / lineageIndex
+ *
+ * @example
+ * ```typescript
+ * const rhythmLineageA = rhythmLineage([5, [3, 1], [2, 0]])
+ * // rhythmLineageA === [
+ * //   [[5], [3, 2]], // high-altitude or zoomed-out
+ * //   [[5, [3, 1]], [2]] // low-altitude or zoomed-in
+ * // ]
+ * ```
  */
 export function rhythmLineage(
   someAlignedRhythmStructure: AlignedRecursiveEuclidRhythmStructure
