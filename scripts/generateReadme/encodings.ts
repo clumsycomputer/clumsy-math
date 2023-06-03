@@ -1,4 +1,4 @@
-export interface DocumentationMap {
+export interface DocumentationItems {
   [itemId: string]: DocumentationItem;
 }
 
@@ -33,8 +33,8 @@ export interface FunctionDocumentationItem
 
 interface DocumentationItemBase<ItemType extends string> {
   itemId: string;
-  itemType: ItemType;
   itemDomain: string;
+  itemCategory: ItemType;
   itemName: string;
   itemSummary: string;
   //   itemExamples: Array<unknown>;

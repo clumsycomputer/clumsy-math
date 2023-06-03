@@ -72,7 +72,7 @@ export type Spacer = [resolution: SpacerResolution, points: Array<SpacerPoint>];
 export type SpacerString = string;
 
 /**
- * {@link _SPACER_CONCEPT|spacer} as Array<boolean>
+ * {@link _SPACER_CONCEPT|spacer} as Array\<boolean\>
  */
 export type SpacerMap = Array<SpacerSlot>;
 

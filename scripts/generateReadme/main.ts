@@ -1,6 +1,8 @@
 import { ApiModel } from "@microsoft/api-extractor-model";
-import { fetchDocumentationMap } from "./fetchDocumentationMap";
+import { fetchDocumentationItems } from "./fetchDocumentationItems";
 import { generateIntermediateFiles } from "./generateIntermediateFiles";
+import { getReadmeMarkdown } from "./getReadmeMarkdown";
+import { writeFileSync } from "fs";
 
 export interface GenerateReadmeApi {
   temporaryOutputDirectoryPath: string;
@@ -15,19 +17,18 @@ function generateReadme(api: GenerateReadmeApi) {
   generateIntermediateFiles({
     temporaryOutputDirectoryPath,
   });
-  const { documentationMap } = fetchDocumentationMap({
+  const { documentationItems } = fetchDocumentationItems({
     packageItem: new ApiModel().loadPackage(
       `${temporaryOutputDirectoryPath}/clumsy-math.api.json`
     ),
   });
-  console.log(documentationMap);
-  //   FileSystem.writeFileSync(
-  //     "./README.md",
-  //     getReadmeMarkdown({
-  //       documentationMap,
-  //     }),
-  //     {
-  //       encoding: "utf-8",
-  //     }
-  //   );
+  writeFileSync(
+    "./README.md",
+    getReadmeMarkdown({
+      documentationItems,
+    }),
+    {
+      encoding: "utf-8",
+    }
+  );
 }
