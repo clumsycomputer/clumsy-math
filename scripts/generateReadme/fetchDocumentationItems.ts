@@ -10,6 +10,7 @@ import { throwInvalidPathError } from "../helpers/throwInvalidPath";
 import { DocumentationItem, DocumentationItems } from "./encodings";
 import {
   DocEscapedText,
+  DocFencedCode,
   DocLinkTag,
   DocParagraph,
   DocPlainText,
@@ -72,6 +73,9 @@ function getDocumentationItem(api: GetDocumentationItemApi): DocumentationItem {
       itemSummary: getItemSummary({
         someApiItem,
       }),
+      itemExamples: getItemExamples({
+        someApiItem,
+      }),
     };
   } else if (someApiItem instanceof ApiInterface) {
     return {
@@ -81,6 +85,9 @@ function getDocumentationItem(api: GetDocumentationItemApi): DocumentationItem {
       itemDomain,
       itemName: itemId,
       itemSummary: getItemSummary({
+        someApiItem,
+      }),
+      itemExamples: getItemExamples({
         someApiItem,
       }),
     };
@@ -100,6 +107,9 @@ function getDocumentationItem(api: GetDocumentationItemApi): DocumentationItem {
       itemSummary: getItemSummary({
         someApiItem,
       }),
+      itemExamples: getItemExamples({
+        someApiItem,
+      }),
     };
   } else if (someApiItem instanceof ApiTypeAlias) {
     return {
@@ -109,6 +119,9 @@ function getDocumentationItem(api: GetDocumentationItemApi): DocumentationItem {
       itemDomain,
       itemName: itemId,
       itemSummary: getItemSummary({
+        someApiItem,
+      }),
+      itemExamples: getItemExamples({
         someApiItem,
       }),
     };
@@ -151,4 +164,27 @@ function getItemSummary(api: GetItemSummaryApi): string {
         }, "")
         .trim()
     : throwInvalidPathError("getItemSummary");
+}
+
+interface GetItemExamplesApi
+  extends Pick<GetDocumentationItemApi, "someApiItem"> {}
+
+function getItemExamples(api: GetItemExamplesApi) {
+  const { someApiItem } = api;
+  return (
+    someApiItem.tsdocComment?.customBlocks
+      .filter(
+        (someCustomBlock) => someCustomBlock.blockTag.tagName === "@example"
+      )
+      .map((someExampleBlock) => {
+        const exampleSectionNode = someExampleBlock.getChildNodes()[1];
+        const exampleCodeNode = exampleSectionNode?.getChildNodes()[1];
+        return exampleCodeNode instanceof DocFencedCode
+          ? {
+              exampleLanguage: exampleCodeNode.language,
+              exampleCode: exampleCodeNode.code,
+            }
+          : throwInvalidPathError("getItemExamples.someExampleBlock");
+      }) ?? throwInvalidPathError("getItemExamples")
+  );
 }

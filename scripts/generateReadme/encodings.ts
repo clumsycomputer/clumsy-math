@@ -37,6 +37,9 @@ interface DocumentationItemBase<ItemType extends string> {
   itemCategory: ItemType;
   itemName: string;
   itemSummary: string;
-  //   itemExamples: Array<unknown>;
+  itemExamples: Array<{
+    exampleLanguage: string;
+    exampleCode: string;
+  }>;
   //   itemConcepts: Array<unknown>;
 }

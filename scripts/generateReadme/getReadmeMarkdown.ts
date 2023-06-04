@@ -181,6 +181,9 @@ function getItemMarkdown(api: GetItemMarkdownApi) {
     documentationItems,
     linkItems,
   });
+  resultMarkdown += getItemExamplesMarkdown({
+    someCategoryItem,
+  });
   return resultMarkdown;
 }
 
@@ -213,6 +216,20 @@ function getItemSummaryMarkdown(api: GetItemSummaryMarkdownApi) {
     );
   }
   return resultMarkdown;
+}
+
+interface GetItemExamplesMarkdownApi
+  extends Pick<GetItemMarkdownApi, "someCategoryItem"> {}
+
+function getItemExamplesMarkdown(api: GetItemExamplesMarkdownApi) {
+  const { someCategoryItem } = api;
+  return someCategoryItem.itemExamples.reduce(
+    (resultString, someItemExample) => {
+      resultString += `\n\`\`\`${someItemExample.exampleLanguage}\n${someItemExample.exampleCode}\`\`\`\n`;
+      return resultString;
+    },
+    ""
+  );
 }
 
 interface GetDomainCategoryTitleDataApi {
