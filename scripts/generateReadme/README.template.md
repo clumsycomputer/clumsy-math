@@ -1,6 +1,6 @@
 # clumsy-math
 
-a little library of helpful math utensils 🙂
+a math library for the clumsy and curious 🙂
 
 ## installation
 

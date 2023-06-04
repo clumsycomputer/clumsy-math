@@ -30,18 +30,7 @@ export function generateIntermediateFiles(api: GenerateIntermediateFilesApi) {
       tsdocConfigFile: TSDocConfigFile.loadFromObject({
         $schema:
           "https://developer.microsoft.com/json-schemas/tsdoc/v0/tsdoc.schema.json",
-        tagDefinitions: [
-          {
-            tagName: "@attributes",
-            syntaxKind: "block",
-            allowMultiple: false,
-          },
-          {
-            tagName: "@relations",
-            syntaxKind: "block",
-            allowMultiple: true,
-          },
-        ],
+        tagDefinitions: [],
       }),
     })
   );

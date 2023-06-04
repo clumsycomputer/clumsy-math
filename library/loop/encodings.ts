@@ -1,20 +1,32 @@
 export type LoopStructure = Array<LoopLayer>;
 
 export type LoopLayer = [
-  relativeSubRadius: number,
-  relativeSubDepth: number,
-  subPhase: number,
-  subOrientation: number,
-  loopRotation: number
+  relativeSubLoopRadius: RelativeSubLoopRadius,
+  relativeSubLoopDepth: RelativeSubLoopDepth,
+  subPhase: SubLoopPhase,
+  subOrientation: SubLoopOrientation,
+  loopRotation: LoopRotation
 ];
 
 export type LoopPoint = [
-  x: number,
-  y: number,
-  baseX: number,
-  baseY: number,
-  terminalX: number,
-  terminalY: number,
-  originX: number,
-  originY: number
+  x: LoopPointComponent,
+  y: LoopPointComponent,
+  baseX: LoopPointComponent,
+  baseY: LoopPointComponent,
+  terminalX: LoopPointComponent,
+  terminalY: LoopPointComponent,
+  originX: LoopPointComponent,
+  originY: LoopPointComponent
 ];
+
+export type RelativeSubLoopRadius = number;
+
+export type RelativeSubLoopDepth = number;
+
+export type SubLoopPhase = number;
+
+export type SubLoopOrientation = number;
+
+export type LoopRotation = number;
+
+export type LoopPointComponent = number;
