@@ -143,11 +143,12 @@ function getItemSummary(api: GetItemSummaryApi): string {
           } else if (someSummaryNode instanceof DocSoftBreak) {
             resultSummary += "\n";
           } else if (someSummaryNode instanceof DocEscapedText) {
-            resultSummary += someSummaryNode.decodedText;
+            resultSummary += someSummaryNode.encodedText;
           } else {
             throwInvalidPathError("getItemSummary.itemSummary");
           }
           return resultSummary;
         }, "")
+        .trim()
     : throwInvalidPathError("getItemSummary");
 }

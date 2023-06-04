@@ -108,7 +108,7 @@ export type _SPACER_INTERVAL_CONCEPT = never;
  * const slotWeightZero = 3; // groupSlotWeights[0]
  * ```
  */
-export type _SPACER_SLOT_WEIGHT = never;
+export type _SPACER_SLOT_WEIGHT_CONCEPT = never;
 
 /**
  * a point's corresponding slot weight
@@ -123,7 +123,7 @@ export type _SPACER_SLOT_WEIGHT = never;
  * const spacerPointWeightsA = [3, 1, 2]
  * ```
  */
-export type _SPACER_POINT_WEIGHT = never;
+export type _SPACER_POINT_WEIGHT_CONCEPT = never;
 
 /**
  * the sum of a spacer's point weight
@@ -139,7 +139,7 @@ export type _SPACER_POINT_WEIGHT = never;
  * const spacerWeightA = 6 // 3 + 1 + 2
  * ```
  */
-export type _SPACER_WEIGHT = never;
+export type _SPACER_WEIGHT_CONCEPT = never;
 
 // spacer types
 //
