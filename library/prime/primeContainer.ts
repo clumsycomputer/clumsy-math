@@ -2,6 +2,9 @@ import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
 import { PrimeContainer, PrimeContainerIndex } from "./encoding";
 import { isPrimeContainer } from "./primeChecks";
 
+/**
+ * great for organizing primes and who knows what else
+ */
 export function primeContainer(
   containerIndex: PrimeContainerIndex
 ): PrimeContainer {
@@ -11,6 +14,9 @@ export function primeContainer(
   );
 }
 
+/**
+ * great for getting n prime containers
+ */
 export function primeContainerNumbering(
   maxContainerIndex: PrimeContainerIndex
 ): Array<PrimeContainer> {

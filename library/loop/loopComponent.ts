@@ -1,14 +1,23 @@
-import { LoopPoint } from "./encodings";
+import { LoopCosine, LoopPendulum, LoopPoint, LoopSine } from "./encodings";
 
-export function loopCosine(someLoopPoint: LoopPoint) {
+/**
+ * great for generating cosine waves of a loop
+ */
+export function loopCosine(someLoopPoint: LoopPoint): LoopCosine {
   return someLoopPoint[0] - someLoopPoint[6];
 }
 
-export function loopSine(someLoopPoint: LoopPoint) {
+/**
+ * great for generating sine waves of a loop
+ */
+export function loopSine(someLoopPoint: LoopPoint): LoopSine {
   return someLoopPoint[1] - someLoopPoint[7];
 }
 
-export function loopPendulum(someLoopPoint: LoopPoint) {
+/**
+ * great for generating pendulum waves of a loop
+ */
+export function loopPendulum(someLoopPoint: LoopPoint): LoopPendulum {
   const outputLoopAngle = Math.atan2(
     someLoopPoint[1] - someLoopPoint[7],
     someLoopPoint[0] - someLoopPoint[6]

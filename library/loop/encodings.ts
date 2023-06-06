@@ -30,3 +30,9 @@ export type SubLoopOrientation = number;
 export type LoopRotation = number;
 
 export type LoopPointComponent = number;
+
+export type LoopSine = number;
+
+export type LoopCosine = number;
+
+export type LoopPendulum = number;
