@@ -10,7 +10,7 @@ export function primeNumbering(maxPrimeIndex: number): Array<number> {
   return primeNumberingIncluding(numberGreaterThanPrime(maxPrimeIndex));
 }
 
-function primeNumberingIncluding(maxNumber: number): Array<number> {
+export function primeNumberingIncluding(maxNumber: number): Array<number> {
   const nonPrimes = new Set<number>();
   const resultPrimes: Array<number> = [];
   for (let n = 2; n <= maxNumber; n++) {
