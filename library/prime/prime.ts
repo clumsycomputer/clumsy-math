@@ -1,5 +1,5 @@
 import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
-import { Prime, PrimeIndex } from "./encoding";
+import { Natural, Prime, PrimeIndex } from "./encoding";
 
 /**
  * great for getting prime by index
@@ -20,9 +20,9 @@ export function primeNumbering(maxPrimeIndex: PrimeIndex): Array<Prime> {
 /**
  * great for getting all primes less than some number
  */
-export function primeNumberingInclusive(maxNumber: number): Array<Prime> {
-  const nonPrimes = new Set<number>();
-  const resultPrimes: Array<number> = [];
+export function primeNumberingInclusive(maxNumber: Natural): Array<Prime> {
+  const nonPrimes = new Set<Prime>();
+  const resultPrimes: Array<Prime> = [];
   for (let n = 2; n <= maxNumber; n++) {
     if (!nonPrimes.has(n)) {
       resultPrimes.push(n);
@@ -39,7 +39,7 @@ export function primeNumberingInclusive(maxNumber: number): Array<Prime> {
 /**
  * helpful for determining the approximate size of prime at prime index
  */
-function numberGreaterThanPrime(primeIndex: PrimeIndex): number {
+function numberGreaterThanPrime(primeIndex: PrimeIndex): Natural {
   if (primeIndex === 0) {
     return 2 + 1;
   } else if (primeIndex === 1) {
