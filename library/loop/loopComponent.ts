@@ -9,14 +9,18 @@ export function loopSine(someLoopPoint: LoopPoint) {
 }
 
 export function loopPendulum(someLoopPoint: LoopPoint) {
-  return (
-    Math.atan2(
-      someLoopPoint[1] - someLoopPoint[7],
-      someLoopPoint[0] - someLoopPoint[6]
-    ) -
-    Math.atan2(
-      someLoopPoint[3] - someLoopPoint[7],
-      someLoopPoint[2] - someLoopPoint[6]
-    )
+  const outputLoopAngle = Math.atan2(
+    someLoopPoint[1] - someLoopPoint[7],
+    someLoopPoint[0] - someLoopPoint[6]
   );
+  const outputBaseAngle = Math.atan2(
+    someLoopPoint[3] - someLoopPoint[7],
+    someLoopPoint[2] - someLoopPoint[6]
+  );
+  const rawLoopPendulum = outputLoopAngle - outputBaseAngle;
+  return rawLoopPendulum > Math.PI
+    ? outputLoopAngle - (2 * Math.PI + outputBaseAngle)
+    : rawLoopPendulum < -Math.PI
+    ? 2 * Math.PI + outputLoopAngle - outputBaseAngle
+    : rawLoopPendulum;
 }
