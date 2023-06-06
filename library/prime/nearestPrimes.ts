@@ -1,10 +1,10 @@
 import { Prime } from "./encoding";
-import { prime, primeNumberingIncluding } from "./prime";
+import { prime, primeNumberingInclusive } from "./prime";
 
 export function nearestPrimes(
   someNumber: number
-): [maybePrimeLessThanIncluding: Prime | null, primeMoreThanIncluding: Prime] {
-  const currentPrimeNumbering = primeNumberingIncluding(someNumber);
+): [maybePrimeLessThanInclusive: Prime | null, primeMoreThanInclusive: Prime] {
+  const currentPrimeNumbering = primeNumberingInclusive(someNumber);
   const maybePrimeLessThanIndex = currentPrimeNumbering.length - 1;
   const maybePrimeLessThanIncluding =
     currentPrimeNumbering[maybePrimeLessThanIndex] ?? null;
