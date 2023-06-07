@@ -4,6 +4,13 @@ import { isPrimeContainer } from "./primeChecks";
 
 /**
  * great for organizing primes and who knows what else
+ *
+ * @example
+ * ```typescript
+ * primeContainer(0) // 4
+ * primeContainer(1) // 6
+ * primeContainer(2) // 12
+ * ```
  */
 export function primeContainer(
   containerIndex: PrimeContainerIndex
@@ -16,6 +23,12 @@ export function primeContainer(
 
 /**
  * use for working with the first n prime containers
+ *
+ * @example
+ * ```typescript
+ * const sequenceA = primeContainerSequence(2)
+ * // sequenceA === [4, 6, 12]
+ * ```
  */
 export function primeContainerSequence(
   maxContainerIndex: PrimeContainerIndex

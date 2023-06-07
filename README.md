@@ -591,9 +591,19 @@ const weightA = spacerWeight(
 
 > a natural number greater than one whose factors are one and itself
 
+```typescript
+const prime = 5 // 5 * 1
+const notPrime = 4 // 2 * 2, 4 * 1
+```
+
 ###### prime container
 
 > a natural number where both it's immediate neighbors are prime
+
+```typescript
+const containerA = 6 // 5 & 7
+const containerB = 12 // 11 & 13
+```
 
 ## prime _(functions)_
 
@@ -601,29 +611,66 @@ const weightA = spacerWeight(
 
 > use for checking if some number is prime
 
+```typescript
+isPrime(4) // false
+isPrime(5) // true
+```
+
 ###### isPrimeContainer
 
 > use for checking if some number is a prime container
+
+```typescript
+isPrimeContainer(4) // true
+isPrimeContainer(5) // false
+```
 
 ###### prime
 
 > use for getting prime by index
 
+```typescript
+const primeA = prime(0) // 2
+const primeB = prime(1) // 3
+const primeC = prime(2) // 5
+```
+
 ###### primeContainer
 
 > great for organizing primes and who knows what else
+
+```typescript
+primeContainer(0) // 4
+primeContainer(1) // 6
+primeContainer(2) // 12
+```
 
 ###### primeContainerSequence
 
 > use for working with the first n prime containers
 
+```typescript
+const sequenceA = primeContainerSequence(2)
+// sequenceA === [4, 6, 12]
+```
+
 ###### primeSequence
 
 > use for working with the first n primes
 
+```typescript
+const sequenceA = primeSeqeunce(2)
+// sequenceA === [2, 3, 5]
+```
+
 ###### primeSequenceInclusive
 
 > use for getting all primes less than some number
+
+```typescript
+const sequenceA = primeSequenceInclusive(6)
+// sequenceA === [2, 3, 5]
+```
 
 ## prime _(encodings)_
 

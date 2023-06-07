@@ -3,6 +3,13 @@ import { Natural, Prime, PrimeIndex } from "./encoding";
 
 /**
  * use for getting prime by index
+ *
+ * @example
+ * ```typescript
+ * const primeA = prime(0) // 2
+ * const primeB = prime(1) // 3
+ * const primeC = prime(2) // 5
+ * ```
  */
 export function prime(primeIndex: PrimeIndex): Prime {
   return (
@@ -12,6 +19,12 @@ export function prime(primeIndex: PrimeIndex): Prime {
 
 /**
  * use for working with the first n primes
+ *
+ * @example
+ * ```typescript
+ * const sequenceA = primeSeqeunce(2)
+ * // sequenceA === [2, 3, 5]
+ * ```
  */
 export function primeSequence(maxPrimeIndex: PrimeIndex): Array<Prime> {
   return primeSequenceInclusive(numberGreaterThanPrime(maxPrimeIndex));
@@ -19,6 +32,12 @@ export function primeSequence(maxPrimeIndex: PrimeIndex): Array<Prime> {
 
 /**
  * use for getting all primes less than some number
+ *
+ * @example
+ * ```typescript
+ * const sequenceA = primeSequenceInclusive(6)
+ * // sequenceA === [2, 3, 5]
+ * ```
  */
 export function primeSequenceInclusive(maxNumber: Natural): Array<Prime> {
   const nonPrimes = new Set<Prime>();
@@ -37,7 +56,13 @@ export function primeSequenceInclusive(maxNumber: Natural): Array<Prime> {
 }
 
 /**
- * helpful for determining the approximate size of prime at a prime index
+ * helpful for quickly determing the approximate size of a prime
+ *
+ * @example
+ * ```typescript
+ * const numberA = numberGreaterThanPrime(2)
+ * // numberA === 6
+ * ```
  */
 function numberGreaterThanPrime(primeIndex: PrimeIndex): Natural {
   if (primeIndex === 0) {

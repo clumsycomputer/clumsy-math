@@ -3,6 +3,13 @@ import { prime, primeSequenceInclusive } from "./prime";
 
 /**
  * great for rounding some number to nearest prime
+ *
+ * @example
+ * ```typescript
+ * nearestPrimes(1) // [null, 2]
+ * nearestPrimes(3) // [3, 3]
+ * nearestPrimes(8) // [7, 11]
+ * ```
  */
 export function nearestPrimes(
   someNumber: Natural
