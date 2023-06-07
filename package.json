@@ -1,22 +1,37 @@
 {
   "name": "clumsy-math",
-  "version": "3.1.0-alpha.0",
-  "description": "a little library of helpful math utensils",
-  "main": "./package/index.js",
-  "types": "./package/types/index.js",
-  "license": "MIT",
+  "version": "4.0.0-alpha.1",
+  "description": "a math library for the clumsy and curious",
+  "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
     "url": "https://github.com/clumsycomputer/clumsy-math"
   },
-  "dependencies": {
-    "typescript": "^4.7.4"
-  },
-  "scripts": {
-    "buildPackage": "tsc"
-  },
+  "contributors": [
+    {
+      "name": "jared mathews",
+      "email": "clumsycomputer@gmail.com",
+      "url": "https://www.clumsycomputer.com"
+    }
+  ],
   "keywords": [
     "math",
-    "typescript"
-  ]
+    "javascript"
+  ],
+  "main": "./library/index.ts",
+  "scripts": {
+    "buildNpmPackage": "ts-node ./scripts/buildNpmPackage.ts",
+    "generateReadme": "ts-node ./scripts/generateReadme/main.ts"
+  },
+  "dependencies": {
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.35.0",
+    "@microsoft/api-extractor-model": "^7.27.0",
+    "@microsoft/tsdoc": "^0.14.2",
+    "@types/node": "^20.2.5",
+    "ts-node": "^10.9.1",
+    "tsup": "^6.7.0"
+  }
 }
