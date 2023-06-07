@@ -6,4 +6,4 @@ export type _PRIME_CONCEPT = never;
 /**
  * a natural number where both it's immediate neighbors are primes
  */
-export type _PRIME_CONTAINER = never;
+export type _PRIME_CONTAINER_CONCEPT = never;

@@ -2,7 +2,7 @@ import { throwInvalidPathError } from "../utilities/throwInvalidPathError";
 import { Natural, Prime, PrimeIndex } from "./encoding";
 
 /**
- * great for getting prime by index
+ * use for getting prime by index
  */
 export function prime(primeIndex: PrimeIndex): Prime {
   return (
@@ -11,14 +11,14 @@ export function prime(primeIndex: PrimeIndex): Prime {
 }
 
 /**
- * great for working with n primes
+ * use for working with the first n primes
  */
 export function primeNumbering(maxPrimeIndex: PrimeIndex): Array<Prime> {
   return primeNumberingInclusive(numberGreaterThanPrime(maxPrimeIndex));
 }
 
 /**
- * great for getting all primes less than some number
+ * use for getting all primes less than some number
  */
 export function primeNumberingInclusive(maxNumber: Natural): Array<Prime> {
   const nonPrimes = new Set<Prime>();
@@ -37,7 +37,7 @@ export function primeNumberingInclusive(maxNumber: Natural): Array<Prime> {
 }
 
 /**
- * helpful for determining the approximate size of prime at prime index
+ * helpful for determining the approximate size of prime at a prime index
  */
 function numberGreaterThanPrime(primeIndex: PrimeIndex): Natural {
   if (primeIndex === 0) {

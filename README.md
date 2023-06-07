@@ -16,6 +16,14 @@ yarn add clumsy-math
 
 - **[spacer _(functions)_](#spacer-functions)**
 
+- **[prime _(concepts)_](#prime-concepts)**
+
+- **[prime _(functions)_](#prime-functions)**
+
+- **[prime _(encodings)_](#prime-encodings)**
+
+- **[loop _(functions)_](#loop-functions)**
+
 ## spacer _(concepts)_
 
 ###### aligned recursive euclid spacer
@@ -576,4 +584,68 @@ const weightA = spacerWeight(
 )
 // const weightA === 7
 ```
+
+## prime _(concepts)_
+
+###### prime
+
+> a natural number greater than one whose factors are one and itself
+
+###### prime container
+
+> a natural number where both it's immediate neighbors are primes
+
+## prime _(functions)_
+
+###### isPrime
+
+> use for checking if some number is prime
+
+###### isPrimeContainer
+
+> use for checking if some number is a prime container
+
+###### prime
+
+> use for getting prime by index
+
+###### primeContainer
+
+> great for organizing primes and who knows what else
+
+###### primeContainerNumbering
+
+> use for working with the first n prime containers
+
+###### primeNumbering
+
+> use for working with the first n primes
+
+###### primeNumberingInclusive
+
+> use for getting all primes less than some number
+
+## prime _(encodings)_
+
+###### Prime
+
+> [prime](#prime) as number
+
+###### PrimeContainer
+
+> [prime container](#prime-container) as number
+
+## loop _(functions)_
+
+###### loopCosine
+
+> great for generating cosine waves of a loop
+
+###### loopPendulum
+
+> great for generating pendulum waves of a loop
+
+###### loopSine
+
+> great for generating sine waves of a loop
 

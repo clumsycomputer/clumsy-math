@@ -15,7 +15,7 @@ export function primeContainer(
 }
 
 /**
- * great for getting n prime containers
+ * use for working with the first n prime containers
  */
 export function primeContainerNumbering(
   maxContainerIndex: PrimeContainerIndex

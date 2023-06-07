@@ -2,7 +2,7 @@ import { Natural, Prime } from "./encoding";
 import { prime, primeNumberingInclusive } from "./prime";
 
 /**
- * great for rounding some number to a prime
+ * great for rounding some number to nearest prime
  */
 export function nearestPrimes(
   someNumber: Natural
