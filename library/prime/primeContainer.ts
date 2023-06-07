@@ -9,7 +9,7 @@ export function primeContainer(
   containerIndex: PrimeContainerIndex
 ): PrimeContainer {
   return (
-    primeContainerNumbering(containerIndex)[containerIndex] ??
+    primeContainerSequence(containerIndex)[containerIndex] ??
     throwInvalidPathError("primeContainer")
   );
 }
@@ -17,7 +17,7 @@ export function primeContainer(
 /**
  * use for working with the first n prime containers
  */
-export function primeContainerNumbering(
+export function primeContainerSequence(
   maxContainerIndex: PrimeContainerIndex
 ): Array<PrimeContainer> {
   const resultContainers: Array<PrimeContainer> = [];

@@ -6,21 +6,21 @@ import { Natural, Prime, PrimeIndex } from "./encoding";
  */
 export function prime(primeIndex: PrimeIndex): Prime {
   return (
-    primeNumbering(primeIndex)[primeIndex] ?? throwInvalidPathError("prime")
+    primeSequence(primeIndex)[primeIndex] ?? throwInvalidPathError("prime")
   );
 }
 
 /**
  * use for working with the first n primes
  */
-export function primeNumbering(maxPrimeIndex: PrimeIndex): Array<Prime> {
-  return primeNumberingInclusive(numberGreaterThanPrime(maxPrimeIndex));
+export function primeSequence(maxPrimeIndex: PrimeIndex): Array<Prime> {
+  return primeSequenceInclusive(numberGreaterThanPrime(maxPrimeIndex));
 }
 
 /**
  * use for getting all primes less than some number
  */
-export function primeNumberingInclusive(maxNumber: Natural): Array<Prime> {
+export function primeSequenceInclusive(maxNumber: Natural): Array<Prime> {
   const nonPrimes = new Set<Prime>();
   const resultPrimes: Array<Prime> = [];
   for (let n = 2; n <= maxNumber; n++) {

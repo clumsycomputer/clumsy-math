@@ -593,7 +593,7 @@ const weightA = spacerWeight(
 
 ###### prime container
 
-> a natural number where both it's immediate neighbors are primes
+> a natural number where both it's immediate neighbors are prime
 
 ## prime _(functions)_
 
@@ -613,15 +613,15 @@ const weightA = spacerWeight(
 
 > great for organizing primes and who knows what else
 
-###### primeContainerNumbering
+###### primeContainerSequence
 
 > use for working with the first n prime containers
 
-###### primeNumbering
+###### primeSequence
 
 > use for working with the first n primes
 
-###### primeNumberingInclusive
+###### primeSequenceInclusive
 
 > use for getting all primes less than some number
 

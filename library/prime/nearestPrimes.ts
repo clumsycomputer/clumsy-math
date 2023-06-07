@@ -1,5 +1,5 @@
 import { Natural, Prime } from "./encoding";
-import { prime, primeNumberingInclusive } from "./prime";
+import { prime, primeSequenceInclusive } from "./prime";
 
 /**
  * great for rounding some number to nearest prime
@@ -7,10 +7,10 @@ import { prime, primeNumberingInclusive } from "./prime";
 export function nearestPrimes(
   someNumber: Natural
 ): [maybePrimeLessThanInclusive: Prime | null, primeMoreThanInclusive: Prime] {
-  const currentPrimeNumbering = primeNumberingInclusive(someNumber);
-  const maybePrimeLessThanIndex = currentPrimeNumbering.length - 1;
+  const currentPrimeSequence = primeSequenceInclusive(someNumber);
+  const maybePrimeLessThanIndex = currentPrimeSequence.length - 1;
   const maybePrimeLessThanIncluding =
-    currentPrimeNumbering[maybePrimeLessThanIndex] ?? null;
+    currentPrimeSequence[maybePrimeLessThanIndex] ?? null;
   return [
     maybePrimeLessThanIncluding,
     someNumber === maybePrimeLessThanIncluding
