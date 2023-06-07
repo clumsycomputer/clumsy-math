@@ -9,14 +9,14 @@ export type LoopLayer = [
 ];
 
 export type LoopPoint = [
-  x: LoopPointComponent,
-  y: LoopPointComponent,
-  baseX: LoopPointComponent,
-  baseY: LoopPointComponent,
-  terminalX: LoopPointComponent,
-  terminalY: LoopPointComponent,
-  originX: LoopPointComponent,
-  originY: LoopPointComponent
+  x: number,
+  y: number,
+  baseX: number,
+  baseY: number,
+  terminalX: number,
+  terminalY: number,
+  originX: number,
+  originY: number
 ];
 
 export type RelativeSubLoopRadius = number;
@@ -28,8 +28,6 @@ export type SubLoopPhase = number;
 export type SubLoopOrientation = number;
 
 export type LoopRotation = number;
-
-export type LoopPointComponent = number;
 
 export type LoopSine = number;
 

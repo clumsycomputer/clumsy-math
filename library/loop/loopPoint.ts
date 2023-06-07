@@ -5,6 +5,9 @@ import {
 } from "./constants";
 import { LoopPoint, LoopStructure } from "./encodings";
 
+/**
+ * great for rendering geometry and synthesizing waves
+ */
 export function loopPoint(
   loopStructure: LoopStructure,
   inputAngle: number

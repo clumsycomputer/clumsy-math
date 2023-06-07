@@ -692,6 +692,10 @@ const sequenceA = primeSequenceInclusive(6)
 
 > great for generating pendulum waves of a loop
 
+###### loopPoint
+
+> great for rendering geometry and synthesizing waves
+
 ###### loopSine
 
 > great for generating sine waves of a loop
