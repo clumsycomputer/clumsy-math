@@ -1,3 +1,21 @@
+.graphicList {
+  display: flex;
+  flex-direction: row;
+}
+
+.itemContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em;
+}
+
+.itemLabel {
+  font-family: monospace;
+  font-size: 1.5em;
+  font-weight: 700;
+  padding-block: 0.25em;
+}
+
 .wavePath {
   stroke: yellow;
   stroke-width: 0.03;

@@ -1,12 +1,12 @@
 import { LoopStructure } from "clumsy-math";
-import { LoopGraphicDisplay } from "./LoopGraphicDisplay";
+import { LoopGraphicList } from "./LoopGraphicList";
 
 export interface LoopToyPageProps {}
 
 export function LoopToyPage() {
   return (
     <div>
-      <LoopGraphicDisplay
+      <LoopGraphicList
         loopToyState={{
           selectedGraphicName: "all",
           loopStructure: [[0.5, 0.5, 0, 0, 0]],

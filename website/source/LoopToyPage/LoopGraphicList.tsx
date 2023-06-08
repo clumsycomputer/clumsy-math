@@ -7,37 +7,40 @@ import {
   loopPoint,
   loopSine,
 } from "clumsy-math";
-import { Fragment, FunctionalComponent } from "preact";
+import { Fragment, FunctionalComponent, ComponentChildren } from "preact";
 import { useMemo } from "preact/hooks";
-import cssModule from "./LoopGraphicDisplay.module.scss";
+import cssModule from "./LoopGraphicList.module.scss";
 import { LoopToyState } from "./LoopToyPage";
 
-export interface LoopGraphicDisplayProps {
+export interface LoopGraphicListProps {
   loopToyState: LoopToyState;
 }
 
-export function LoopGraphicDisplay(props: LoopGraphicDisplayProps) {
+export function LoopGraphicList(props: LoopGraphicListProps) {
   const { loopToyState } = props;
   const { loopGeometry } = useLoopGeometry({
     loopToyState,
   });
   return (
-    <div>
-      <div>
-        <div>{loopToyState.selectedGraphicName}</div>
-      </div>
-      <ShapeLoopGraphic
-        loopToyState={loopToyState}
-        loopGeometry={loopGeometry}
-      />
-      <SineLoopGraphic loopGeometry={loopGeometry} />
-      <PendulumLoopGraphic loopGeometry={loopGeometry} />
+    <div className={cssModule.graphicList}>
+      <LoopGraphicItem itemLabel={"shape"}>
+        <ShapeLoopGraphic
+          loopToyState={loopToyState}
+          loopGeometry={loopGeometry}
+        />
+      </LoopGraphicItem>
+      <LoopGraphicItem itemLabel={"sine"}>
+        <SineLoopGraphic loopGeometry={loopGeometry} />
+      </LoopGraphicItem>
+      <LoopGraphicItem itemLabel={"pendulum"}>
+        <PendulumLoopGraphic loopGeometry={loopGeometry} />
+      </LoopGraphicItem>
     </div>
   );
 }
 
 interface UseLoopGraphicDataApi
-  extends Pick<LoopGraphicDisplayProps, "loopToyState"> {}
+  extends Pick<LoopGraphicListProps, "loopToyState"> {}
 
 function useLoopGeometry(api: UseLoopGraphicDataApi) {
   const { loopToyState } = api;
@@ -79,6 +82,21 @@ function useLoopGeometry(api: UseLoopGraphicDataApi) {
       },
     };
   }, [loopToyState]);
+}
+
+interface LoopGraphicItemProps {
+  itemLabel: string;
+  children: ComponentChildren;
+}
+
+function LoopGraphicItem(props: LoopGraphicItemProps) {
+  const { itemLabel, children } = props;
+  return (
+    <div className={cssModule.itemContainer}>
+      <div className={cssModule.itemLabel}>{itemLabel}</div>
+      {children}
+    </div>
+  );
 }
 
 interface PendulumLoopGraphicProps
@@ -130,7 +148,7 @@ function SineLoopGraphic(props: SineLoopGraphicProps) {
 }
 
 interface ShapeLoopGraphicProps
-  extends Pick<LoopGraphicDisplayProps, "loopToyState">,
+  extends Pick<LoopGraphicListProps, "loopToyState">,
     Pick<ReturnType<typeof useLoopGeometry>, "loopGeometry"> {}
 
 function ShapeLoopGraphic(props: ShapeLoopGraphicProps) {
