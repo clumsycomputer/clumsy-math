@@ -20,8 +20,10 @@
   ],
   "main": "./library/index.ts",
   "scripts": {
+    "generateReadme": "ts-node ./scripts/generateReadme/main.ts",
     "buildNpmPackage": "ts-node ./scripts/buildNpmPackage.ts",
-    "generateReadme": "ts-node ./scripts/generateReadme/main.ts"
+    "buildDevelopPackage": "yarn buildNpmPackage && mv -f ./clumsy-math ./node_modules",
+    "developWebsite": "NODE_OPTIONS=--openssl-legacy-provider preact watch --cwd ./website --src ./source --host 127.0.0.1 --esm false"
   },
   "dependencies": {
     "typescript": "^5.0.4"
@@ -31,6 +33,10 @@
     "@microsoft/api-extractor-model": "^7.27.0",
     "@microsoft/tsdoc": "^0.14.2",
     "@types/node": "^20.2.5",
+    "preact": "^10.15.1",
+    "preact-cli": "^3.4.5",
+    "sass": "^1.62.1",
+    "sass-loader": "10",
     "ts-node": "^10.9.1",
     "tsup": "^6.7.0"
   }
