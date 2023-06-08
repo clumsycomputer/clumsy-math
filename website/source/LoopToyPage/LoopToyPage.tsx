@@ -1,16 +1,20 @@
 import { LoopStructure } from "clumsy-math";
-import { LoopGraphicList } from "./LoopGraphicList";
+import { useState } from "preact/hooks";
+import { LoopGraphics } from "./LoopGraphics";
+import { LoopControls } from "./LoopControls";
 
 export interface LoopToyPageProps {}
 
 export function LoopToyPage() {
+  const [loopToyState, setLoopToyState] = useState<LoopToyState>({
+    loopStructure: [[0.5, 0.5, 0, 0, 0]],
+  });
   return (
     <div>
-      <LoopGraphicList
-        loopToyState={{
-          selectedGraphicName: "all",
-          loopStructure: [[0.5, 0.5, 0, 0, 0]],
-        }}
+      <LoopGraphics loopToyState={loopToyState} />
+      <LoopControls
+        loopToyState={loopToyState}
+        setLoopToyState={setLoopToyState}
       />
     </div>
   );
@@ -18,5 +22,4 @@ export function LoopToyPage() {
 
 export interface LoopToyState {
   loopStructure: LoopStructure;
-  selectedGraphicName: "all" | "shape" | "sine" | "pendulum";
 }

@@ -9,14 +9,14 @@ import {
 } from "clumsy-math";
 import { Fragment, FunctionalComponent, ComponentChildren } from "preact";
 import { useMemo } from "preact/hooks";
-import cssModule from "./LoopGraphicList.module.scss";
+import cssModule from "./LoopGraphics.module.scss";
 import { LoopToyState } from "./LoopToyPage";
 
-export interface LoopGraphicListProps {
+export interface LoopGraphicsProps {
   loopToyState: LoopToyState;
 }
 
-export function LoopGraphicList(props: LoopGraphicListProps) {
+export function LoopGraphics(props: LoopGraphicsProps) {
   const { loopToyState } = props;
   const { loopGeometry } = useLoopGeometry({
     loopToyState,
@@ -40,7 +40,7 @@ export function LoopGraphicList(props: LoopGraphicListProps) {
 }
 
 interface UseLoopGraphicDataApi
-  extends Pick<LoopGraphicListProps, "loopToyState"> {}
+  extends Pick<LoopGraphicsProps, "loopToyState"> {}
 
 function useLoopGeometry(api: UseLoopGraphicDataApi) {
   const { loopToyState } = api;
@@ -148,7 +148,7 @@ function SineLoopGraphic(props: SineLoopGraphicProps) {
 }
 
 interface ShapeLoopGraphicProps
-  extends Pick<LoopGraphicListProps, "loopToyState">,
+  extends Pick<LoopGraphicsProps, "loopToyState">,
     Pick<ReturnType<typeof useLoopGeometry>, "loopGeometry"> {}
 
 function ShapeLoopGraphic(props: ShapeLoopGraphicProps) {
