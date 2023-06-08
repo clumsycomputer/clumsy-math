@@ -625,14 +625,24 @@ isPrimeContainer(4) // true
 isPrimeContainer(5) // false
 ```
 
+###### nearestPrimes
+
+> great for rounding some number to nearest prime
+
+```typescript
+nearestPrimes(1) // [null, 2]
+nearestPrimes(3) // [3, 3]
+nearestPrimes(8) // [7, 11]
+```
+
 ###### prime
 
 > use for getting prime by index
 
 ```typescript
-const primeA = prime(0) // 2
-const primeB = prime(1) // 3
-const primeC = prime(2) // 5
+prime(0) // 2
+prime(1) // 3
+prime(2) // 5
 ```
 
 ###### primeContainer
@@ -650,8 +660,7 @@ primeContainer(2) // 12
 > use for working with the first n prime containers
 
 ```typescript
-const sequenceA = primeContainerSequence(2)
-// sequenceA === [4, 6, 12]
+primeContainerSequence(2) // [4, 6, 12]
 ```
 
 ###### primeSequence
@@ -659,8 +668,7 @@ const sequenceA = primeContainerSequence(2)
 > use for working with the first n primes
 
 ```typescript
-const sequenceA = primeSeqeunce(2)
-// sequenceA === [2, 3, 5]
+primeSeqeunce(2) // [2, 3, 5]
 ```
 
 ###### primeSequenceInclusive
@@ -668,8 +676,15 @@ const sequenceA = primeSeqeunce(2)
 > use for getting all primes less than some number
 
 ```typescript
-const sequenceA = primeSequenceInclusive(6)
-// sequenceA === [2, 3, 5]
+primeSequenceInclusive(6) // [2, 3, 5]
+```
+
+###### primeSequenceInRange
+
+> great for working with primes between containers
+
+```typescript
+primeSequenceInRange(12, 18) // [13, 17]
 ```
 
 ## prime _(encodings)_

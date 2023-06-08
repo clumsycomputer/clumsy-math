@@ -6,9 +6,9 @@ import { Natural, Prime, PrimeIndex } from "./encoding";
  *
  * @example
  * ```typescript
- * const primeA = prime(0) // 2
- * const primeB = prime(1) // 3
- * const primeC = prime(2) // 5
+ * prime(0) // 2
+ * prime(1) // 3
+ * prime(2) // 5
  * ```
  */
 export function prime(primeIndex: PrimeIndex): Prime {
@@ -22,8 +22,7 @@ export function prime(primeIndex: PrimeIndex): Prime {
  *
  * @example
  * ```typescript
- * const sequenceA = primeSeqeunce(2)
- * // sequenceA === [2, 3, 5]
+ * primeSeqeunce(2) // [2, 3, 5]
  * ```
  */
 export function primeSequence(maxPrimeIndex: PrimeIndex): Array<Prime> {
@@ -35,8 +34,7 @@ export function primeSequence(maxPrimeIndex: PrimeIndex): Array<Prime> {
  *
  * @example
  * ```typescript
- * const sequenceA = primeSequenceInclusive(6)
- * // sequenceA === [2, 3, 5]
+ * primeSequenceInclusive(6) // [2, 3, 5]
  * ```
  */
 export function primeSequenceInclusive(maxNumber: Natural): Array<Prime> {
@@ -60,8 +58,7 @@ export function primeSequenceInclusive(maxNumber: Natural): Array<Prime> {
  *
  * @example
  * ```typescript
- * const numberA = numberGreaterThanPrime(2)
- * // numberA === 6
+ * numberGreaterThanPrime(2) // 6
  * ```
  */
 function numberGreaterThanPrime(primeIndex: PrimeIndex): Natural {
@@ -82,4 +79,23 @@ function numberGreaterThanPrime(primeIndex: PrimeIndex): Natural {
         adjustedPrimeIndex * Math.log(Math.log(adjustedPrimeIndex))
     );
   }
+}
+
+/**
+ * great for working with primes between containers
+ *
+ * @example
+ * ```typescript
+ * primeSequenceInRange(12, 18) // [13, 17]
+ * ```
+ */
+export function primeSequenceInRange(
+  minNumber: Natural,
+  maxNumber: Natural
+): Array<Prime> {
+  const maxNumberSequence = primeSequenceInclusive(maxNumber);
+  const minNumberIndex = maxNumberSequence.findIndex(
+    (somePrime) => somePrime >= minNumber
+  );
+  return maxNumberSequence.slice(minNumberIndex);
 }

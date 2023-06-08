@@ -1,5 +1,5 @@
-import { Natural, Prime } from "./encoding";
-import { prime, primeSequenceInclusive } from "./prime";
+import { Natural, Prime, PrimeIndex } from "./encoding";
+import { prime, primeSequenceInclusive, primeSequence } from "./prime";
 
 /**
  * great for rounding some number to nearest prime
