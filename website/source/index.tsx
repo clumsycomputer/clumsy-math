@@ -1,3 +1,3 @@
-import { LoopToyPage } from "./LoopToyPage/LoopToyPage";
+import { LoopToyPage } from "./LoopToyPage";
 
 export default LoopToyPage;

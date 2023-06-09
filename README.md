@@ -475,6 +475,16 @@ const spacerA = spacer([5, [3, 1, 0]])
 // const spacerA === [5, [0, 2, 4]]
 ```
 
+###### spacerFullSlotWeights
+
+> great for normalizing a spacer and it's orientations against itself
+
+```typescript
+spacerFullSlotWeights(
+  spacer([5, [3, 0]]),
+) // [3, 1, 2, 2, 1]
+```
+
 ###### spacerGroup
 
 > great for defining a set of related spacers at a desired altitude / scope
@@ -605,6 +615,10 @@ const containerA = 6 // 5 & 7
 const containerB = 12 // 11 & 13
 ```
 
+###### prime tribe
+
+> the set of primes bounded by adjacent prime containers
+
 ## prime _(functions)_
 
 ###### isPrime
@@ -685,6 +699,26 @@ primeSequenceInclusive(6) // [2, 3, 5]
 
 ```typescript
 primeSequenceInRange(12, 18) // [13, 17]
+```
+
+###### primeTribe
+
+> great for working with primes that share bounds and analyzing prime distribution
+
+```typescript
+primeTribe(0) // [5]
+primeTribe(1) // [7, 11]
+primeTribe(2) // [13, 17]
+```
+
+###### tribeSpacer
+
+> great for analyzing the layout of a prime tribe
+
+```typescript
+tribeSpacer(2) // [6, [0, 4]]
+tribeSpacer(3) // [12, [0, 4, 10]]
+tribeSpacer(4) // [12, [0, 6, 10]]
 ```
 
 ## prime _(encodings)_
