@@ -1,4 +1,5 @@
 import { Spacer, SpacerSlotWeight, SpacerWeight } from "./encodings";
+import { orientatedSpacer } from "./spacerTransforms";
 
 /**
  * great for understanding point distribution across a set of spacers
@@ -14,15 +15,35 @@ import { Spacer, SpacerSlotWeight, SpacerWeight } from "./encodings";
  * ```
  */
 export function spacerSlotWeights(
-  someSpacers: [Spacer, ...Array<Spacer>]
+  someSpacers: Array<Spacer>
 ): Array<SpacerSlotWeight> {
-  const resultSlotWeights = new Array(someSpacers[0][0]).fill(0);
+  const resultSlotWeights = new Array(someSpacers[0]![0]).fill(0);
   for (const currentSpacer of someSpacers) {
     for (const currentPoint of currentSpacer[1]) {
       resultSlotWeights[currentPoint] += 1;
     }
   }
   return resultSlotWeights;
+}
+
+/**
+ * great for normalizing a spacer and it's orientations against itself
+ *
+ * @example
+ * ```typescript
+ * spacerFullSlotWeights(
+ *   spacer([5, [3, 0]]),
+ * ) // [3, 1, 2, 2, 1]
+ * ```
+ */
+export function spacerFullSlotWeights(
+  someSpacer: Spacer
+): Array<SpacerSlotWeight> {
+  return spacerSlotWeights(
+    someSpacer[1].map((_, pointIndex) =>
+      orientatedSpacer(someSpacer, pointIndex)
+    )
+  );
 }
 
 /**

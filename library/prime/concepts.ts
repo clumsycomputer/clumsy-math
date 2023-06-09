@@ -19,3 +19,8 @@ export type _PRIME_CONCEPT = never;
  * ```
  */
 export type _PRIME_CONTAINER_CONCEPT = never;
+
+/**
+ * the set of primes bounded by adjacent prime containers
+ */
+export type _PRIME_TRIBE_CONCEPT = never;

@@ -1,0 +1,36 @@
+.loopControls {
+  display: flex;
+  flex-direction: column;
+}
+
+.layerControls {
+  display: flex;
+  flex-direction: row;
+}
+
+.removeLayerContainer {
+  display: flex;
+  padding: 0.5em;
+}
+
+.addLayerContainer {
+  display: flex;
+  padding: 0.5em;
+}
+
+.sliderContainer {
+  display: flex;
+  padding: 0.5em;
+}
+
+.loopButton {
+  cursor: pointer;
+  border-style: solid;
+  border-radius: 4px;
+  border-width: 2px;
+  padding-inline: 0.5em;
+  padding-block: 0.25em;
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 1.25em;
+}

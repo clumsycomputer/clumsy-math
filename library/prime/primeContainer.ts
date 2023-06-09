@@ -26,8 +26,7 @@ export function primeContainer(
  *
  * @example
  * ```typescript
- * const sequenceA = primeContainerSequence(2)
- * // sequenceA === [4, 6, 12]
+ * primeContainerSequence(2) // [4, 6, 12]
  * ```
  */
 export function primeContainerSequence(

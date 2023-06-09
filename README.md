@@ -475,6 +475,16 @@ const spacerA = spacer([5, [3, 1, 0]])
 // const spacerA === [5, [0, 2, 4]]
 ```
 
+###### spacerFullSlotWeights
+
+> great for normalizing a spacer and it's orientations against itself
+
+```typescript
+spacerFullSlotWeights(
+  spacer([5, [3, 0]]),
+) // [3, 1, 2, 2, 1]
+```
+
 ###### spacerGroup
 
 > great for defining a set of related spacers at a desired altitude / scope
@@ -605,6 +615,10 @@ const containerA = 6 // 5 & 7
 const containerB = 12 // 11 & 13
 ```
 
+###### prime tribe
+
+> the set of primes bounded by adjacent prime containers
+
 ## prime _(functions)_
 
 ###### isPrime
@@ -625,14 +639,24 @@ isPrimeContainer(4) // true
 isPrimeContainer(5) // false
 ```
 
+###### nearestPrimes
+
+> great for rounding some number to nearest prime
+
+```typescript
+nearestPrimes(1) // [null, 2]
+nearestPrimes(3) // [3, 3]
+nearestPrimes(8) // [7, 11]
+```
+
 ###### prime
 
 > use for getting prime by index
 
 ```typescript
-const primeA = prime(0) // 2
-const primeB = prime(1) // 3
-const primeC = prime(2) // 5
+prime(0) // 2
+prime(1) // 3
+prime(2) // 5
 ```
 
 ###### primeContainer
@@ -650,8 +674,7 @@ primeContainer(2) // 12
 > use for working with the first n prime containers
 
 ```typescript
-const sequenceA = primeContainerSequence(2)
-// sequenceA === [4, 6, 12]
+primeContainerSequence(2) // [4, 6, 12]
 ```
 
 ###### primeSequence
@@ -659,8 +682,7 @@ const sequenceA = primeContainerSequence(2)
 > use for working with the first n primes
 
 ```typescript
-const sequenceA = primeSeqeunce(2)
-// sequenceA === [2, 3, 5]
+primeSeqeunce(2) // [2, 3, 5]
 ```
 
 ###### primeSequenceInclusive
@@ -668,8 +690,35 @@ const sequenceA = primeSeqeunce(2)
 > use for getting all primes less than some number
 
 ```typescript
-const sequenceA = primeSequenceInclusive(6)
-// sequenceA === [2, 3, 5]
+primeSequenceInclusive(6) // [2, 3, 5]
+```
+
+###### primeSequenceInRange
+
+> great for working with primes between containers
+
+```typescript
+primeSequenceInRange(12, 18) // [13, 17]
+```
+
+###### primeTribe
+
+> great for working with primes that share bounds and analyzing prime distribution
+
+```typescript
+primeTribe(0) // [5]
+primeTribe(1) // [7, 11]
+primeTribe(2) // [13, 17]
+```
+
+###### tribeSpacer
+
+> great for analyzing the layout of a prime tribe
+
+```typescript
+tribeSpacer(2) // [6, [0, 4]]
+tribeSpacer(3) // [12, [0, 4, 10]]
+tribeSpacer(4) // [12, [0, 6, 10]]
 ```
 
 ## prime _(encodings)_

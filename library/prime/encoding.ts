@@ -12,4 +12,6 @@ export type PrimeContainer = number;
 
 export type PrimeContainerIndex = number;
 
+export type TribeIndex = number;
+
 export type Natural = number;
