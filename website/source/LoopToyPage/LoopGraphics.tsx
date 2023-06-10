@@ -11,6 +11,7 @@ import { Fragment, FunctionalComponent, ComponentChildren } from "preact";
 import { useMemo } from "preact/hooks";
 import cssModule from "./LoopGraphics.module.scss";
 import { LoopToyState } from "./LoopToyPage";
+import { ClumsyGraphic } from "../components/ClumsyGraphic";
 
 export interface LoopGraphicsProps {
   loopToyState: LoopToyState;
@@ -104,7 +105,7 @@ interface PendulumLoopGraphicProps
 
 function PendulumLoopGraphic(props: PendulumLoopGraphicProps) {
   return (
-    <LoopGraphicBase
+    <ClumsyGraphic
       geometryProps={props}
       Geometry={({ loopGeometry }) => (
         <polyline
@@ -128,7 +129,7 @@ interface SineLoopGraphicProps
 
 function SineLoopGraphic(props: SineLoopGraphicProps) {
   return (
-    <LoopGraphicBase
+    <ClumsyGraphic
       geometryProps={props}
       Geometry={({ loopGeometry }) => (
         <polyline
@@ -152,7 +153,7 @@ interface ShapeLoopGraphicProps
     Pick<ReturnType<typeof useLoopGeometry>, "loopGeometry"> {}
 
 function ShapeLoopGraphic(props: ShapeLoopGraphicProps) {
-  return <LoopGraphicBase Geometry={ShapeGeometry} geometryProps={props} />;
+  return <ClumsyGraphic Geometry={ShapeGeometry} geometryProps={props} />;
 }
 
 interface ShapeGeometryProps extends ShapeLoopGraphicProps {}
@@ -214,33 +215,5 @@ function ShapeGeometry(props: ShapeGeometryProps) {
         points={loopPolygonPoints}
       />
     </Fragment>
-  );
-}
-
-interface LoopGraphicBaseProps<GeometryProps extends object> {
-  geometryProps: GeometryProps;
-  Geometry: FunctionalComponent<GeometryProps>;
-}
-
-function LoopGraphicBase<GeometryProps extends object>(
-  props: LoopGraphicBaseProps<GeometryProps>
-) {
-  const { Geometry, geometryProps } = props;
-  const viewRect = { x: -1.25, y: -1.25, size: 2.5 };
-  return (
-    <div className={cssModule.graphicContainer}>
-      <svg
-        viewBox={`${viewRect.x} ${viewRect.y} ${viewRect.size} ${viewRect.size}`}
-      >
-        <rect
-          className={cssModule.graphicBackground}
-          x={viewRect.x}
-          y={viewRect.y}
-          width={viewRect.size}
-          height={viewRect.size}
-        />
-        <Geometry {...geometryProps} />
-      </svg>
-    </div>
   );
 }
