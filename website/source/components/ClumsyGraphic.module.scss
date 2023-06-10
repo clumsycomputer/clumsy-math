@@ -9,3 +9,16 @@
 .graphicBackground {
   fill: grey;
 }
+
+.graphicItemContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em;
+}
+
+.graphicItemLabel {
+  font-family: monospace;
+  font-size: 1.5em;
+  font-weight: 700;
+  padding-block: 0.25em;
+}

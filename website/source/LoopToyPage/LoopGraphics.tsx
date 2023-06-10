@@ -1,17 +1,17 @@
 import {
+  LoopPendulum,
   LoopPoint,
   LoopSine,
-  LoopPendulum,
   LoopStructure,
   loopPendulum,
   loopPoint,
   loopSine,
 } from "clumsy-math";
-import { Fragment, FunctionalComponent, ComponentChildren } from "preact";
+import { Fragment } from "preact";
 import { useMemo } from "preact/hooks";
+import { ClumsyGraphic, ClumsyGraphicItem } from "../components/ClumsyGraphic";
 import cssModule from "./LoopGraphics.module.scss";
 import { LoopToyState } from "./LoopToyPage";
-import { ClumsyGraphic } from "../components/ClumsyGraphic";
 
 export interface LoopGraphicsProps {
   loopToyState: LoopToyState;
@@ -24,18 +24,18 @@ export function LoopGraphics(props: LoopGraphicsProps) {
   });
   return (
     <div className={cssModule.graphicList}>
-      <LoopGraphicItem itemLabel={"shape"}>
+      <ClumsyGraphicItem itemLabel={"shape"}>
         <ShapeLoopGraphic
           loopToyState={loopToyState}
           loopGeometry={loopGeometry}
         />
-      </LoopGraphicItem>
-      <LoopGraphicItem itemLabel={"sine"}>
+      </ClumsyGraphicItem>
+      <ClumsyGraphicItem itemLabel={"sine"}>
         <SineLoopGraphic loopGeometry={loopGeometry} />
-      </LoopGraphicItem>
-      <LoopGraphicItem itemLabel={"pendulum"}>
+      </ClumsyGraphicItem>
+      <ClumsyGraphicItem itemLabel={"pendulum"}>
         <PendulumLoopGraphic loopGeometry={loopGeometry} />
-      </LoopGraphicItem>
+      </ClumsyGraphicItem>
     </div>
   );
 }
@@ -83,21 +83,6 @@ function useLoopGeometry(api: UseLoopGraphicDataApi) {
       },
     };
   }, [loopToyState]);
-}
-
-interface LoopGraphicItemProps {
-  itemLabel: string;
-  children: ComponentChildren;
-}
-
-function LoopGraphicItem(props: LoopGraphicItemProps) {
-  const { itemLabel, children } = props;
-  return (
-    <div className={cssModule.itemContainer}>
-      <div className={cssModule.itemLabel}>{itemLabel}</div>
-      {children}
-    </div>
-  );
 }
 
 interface PendulumLoopGraphicProps

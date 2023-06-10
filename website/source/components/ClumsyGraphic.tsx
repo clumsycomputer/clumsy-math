@@ -1,4 +1,4 @@
-import { FunctionalComponent } from "preact";
+import { ComponentChildren, FunctionalComponent } from "preact";
 import cssModule from "./ClumsyGraphic.module.scss";
 
 export interface ClumsyGraphicProps<GeometryProps extends object> {
@@ -25,6 +25,21 @@ export function ClumsyGraphic<GeometryProps extends object>(
         />
         <Geometry {...geometryProps} />
       </svg>
+    </div>
+  );
+}
+
+export interface ClumsyGraphicItemProps {
+  itemLabel: string;
+  children: ComponentChildren;
+}
+
+export function ClumsyGraphicItem(props: ClumsyGraphicItemProps) {
+  const { itemLabel, children } = props;
+  return (
+    <div className={cssModule.graphicItemContainer}>
+      <div className={cssModule.graphicItemLabel}>{itemLabel}</div>
+      {children}
     </div>
   );
 }

@@ -1,25 +1,15 @@
-import {
-  AlignedSpacerStructure,
-  componentSpacers,
-  spacer,
-  spacerFullSlotWeights,
-} from "clumsy-math";
+import { AlignedSpacerStructure } from "clumsy-math";
 import { StateUpdater, useState } from "preact/hooks";
-import { Fragment } from "preact/jsx-runtime";
 import { ClumsyButton } from "../components/ClumsyButton";
-import { ClumsyGraphic } from "../components/ClumsyGraphic";
+import { SpacerGraphics } from "./SpacerGraphics";
 
 export function SpacerToyPage() {
   const [spacerToyState, setSpacerToyState] = useState<SpacerToyState>({
     spacerStructure: [12, [5, 0]],
   });
-
   return (
     <div>
-      <SpacerGraphics
-        spacerToyState={spacerToyState}
-        // setSpacerToyState={setSpacerToyState}
-      />
+      <SpacerGraphics spacerToyState={spacerToyState} />
       <SpacerControls
         spacerToyState={spacerToyState}
         setSpacerToyState={setSpacerToyState}
@@ -28,81 +18,7 @@ export function SpacerToyPage() {
   );
 }
 
-interface SpacerGraphicsProps {
-  // setSpacerToyState: StateUpdater<SpacerToyState>;
-  spacerToyState: SpacerToyState;
-}
-
-function SpacerGraphics(props: SpacerGraphicsProps) {
-  const { spacerToyState } = props;
-  const currentSpacer = spacer(spacerToyState.spacerStructure);
-  const currentComponents = componentSpacers(spacerToyState.spacerStructure);
-
-  return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      <ClumsyGraphic
-        geometryProps={{}}
-        Geometry={() => {
-          const cellSize = 2.25 / spacerToyState.spacerStructure[0];
-          const cellSizeHalf = cellSize / 2;
-          const cellPadding = cellSizeHalf * 0.25;
-          const cellRadius = cellSizeHalf - cellPadding;
-          return (
-            <Fragment>
-              {currentComponents.map((someComponent, componentIndex) => {
-                const currentSpacer = spacer(someComponent);
-                return currentSpacer[1].map((someSpacerPoint) => {
-                  const columnIndex = someSpacerPoint;
-                  const rowIndex = componentIndex;
-                  return (
-                    <circle
-                      r={cellRadius}
-                      cx={columnIndex * cellSize + cellSizeHalf - 1.125}
-                      cy={rowIndex * cellSize + cellSizeHalf - 1.125}
-                      fill={"yellow"}
-                    />
-                  );
-                });
-              })}
-            </Fragment>
-          );
-        }}
-      />
-      <ClumsyGraphic
-        geometryProps={{}}
-        Geometry={() => (
-          <Fragment>
-            {spacerFullSlotWeights(currentSpacer).map(
-              (someSlotWeight, slotIndex, currentFullSlotWeights) => {
-                const pointAngle =
-                  ((2 * Math.PI) / spacerToyState.spacerStructure[0]) *
-                    slotIndex -
-                  Math.PI / 2;
-                const pointCosine = Math.cos(pointAngle);
-                const pointSine = Math.sin(pointAngle);
-                const radiusMax =
-                  (2 * Math.PI) / currentFullSlotWeights.length / 2;
-                const radiusMin = radiusMax / 4;
-                const radiusRange = radiusMax - radiusMin;
-                const radiusStep = radiusRange / currentFullSlotWeights[0]!;
-                return someSlotWeight === 0 ? null : (
-                  <circle
-                    cx={pointCosine}
-                    cy={pointSine}
-                    r={someSlotWeight * radiusStep + radiusMin}
-                    fill={"yellow"}
-                  />
-                );
-              }
-            )}
-          </Fragment>
-        )}
-      />
-    </div>
-  );
-}
-
-interface SpacerToyState {
+export interface SpacerToyState {
   spacerStructure: AlignedSpacerStructure;
 }
 
