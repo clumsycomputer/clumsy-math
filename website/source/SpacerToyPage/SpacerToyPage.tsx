@@ -1,13 +1,19 @@
-import { AlignedSpacerStructure, spacer } from "clumsy-math";
+import {
+  AlignedSpacerStructure,
+  componentSpacers,
+  spacer,
+  spacerFullSlotWeights,
+} from "clumsy-math";
 import { StateUpdater, useState } from "preact/hooks";
+import { Fragment } from "preact/jsx-runtime";
 import { ClumsyButton } from "../components/ClumsyButton";
 import { ClumsyGraphic } from "../components/ClumsyGraphic";
-import { Fragment } from "preact/jsx-runtime";
 
 export function SpacerToyPage() {
   const [spacerToyState, setSpacerToyState] = useState<SpacerToyState>({
     spacerStructure: [12, [5, 0]],
   });
+
   return (
     <div>
       <SpacerGraphics
@@ -30,28 +36,65 @@ interface SpacerGraphicsProps {
 function SpacerGraphics(props: SpacerGraphicsProps) {
   const { spacerToyState } = props;
   const currentSpacer = spacer(spacerToyState.spacerStructure);
+  const currentComponents = componentSpacers(spacerToyState.spacerStructure);
+
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <ClumsyGraphic
         geometryProps={{}}
+        Geometry={() => {
+          const cellSize = 2.25 / spacerToyState.spacerStructure[0];
+          const cellSizeHalf = cellSize / 2;
+          const cellPadding = cellSizeHalf * 0.25;
+          const cellRadius = cellSizeHalf - cellPadding;
+          return (
+            <Fragment>
+              {currentComponents.map((someComponent, componentIndex) => {
+                const currentSpacer = spacer(someComponent);
+                return currentSpacer[1].map((someSpacerPoint) => {
+                  const columnIndex = someSpacerPoint;
+                  const rowIndex = componentIndex;
+                  return (
+                    <circle
+                      r={cellRadius}
+                      cx={columnIndex * cellSize + cellSizeHalf - 1.125}
+                      cy={rowIndex * cellSize + cellSizeHalf - 1.125}
+                      fill={"yellow"}
+                    />
+                  );
+                });
+              })}
+            </Fragment>
+          );
+        }}
+      />
+      <ClumsyGraphic
+        geometryProps={{}}
         Geometry={() => (
           <Fragment>
-            {currentSpacer[1].map((someSpacerPoint) => {
-              const pointAngle =
-                ((2 * Math.PI) / spacerToyState.spacerStructure[0]) *
-                  someSpacerPoint -
-                Math.PI / 2;
-              const pointCosine = Math.cos(pointAngle);
-              const pointSine = Math.sin(pointAngle);
-              return (
-                <circle
-                  cx={pointCosine}
-                  cy={pointSine}
-                  r={0.05}
-                  fill={"yellow"}
-                />
-              );
-            })}
+            {spacerFullSlotWeights(currentSpacer).map(
+              (someSlotWeight, slotIndex, currentFullSlotWeights) => {
+                const pointAngle =
+                  ((2 * Math.PI) / spacerToyState.spacerStructure[0]) *
+                    slotIndex -
+                  Math.PI / 2;
+                const pointCosine = Math.cos(pointAngle);
+                const pointSine = Math.sin(pointAngle);
+                const radiusMax =
+                  (2 * Math.PI) / currentFullSlotWeights.length / 2;
+                const radiusMin = radiusMax / 4;
+                const radiusRange = radiusMax - radiusMin;
+                const radiusStep = radiusRange / currentFullSlotWeights[0]!;
+                return someSlotWeight === 0 ? null : (
+                  <circle
+                    cx={pointCosine}
+                    cy={pointSine}
+                    r={someSlotWeight * radiusStep + radiusMin}
+                    fill={"yellow"}
+                  />
+                );
+              }
+            )}
           </Fragment>
         )}
       />
@@ -180,7 +223,10 @@ function SpacerControls(props: SpacerControlsProps) {
             const nextSpacerLayers = spacerLayers.map((someSpacerLayer) => [
               ...someSpacerLayer,
             ]);
-            nextSpacerLayers.push([1, 0]);
+            nextSpacerLayers.push([
+              Math.ceil(nextSpacerLayers[nextSpacerLayers.length - 1]![0]! / 2),
+              0,
+            ]);
             setSpacerToyState({
               ...spacerToyState,
               spacerStructure: [
