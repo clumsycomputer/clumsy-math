@@ -153,29 +153,67 @@ interface SymmetricWeightsGeometryProps
 
 function SymmetricWeightsGeometry(props: SymmetricWeightsGeometryProps) {
   const { spacerToyState } = props;
+  const currentComponents = componentSpacers(spacerToyState.spacerStructure);
+  const partitionRoot =
+    currentComponents.length === 1
+      ? 1
+      : currentComponents.length <= 4
+      ? 2
+      : currentComponents.length <= 9
+      ? 3
+      : currentComponents.length <= 16
+      ? 4
+      : currentComponents.length <= 25
+      ? 5
+      : currentComponents.length <= 36
+      ? 6
+      : currentComponents.length <= 49
+      ? 7
+      : currentComponents.length <= 64
+      ? 8
+      : NaN;
+  const paddedParitionRoot = partitionRoot / 4 + partitionRoot;
   return (
     <Fragment>
-      {spacerFullSlotWeights(spacer(spacerToyState.spacerStructure)).map(
-        (someSlotWeight, slotIndex, currentFullSlotWeights) => {
-          const pointAngle =
-            ((2 * Math.PI) / spacerToyState.spacerStructure[0]) * slotIndex -
-            Math.PI / 2;
-          const pointCosine = Math.cos(pointAngle);
-          const pointSine = Math.sin(pointAngle);
-          const radiusMax = (2 * Math.PI) / currentFullSlotWeights.length / 2;
-          const radiusMin = radiusMax / 8;
-          const radiusRange = radiusMax - radiusMin;
-          const radiusStep = radiusRange / currentFullSlotWeights[0]!;
-          return someSlotWeight === 0 ? null : (
-            <circle
-              cx={pointCosine}
-              cy={pointSine}
-              r={someSlotWeight * radiusStep + radiusMin}
-              fill={"yellow"}
-            />
-          );
-        }
-      )}
+      {currentComponents.map((someComponent, componentIndex) => {
+        const columnIndex = componentIndex % partitionRoot;
+        const rowIndex = Math.floor(componentIndex / partitionRoot);
+        const cellSize = 2.25 / partitionRoot;
+        const cellSizeHalf = cellSize / 2;
+        return spacerFullSlotWeights(spacer(someComponent)).map(
+          (someSlotWeight, slotIndex, currentFullSlotWeights) => {
+            const pointAngle =
+              ((2 * Math.PI) / spacerToyState.spacerStructure[0]) * slotIndex -
+              Math.PI / 2;
+            const pointCosine = Math.cos(pointAngle);
+            const pointSine = Math.sin(pointAngle);
+            const radiusMax = (2 * Math.PI) / currentFullSlotWeights.length / 2;
+            const radiusMin = radiusMax / 8;
+            const radiusRange = radiusMax - radiusMin;
+            const radiusStep = radiusRange / currentFullSlotWeights[0]!;
+            return someSlotWeight === 0 ? null : (
+              <circle
+                cx={
+                  pointCosine / paddedParitionRoot +
+                  columnIndex * cellSize +
+                  cellSizeHalf -
+                  1.125
+                }
+                cy={
+                  pointSine / paddedParitionRoot +
+                  rowIndex * cellSize +
+                  cellSizeHalf -
+                  1.125
+                }
+                r={
+                  (someSlotWeight * radiusStep + radiusMin) / paddedParitionRoot
+                }
+                fill={"yellow"}
+              />
+            );
+          }
+        );
+      })}
     </Fragment>
   );
 }
