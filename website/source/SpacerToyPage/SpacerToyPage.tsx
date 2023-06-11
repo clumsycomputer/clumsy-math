@@ -2,6 +2,8 @@ import { AlignedSpacerStructure } from "clumsy-math";
 import { StateUpdater, useState } from "preact/hooks";
 import { ClumsyButton } from "../components/ClumsyButton";
 import { SpacerGraphics } from "./SpacerGraphics";
+import cssModule from "./SpacerToyPage.module.scss";
+import { JSX } from "preact";
 
 export function SpacerToyPage() {
   const [spacerToyState, setSpacerToyState] = useState<SpacerToyState>({
@@ -32,8 +34,7 @@ function SpacerControls(props: SpacerControlsProps) {
   const [spacerResolution, ...spacerLayers] = spacerToyState.spacerStructure;
   return (
     <div>
-      <input
-        type={"number"}
+      <ClumsyNumberInput
         step={1}
         max={60}
         min={spacerLayers[0][0] ?? 1}
@@ -57,9 +58,14 @@ function SpacerControls(props: SpacerControlsProps) {
           ? spacerLayers[layerIndex + 1]![0]
           : 1;
         return (
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <input
-              type={"number"}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <ClumsyNumberInput
               step={1}
               max={baseResolution}
               min={subResolution}
@@ -81,8 +87,7 @@ function SpacerControls(props: SpacerControlsProps) {
                 });
               }}
             />
-            <input
-              type={"number"}
+            <ClumsyNumberInput
               step={1}
               min={0}
               max={someSpacerLayer[0] - 1}
@@ -106,6 +111,7 @@ function SpacerControls(props: SpacerControlsProps) {
             <div
               style={{
                 display: "flex",
+                padding: "0.5em",
                 visibility:
                   layerIndex > 0 && layerIndex === spacerLayers.length - 1
                     ? "visible"
@@ -133,7 +139,7 @@ function SpacerControls(props: SpacerControlsProps) {
           </div>
         );
       })}
-      <div style={{ display: "flex" }}>
+      <div style={{ display: "flex", padding: "0.5em" }}>
         <ClumsyButton
           onClick={() => {
             const nextSpacerLayers = spacerLayers.map((someSpacerLayer) => [
@@ -155,6 +161,29 @@ function SpacerControls(props: SpacerControlsProps) {
           add layer
         </ClumsyButton>
       </div>
+    </div>
+  );
+}
+
+interface ClumsyNumberInputProps
+  extends Pick<
+    JSX.HTMLAttributes<HTMLInputElement>,
+    "step" | "min" | "max" | "value" | "onInput"
+  > {}
+
+function ClumsyNumberInput(props: ClumsyNumberInputProps) {
+  const { step, value, onInput } = props;
+  return (
+    <div className={cssModule.numberInputContainer}>
+      <input
+        className={cssModule.numberInput}
+        type={"number"}
+        step={step}
+        // min={0}
+        // max={someSpacerLayer[0] - 1}
+        value={value}
+        onInput={onInput}
+      />
     </div>
   );
 }
