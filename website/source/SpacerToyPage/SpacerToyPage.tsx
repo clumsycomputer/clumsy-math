@@ -23,6 +23,7 @@ import {
   ModulusNumberInput,
 } from "../components/ClumsyInput";
 import { SpacerGraphics } from "./SpacerGraphics";
+import { Fragment } from "preact/jsx-runtime";
 
 export function SpacerToyPage() {
   const [spacerToyState, setSpacerToyState] = useState<SpacerToyState>({
@@ -157,6 +158,8 @@ function SpacerControls(props: SpacerControlsProps) {
       </div>
       {spacerLayers.map((someSpacerLayer, layerIndex) => {
         const spacerLayerData = spacerToyData[`${layerIndex}`];
+        const layerTerminalSpacerData =
+          spacerLayerData.terminalSpacers[spacerLayerData.id];
         const terminalDistribution = Object.values<any>(
           spacerLayerData.terminalSpacers
         ).reduce<any>((resultData, someTerminalSpacerData) => {
@@ -180,7 +183,13 @@ function SpacerControls(props: SpacerControlsProps) {
           ? spacerLayers[layerIndex + 1]![0]
           : 1;
         return (
-          <div style={{ display: "flex", flexDirection: "column" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              paddingBottom: "0.25em",
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -259,9 +268,15 @@ function SpacerControls(props: SpacerControlsProps) {
                 </ClumsyButton>
               </div>
             </div>
-            <div>
-              <div>
-                {Object.keys(terminalDistribution)
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{ paddingInline: "0.5em", paddingBlock: "0.5em" }}>
+                <WeightDistributionGraphic
+                  someWeightDistribution={terminalDistribution}
+                  focusedWeight={
+                    spacerLayerData.terminalSpacers[spacerLayerData.id].weight
+                  }
+                />
+                {/* {Object.keys(terminalDistribution)
                   .sort()
                   .map(
                     (someWeightKey) =>
@@ -275,10 +290,19 @@ function SpacerControls(props: SpacerControlsProps) {
                           : ""
                       }`
                   )
-                  .join(" _ ")}
+                  .join(" _ ")} */}
               </div>
-              <div>
-                {Object.keys(symmetricDistribution)
+              <div
+                style={{
+                  paddingInline: "0.5em",
+                  paddingBlock: "0.5em",
+                }}
+              >
+                <WeightDistributionGraphic
+                  someWeightDistribution={symmetricDistribution}
+                  focusedWeight={spacerLayerData.symmetricSpacers[0].weight}
+                />
+                {/* {Object.keys(symmetricDistribution)
                   .sort()
                   .map(
                     (someWeightKey) =>
@@ -291,7 +315,7 @@ function SpacerControls(props: SpacerControlsProps) {
                           : ""
                       }`
                   )
-                  .join(" _ ")}
+                  .join(" _ ")} */}
               </div>
             </div>
           </div>
@@ -319,6 +343,82 @@ function SpacerControls(props: SpacerControlsProps) {
           add layer
         </ClumsyButton>
       </div>
+    </div>
+  );
+}
+
+interface WeightDistributionGraphicProps {
+  someWeightDistribution: Record<string, number>;
+  focusedWeight: number;
+}
+
+function WeightDistributionGraphic(props: WeightDistributionGraphicProps) {
+  const { someWeightDistribution, focusedWeight } = props;
+  const sortedWeightDistribution = Object.keys(someWeightDistribution)
+    .map<[number, number]>((someWeightKey) => [
+      parseInt(someWeightKey),
+      someWeightDistribution[someWeightKey]!,
+    ])
+    .sort((a, b) => a[0] - b[0]);
+  const weightDistributionRange: [number, number] = [
+    sortedWeightDistribution[0]![0],
+    sortedWeightDistribution[sortedWeightDistribution.length - 1]![0],
+  ];
+  const weightDistributionRangeSize =
+    weightDistributionRange[1] - weightDistributionRange[0] + 1;
+  console.log(`${weightDistributionRangeSize}: ${weightDistributionRange}`);
+  const maxRadius = 0.5;
+  const minRadius = 0.2;
+  const [minFoo, maxFoo] = sortedWeightDistribution.reduce(
+    (resultRangeTuple, someWeightTuple) => [
+      Math.min(someWeightTuple[1], resultRangeTuple[0] ?? someWeightTuple[1]),
+      Math.max(someWeightTuple[1], resultRangeTuple[1] ?? someWeightTuple[1]),
+    ],
+    [0, 0]
+  );
+  const fooRangeSize = maxFoo - minFoo;
+  const radiusRangeSize = maxRadius - minRadius;
+  const radiusStep = radiusRangeSize / fooRangeSize;
+  return (
+    <div
+      style={{
+        display: "flex",
+        overflow: "hidden",
+        borderRadius: 4,
+      }}
+    >
+      <svg
+        height={24}
+        viewBox={`-0.5 -0.5 ${weightDistributionRangeSize + 1} 2`}
+      >
+        <rect
+          x={-0.5}
+          y={-0.5}
+          width={weightDistributionRangeSize + 1}
+          height={2}
+          fill={"lightgrey"}
+        />
+        {sortedWeightDistribution.map((someWeightPair) => {
+          return (
+            <Fragment>
+              <circle
+                cx={someWeightPair[0] - weightDistributionRange[0] + 0.5}
+                cy={0.5}
+                r={radiusStep * (someWeightPair[1] - minFoo) + minRadius}
+                fill={"black"}
+              />
+              {focusedWeight === someWeightPair[0] ? (
+                <circle
+                  cx={someWeightPair[0] - weightDistributionRange[0] + 0.5}
+                  cy={0.5}
+                  r={minRadius}
+                  fill={"yellow"}
+                />
+              ) : null}
+            </Fragment>
+          );
+        })}
+      </svg>
     </div>
   );
 }
