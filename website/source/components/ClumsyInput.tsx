@@ -3,158 +3,140 @@ import cssModule from "./ClumsyInput.module.scss";
 import { ComponentChildren, JSX } from "preact";
 
 export interface ModulusNumberInputProps
-  extends Pick<NumberInputBaseProps, "value" | "valueStep"> {
-  minValue: number;
-  maxValue: number;
-  onInput: (nextValue: number) => void;
-}
+  extends Pick<
+    NumberInputBaseProps,
+    "value" | "valueStep" | "minValue" | "maxValue" | "onInput"
+  > {}
 
 export function ModulusNumberInput(props: ModulusNumberInputProps) {
-  const { value, valueStep, minValue, maxValue, onInput } = props;
-  const [displayState, setDisplayState] = useState({
-    valueStatus: "valid",
-    value,
-  });
-  useEffect(() => {
-    if (displayState.value !== value) {
-      setDisplayState({
-        valueStatus: "valid",
-        value,
-      });
-    }
-  }, [value]);
-  useEffect(() => {
-    if (displayState.valueStatus === "valid" && displayState.value !== value) {
-      onInput(displayState.value);
-    }
-  }, [displayState]);
+  const { valueStep, minValue, maxValue, value, onInput } = props;
   return (
     <NumberInputBase
-      className={
-        displayState.valueStatus === "invalid"
-          ? cssModule.invalidInputContainer
-          : undefined
-      }
-      value={displayState.value}
       valueStep={valueStep}
-      onKeyboardInput={(nextDisplayValue) => {
-        setDisplayState({
-          value: nextDisplayValue,
-          valueStatus:
-            nextDisplayValue >= minValue && nextDisplayValue <= maxValue
-              ? "valid"
-              : "invalid",
-        });
-      }}
-      onStepInput={(nextDisplayValue) => {
-        const maxValuePlusOne = maxValue + 1;
-        const adjustedDisplayValue =
-          ((nextDisplayValue % maxValuePlusOne) + maxValuePlusOne) %
-          maxValuePlusOne;
-        setDisplayState({
-          valueStatus: "valid",
-          value: adjustedDisplayValue,
-        });
-      }}
+      minValue={minValue}
+      maxValue={maxValue}
+      value={value}
+      onInput={onInput}
+      getAdjustedStepValue={(nextStepValue, minValue, maxValue) =>
+        (((nextStepValue + maxValue) % maxValue) + maxValue) % maxValue
+      }
     />
   );
 }
 
 export interface ClampedNumberInputProps
-  extends Pick<NumberInputBaseProps, "value" | "valueStep"> {
-  minValue: number;
-  maxValue: number;
-  onInput: (nextValue: number) => void;
-}
+  extends Pick<
+    NumberInputBaseProps,
+    "value" | "valueStep" | "minValue" | "maxValue" | "onInput"
+  > {}
 
 export function ClampedNumberInput(props: ClampedNumberInputProps) {
-  const { value, valueStep, minValue, maxValue, onInput } = props;
-  const [displayState, setDisplayState] = useState({
-    valueStatus: "valid",
-    value,
-  });
-  useEffect(() => {
-    if (displayState.value !== value) {
-      setDisplayState({
-        valueStatus: "valid",
-        value,
-      });
-    }
-  }, [value]);
-  useEffect(() => {
-    if (displayState.valueStatus === "valid" && displayState.value !== value) {
-      onInput(displayState.value);
-    }
-  }, [displayState]);
+  const { valueStep, minValue, maxValue, value, onInput } = props;
   return (
     <NumberInputBase
-      className={
-        displayState.valueStatus === "invalid"
-          ? cssModule.invalidInputContainer
-          : undefined
-      }
-      value={displayState.value}
       valueStep={valueStep}
-      onKeyboardInput={(nextDisplayValue) => {
-        setDisplayState({
-          value: nextDisplayValue,
-          valueStatus:
-            nextDisplayValue >= minValue && nextDisplayValue <= maxValue
-              ? "valid"
-              : "invalid",
-        });
-      }}
-      onStepInput={(nextDisplayValue) => {
-        const clampedDisplayValue =
-          nextDisplayValue < minValue
-            ? minValue
-            : nextDisplayValue > maxValue
-            ? maxValue
-            : nextDisplayValue;
-        setDisplayState({
-          valueStatus: "valid",
-          value: clampedDisplayValue,
-        });
-      }}
+      minValue={minValue}
+      maxValue={maxValue}
+      value={value}
+      onInput={onInput}
+      getAdjustedStepValue={(nextStepValue, minValue, maxValue) =>
+        nextStepValue < minValue
+          ? minValue
+          : nextStepValue > maxValue
+          ? maxValue
+          : nextStepValue
+      }
     />
   );
 }
 
 interface NumberInputBaseProps {
-  className?: string;
-  value: number;
   valueStep: number;
-  onKeyboardInput: (nextValue: number) => void;
-  onStepInput: (nextValue: number) => void;
+  minValue: number;
+  maxValue: number;
+  value: number;
+  onInput: (nextValue: number) => void;
+  getAdjustedStepValue: (
+    nextStepValue: number,
+    minValue: number,
+    maxValue: number
+  ) => number;
 }
 
 function NumberInputBase(props: NumberInputBaseProps) {
   const {
-    className = "",
     value,
-    onKeyboardInput,
+    onInput,
     valueStep,
-    onStepInput,
+    minValue,
+    maxValue,
+    getAdjustedStepValue,
   } = props;
+  const [displayState, setDisplayState] = useState({
+    valueStatus: "valid",
+    numericValue: value,
+    textValue: `${value}`,
+  });
+  useEffect(() => {
+    if (displayState.numericValue !== value) {
+      setDisplayState({
+        valueStatus: "valid",
+        numericValue: value,
+        textValue: `${value}`,
+      });
+    }
+  }, [value]);
+  useEffect(() => {
+    if (
+      displayState.valueStatus === "valid" &&
+      displayState.numericValue !== value
+    ) {
+      onInput(displayState.numericValue);
+    }
+  }, [displayState]);
   return (
-    <div className={`${cssModule.numberInputContainer} ${className}`}>
+    <div className={cssModule.numberInputContainer}>
       <input
-        className={cssModule.numberInput}
+        className={
+          displayState.valueStatus === "valid"
+            ? cssModule.numberInput
+            : `${cssModule.numberInput} ${cssModule.invalidNumberInput}`
+        }
         type={"text"}
         autocomplete={"off"}
         autocorrect={"off"}
         autocapitalize={"off"}
         spellcheck={false}
-        value={value}
+        value={displayState.textValue}
         onInput={(someInputEvent) => {
-          const nextValue = parseFloat(someInputEvent.currentTarget.value);
-          onKeyboardInput(nextValue);
+          const nextTextValue = someInputEvent.currentTarget.value;
+          const nextNumericValue = parseFloat(nextTextValue);
+          setDisplayState({
+            valueStatus:
+              nextNumericValue >= minValue && nextNumericValue <= maxValue
+                ? "valid"
+                : "invalid",
+            textValue: nextTextValue,
+            numericValue: nextNumericValue,
+          });
         }}
       />
       <InputButton
         onClick={() => {
-          const nextValue = value - valueStep;
-          onStepInput(nextValue);
+          const nextStepValue = displayState.numericValue - valueStep;
+          const nextNumericValue = getAdjustedStepValue(
+            nextStepValue,
+            minValue,
+            maxValue
+          );
+          setDisplayState({
+            valueStatus:
+              nextNumericValue >= minValue && nextNumericValue <= maxValue
+                ? "valid"
+                : "invalid",
+            numericValue: nextNumericValue,
+            textValue: `${nextNumericValue}`,
+          });
         }}
       >
         <svg width={18} height={24} viewBox={"6 3 12 18"}>
@@ -167,8 +149,20 @@ function NumberInputBase(props: NumberInputBaseProps) {
       </InputButton>
       <InputButton
         onClick={() => {
-          const nextValue = value + valueStep;
-          onStepInput(nextValue);
+          const nextStepValue = displayState.numericValue + valueStep;
+          const nextNumericValue = getAdjustedStepValue(
+            nextStepValue,
+            minValue,
+            maxValue
+          );
+          setDisplayState({
+            valueStatus:
+              nextNumericValue >= minValue && nextNumericValue <= maxValue
+                ? "valid"
+                : "invalid",
+            numericValue: nextNumericValue,
+            textValue: `${nextNumericValue}`,
+          });
         }}
       >
         <svg width={18} height={24} viewBox={"6 3 12 18"}>

@@ -43,7 +43,6 @@ function SpacerControls(props: SpacerControlsProps) {
           minValue={spacerLayers[0][0] ?? 1}
           value={spacerResolution}
           onInput={(nextSpacerResolution) => {
-            console.log(nextSpacerResolution);
             const [_, ...currentSpacerLayers] = spacerToyState.spacerStructure;
             setSpacerToyState({
               ...spacerToyState,
@@ -92,7 +91,7 @@ function SpacerControls(props: SpacerControlsProps) {
               <ModulusNumberInput
                 valueStep={1}
                 minValue={0}
-                maxValue={someSpacerLayer[0] - 1}
+                maxValue={someSpacerLayer[0]}
                 value={someSpacerLayer[1]}
                 onInput={(nextLayerOrientation) => {
                   const nextSpacerLayers = spacerLayers.map(

@@ -24,12 +24,6 @@ $themeBoxShadowOutline: 0 0 0 $themeOutlineWidth $themeOutlineColor;
   }
 }
 
-.invalidInputContainer {
-  & .numberInput {
-    color: red;
-  }
-}
-
 .numberInput {
   max-width: 64px;
   margin: 0;
@@ -39,6 +33,10 @@ $themeBoxShadowOutline: 0 0 0 $themeOutlineWidth $themeOutlineColor;
   font-family: monospace;
   font-weight: 700;
   font-size: 1.25em;
+}
+
+.invalidNumberInput {
+  color: red;
 }
 
 .inputButton {
