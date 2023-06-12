@@ -1,9 +1,11 @@
 import { AlignedSpacerStructure } from "clumsy-math";
 import { StateUpdater, useState } from "preact/hooks";
 import { ClumsyButton } from "../components/ClumsyButton";
+import {
+  ClampedNumberInput,
+  ModulusNumberInput,
+} from "../components/ClumsyInput";
 import { SpacerGraphics } from "./SpacerGraphics";
-import cssModule from "./SpacerToyPage.module.scss";
-import { JSX } from "preact";
 
 export function SpacerToyPage() {
   const [spacerToyState, setSpacerToyState] = useState<SpacerToyState>({
@@ -34,22 +36,22 @@ function SpacerControls(props: SpacerControlsProps) {
   const [spacerResolution, ...spacerLayers] = spacerToyState.spacerStructure;
   return (
     <div>
-      <ClumsyNumberInput
-        step={1}
-        max={60}
-        min={spacerLayers[0][0] ?? 1}
-        value={spacerResolution}
-        onInput={(someInputEvent) => {
-          const nextSpacerResolution = parseFloat(
-            someInputEvent.currentTarget.value
-          );
-          const [_, ...currentSpacerLayers] = spacerToyState.spacerStructure;
-          setSpacerToyState({
-            ...spacerToyState,
-            spacerStructure: [nextSpacerResolution, ...currentSpacerLayers],
-          });
-        }}
-      />
+      <div style={{ display: "flex", padding: "0.5em" }}>
+        <ClampedNumberInput
+          valueStep={1}
+          maxValue={60}
+          minValue={spacerLayers[0][0] ?? 1}
+          value={spacerResolution}
+          onInput={(nextSpacerResolution) => {
+            console.log(nextSpacerResolution);
+            const [_, ...currentSpacerLayers] = spacerToyState.spacerStructure;
+            setSpacerToyState({
+              ...spacerToyState,
+              spacerStructure: [nextSpacerResolution, ...currentSpacerLayers],
+            });
+          }}
+        />
+      </div>
       {spacerLayers.map((someSpacerLayer, layerIndex) => {
         const baseResolution = spacerLayers[layerIndex - 1]
           ? spacerLayers[layerIndex - 1]![0]
@@ -65,49 +67,48 @@ function SpacerControls(props: SpacerControlsProps) {
               alignItems: "center",
             }}
           >
-            <ClumsyNumberInput
-              step={1}
-              max={baseResolution}
-              min={subResolution}
-              value={someSpacerLayer[0]}
-              onInput={(someInputEvent) => {
-                const nextSpacerLayers = spacerLayers.map((someSpacerLayer) => [
-                  ...someSpacerLayer,
-                ]);
-                nextSpacerLayers[layerIndex] = [
-                  parseFloat(someInputEvent.currentTarget.value),
-                  0,
-                ];
-                setSpacerToyState({
-                  ...spacerToyState,
-                  spacerStructure: [
-                    spacerResolution,
-                    ...nextSpacerLayers,
-                  ] as AlignedSpacerStructure,
-                });
-              }}
-            />
-            <ClumsyNumberInput
-              step={1}
-              min={0}
-              max={someSpacerLayer[0] - 1}
-              value={someSpacerLayer[1]}
-              onInput={(someInputEvent) => {
-                const nextSpacerLayers = spacerLayers.map((someSpacerLayer) => [
-                  ...someSpacerLayer,
-                ]);
-                nextSpacerLayers[layerIndex]![1] = parseFloat(
-                  someInputEvent.currentTarget.value
-                );
-                setSpacerToyState({
-                  ...spacerToyState,
-                  spacerStructure: [
-                    spacerResolution,
-                    ...nextSpacerLayers,
-                  ] as AlignedSpacerStructure,
-                });
-              }}
-            />
+            <div style={{ display: "flex", padding: "0.5em" }}>
+              <ClampedNumberInput
+                valueStep={1}
+                maxValue={baseResolution}
+                minValue={subResolution}
+                value={someSpacerLayer[0]}
+                onInput={(nextLayerDensity) => {
+                  const nextSpacerLayers = spacerLayers.map(
+                    (someSpacerLayer) => [...someSpacerLayer]
+                  );
+                  nextSpacerLayers[layerIndex] = [nextLayerDensity, 0];
+                  setSpacerToyState({
+                    ...spacerToyState,
+                    spacerStructure: [
+                      spacerResolution,
+                      ...nextSpacerLayers,
+                    ] as AlignedSpacerStructure,
+                  });
+                }}
+              />
+            </div>
+            <div style={{ display: "flex", padding: "0.5em" }}>
+              <ModulusNumberInput
+                valueStep={1}
+                minValue={0}
+                maxValue={someSpacerLayer[0] - 1}
+                value={someSpacerLayer[1]}
+                onInput={(nextLayerOrientation) => {
+                  const nextSpacerLayers = spacerLayers.map(
+                    (someSpacerLayer) => [...someSpacerLayer]
+                  );
+                  nextSpacerLayers[layerIndex]![1] = nextLayerOrientation;
+                  setSpacerToyState({
+                    ...spacerToyState,
+                    spacerStructure: [
+                      spacerResolution,
+                      ...nextSpacerLayers,
+                    ] as AlignedSpacerStructure,
+                  });
+                }}
+              />
+            </div>
             <div
               style={{
                 display: "flex",
@@ -165,25 +166,25 @@ function SpacerControls(props: SpacerControlsProps) {
   );
 }
 
-interface ClumsyNumberInputProps
-  extends Pick<
-    JSX.HTMLAttributes<HTMLInputElement>,
-    "step" | "min" | "max" | "value" | "onInput"
-  > {}
+// interface ClumsyNumberInputProps
+//   extends Pick<
+//     JSX.HTMLAttributes<HTMLInputElement>,
+//     "step" | "value" | "onInput"
+//   > {}
 
-function ClumsyNumberInput(props: ClumsyNumberInputProps) {
-  const { step, value, onInput } = props;
-  return (
-    <div className={cssModule.numberInputContainer}>
-      <input
-        className={cssModule.numberInput}
-        type={"number"}
-        step={step}
-        // min={0}
-        // max={someSpacerLayer[0] - 1}
-        value={value}
-        onInput={onInput}
-      />
-    </div>
-  );
-}
+// function ClumsyNumberInput(props: ClumsyNumberInputProps) {
+//   const { step, value, onInput } = props;
+//   return (
+//     <div className={cssModule.numberInputContainer}>
+//       <input
+//         className={cssModule.numberInput}
+//         type={"number"}
+//         step={step}
+//         // min={0}
+//         // max={someSpacerLayer[0] - 1}
+//         value={value}
+//         onInput={onInput}
+//       />
+//     </div>
+//   );
+// }
