@@ -1,0 +1,34 @@
+.controlsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.layerContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.layerControlsContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.layerGraphicsContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.inputContainer {
+  display: flex;
+  padding: 0.5em;
+}
+
+.buttonContainer {
+  display: flex;
+  padding: 0.5em;
+}
+
+.graphicContainer {
+  display: flex;
+  padding: 0.5em;
+}
