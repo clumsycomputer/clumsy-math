@@ -4,20 +4,42 @@ import {
   ClampedNumberInput,
   ModulusNumberInput,
 } from "../components/ClumsyInput";
-import { SpacerToyData } from "./useSpacerToyData";
+import {
+  SpacerComponentsData,
+  useSpacerComponentsData,
+} from "./useSpacerComponentsData";
 import { ClumsyButton } from "../components/ClumsyButton";
 import { Fragment } from "preact/jsx-runtime";
 import { AlignedSpacerStructure } from "clumsy-math";
 import cssModule from "./SpacerControls.module.scss";
 
-export interface SpacerControlsProps {
+export interface SpacerControlsProps
+  extends Pick<
+    ReturnType<typeof useSpacerComponentsData>,
+    "spacerComponentsData"
+  > {
   setSpacerToyState: StateUpdater<SpacerToyState>;
   spacerToyState: SpacerToyState;
-  spacerToyData: SpacerToyData;
+  updateSpacerResolution: (nextSpacerResolution: number) => void;
+  updateLayerDensity: (layerIndex: number, nextLayerDensity: number) => void;
+  updateLayerOrientation: (
+    layerIndex: number,
+    nextLayerOrientation: number
+  ) => void;
+  removeTerminalLayer: () => void;
+  addNewLayer: () => void;
 }
 
 export function SpacerControls(props: SpacerControlsProps) {
-  const { spacerToyState, setSpacerToyState, spacerToyData } = props;
+  const {
+    updateSpacerResolution,
+    updateLayerDensity,
+    updateLayerOrientation,
+    removeTerminalLayer,
+    addNewLayer,
+    spacerToyState,
+    spacerComponentsData,
+  } = props;
   const [spacerResolution, ...spacerLayers] = spacerToyState.spacerStructure;
   return (
     <div className={cssModule.controlsContainer}>
@@ -28,16 +50,12 @@ export function SpacerControls(props: SpacerControlsProps) {
           minValue={spacerLayers[0][0] ?? 1}
           value={spacerResolution}
           onInput={(nextSpacerResolution) => {
-            const [_, ...currentSpacerLayers] = spacerToyState.spacerStructure;
-            setSpacerToyState({
-              ...spacerToyState,
-              spacerStructure: [nextSpacerResolution, ...currentSpacerLayers],
-            });
+            updateSpacerResolution(nextSpacerResolution);
           }}
         />
       </div>
       {spacerLayers.map((someSpacerLayer, layerIndex) => {
-        const spacerLayerData = spacerToyData[`${layerIndex}`]!;
+        const layerComponentData = spacerComponentsData[layerIndex]!;
         const baseResolution = spacerLayers[layerIndex - 1]
           ? spacerLayers[layerIndex - 1]![0]
           : spacerResolution;
@@ -46,7 +64,7 @@ export function SpacerControls(props: SpacerControlsProps) {
           : 1;
         return (
           <div
-            key={spacerLayerData.componentId}
+            key={layerComponentData.componentId}
             className={cssModule.layerContainer}
           >
             <div className={cssModule.layerControlsContainer}>
@@ -57,17 +75,7 @@ export function SpacerControls(props: SpacerControlsProps) {
                   minValue={subResolution}
                   value={someSpacerLayer[0]}
                   onInput={(nextLayerDensity) => {
-                    const nextSpacerLayers = spacerLayers.map(
-                      (someSpacerLayer) => [...someSpacerLayer]
-                    );
-                    nextSpacerLayers[layerIndex] = [nextLayerDensity, 0];
-                    setSpacerToyState({
-                      ...spacerToyState,
-                      spacerStructure: [
-                        spacerResolution,
-                        ...nextSpacerLayers,
-                      ] as AlignedSpacerStructure,
-                    });
+                    updateLayerDensity(layerIndex, nextLayerDensity);
                   }}
                 />
               </div>
@@ -78,17 +86,7 @@ export function SpacerControls(props: SpacerControlsProps) {
                   maxValue={someSpacerLayer[0]}
                   value={someSpacerLayer[1]}
                   onInput={(nextLayerOrientation) => {
-                    const nextSpacerLayers = spacerLayers.map(
-                      (someSpacerLayer) => [...someSpacerLayer]
-                    );
-                    nextSpacerLayers[layerIndex]![1] = nextLayerOrientation;
-                    setSpacerToyState({
-                      ...spacerToyState,
-                      spacerStructure: [
-                        spacerResolution,
-                        ...nextSpacerLayers,
-                      ] as AlignedSpacerStructure,
-                    });
+                    updateLayerOrientation(layerIndex, nextLayerOrientation);
                   }}
                 />
               </div>
@@ -103,17 +101,7 @@ export function SpacerControls(props: SpacerControlsProps) {
               >
                 <ClumsyButton
                   onClick={() => {
-                    const nextSpacerLayers = spacerLayers.map(
-                      (someSpacerLayer) => [...someSpacerLayer]
-                    );
-                    nextSpacerLayers.pop();
-                    setSpacerToyState({
-                      ...spacerToyState,
-                      spacerStructure: [
-                        spacerResolution,
-                        ...nextSpacerLayers,
-                      ] as AlignedSpacerStructure,
-                    });
+                    removeTerminalLayer();
                   }}
                 >
                   remove
@@ -124,11 +112,11 @@ export function SpacerControls(props: SpacerControlsProps) {
               <div className={cssModule.graphicContainer}>
                 <WeightDistributionGraphic
                   someWeightDistribution={
-                    spacerLayerData.terminalWeightDistributionMap
+                    layerComponentData.terminalWeightDistribution
                   }
                   focusedWeight={
-                    spacerLayerData.terminalSpacersMap[
-                      spacerLayerData.componentId
+                    layerComponentData.terminalSpacersData[
+                      layerComponentData.componentId
                     ]!.spacerWeight
                   }
                 />
@@ -136,10 +124,10 @@ export function SpacerControls(props: SpacerControlsProps) {
               <div className={cssModule.graphicContainer}>
                 <WeightDistributionGraphic
                   someWeightDistribution={
-                    spacerLayerData.symmetricWeightDistributionMap
+                    layerComponentData.symmetricWeightDistribution
                   }
                   focusedWeight={
-                    spacerLayerData.symmetricSpacersMap[0]!.spacerWeight
+                    layerComponentData.symmetricSpacersData[0]!.spacerWeight
                   }
                 />
               </div>
@@ -150,20 +138,7 @@ export function SpacerControls(props: SpacerControlsProps) {
       <div className={cssModule.buttonContainer}>
         <ClumsyButton
           onClick={() => {
-            const nextSpacerLayers = spacerLayers.map((someSpacerLayer) => [
-              ...someSpacerLayer,
-            ]);
-            nextSpacerLayers.push([
-              Math.ceil(nextSpacerLayers[nextSpacerLayers.length - 1]![0]! / 2),
-              0,
-            ]);
-            setSpacerToyState({
-              ...spacerToyState,
-              spacerStructure: [
-                spacerResolution,
-                ...nextSpacerLayers,
-              ] as AlignedSpacerStructure,
-            });
+            addNewLayer();
           }}
         >
           add layer

@@ -1,123 +1,110 @@
-import {
-  componentSpacers,
-  spacer,
-  spacerFullSlotWeights,
-  spacerGroup,
-  spacerLineage,
-  spacerSlotWeights,
-} from "clumsy-math";
 import { Fragment } from "preact/jsx-runtime";
 import { ClumsyGraphic, ClumsyGraphicItem } from "../components/ClumsyGraphic";
-import { SpacerToyState } from "./SpacerToyPage";
 import cssModule from "./SpacerGraphics.module.scss";
+import { useSpacerComponentsData } from "./useSpacerComponentsData";
 
-export interface SpacerGraphicsProps {
-  spacerToyState: SpacerToyState;
-}
+export interface SpacerGraphicsProps
+  extends Pick<
+    ReturnType<typeof useSpacerComponentsData>,
+    "spacerComponentsData"
+  > {}
 
 export function SpacerGraphics(props: SpacerGraphicsProps) {
-  const { spacerToyState } = props;
+  const { spacerComponentsData } = props;
   return (
     <div className={cssModule.graphicContainers}>
       <ClumsyGraphicItem itemLabel={"composition"}>
-        <SpacerCompositionGraphic spacerToyState={spacerToyState} />
+        <SpacerCompositionGraphic spacerComponentsData={spacerComponentsData} />
       </ClumsyGraphicItem>
       <ClumsyGraphicItem itemLabel={"terminal weights"}>
-        <SpacerTerminalWeightsGraphic spacerToyState={spacerToyState} />
+        <SpacerTerminalWeightsGraphic
+          spacerComponentsData={spacerComponentsData}
+        />
       </ClumsyGraphicItem>
       <ClumsyGraphicItem itemLabel={"symmetric weights"}>
-        <SpacerSymmetricWeightsGraphic spacerToyState={spacerToyState} />
+        <SpacerSymmetricWeightsGraphic
+          spacerComponentsData={spacerComponentsData}
+        />
       </ClumsyGraphicItem>
     </div>
   );
 }
 
 interface SpacerCompositionGraphicProps
-  extends Pick<SpacerGraphicsProps, "spacerToyState"> {}
+  extends Pick<SpacerGraphicsProps, "spacerComponentsData"> {}
 
 function SpacerCompositionGraphic(props: SpacerCompositionGraphicProps) {
-  const { spacerToyState } = props;
+  const { spacerComponentsData } = props;
   return (
     <ClumsyGraphic
-      geometryProps={{ spacerToyState }}
+      geometryProps={{ spacerComponentsData }}
       Geometry={CompositionGeometry}
     />
   );
 }
 
 interface CompositionGeometryProps
-  extends Pick<SpacerCompositionGraphicProps, "spacerToyState"> {}
+  extends Pick<SpacerCompositionGraphicProps, "spacerComponentsData"> {}
 
 function CompositionGeometry(props: CompositionGeometryProps) {
-  const { spacerToyState } = props;
-  const cellSize = 2.25 / spacerToyState.spacerStructure[0];
-  const cellSizeHalf = cellSize / 2;
-  const cellRadius = cellSizeHalf;
+  const { spacerComponentsData } = props;
   return (
     <Fragment>
-      {componentSpacers(spacerToyState.spacerStructure).map(
-        (someComponent, componentIndex) => {
-          const currentSpacer = spacer(someComponent);
-          return currentSpacer[1].map((someSpacerPoint) => {
-            const columnIndex = someSpacerPoint;
-            const rowIndex = componentIndex;
-            return (
-              <circle
-                r={cellRadius}
-                cx={columnIndex * cellSize + cellSizeHalf - 1.125}
-                cy={rowIndex * cellSize + cellSizeHalf - 1.125}
-                fill={"yellow"}
-              />
-            );
-          });
-        }
-      )}
+      {spacerComponentsData.map((someComponentData, componentIndex) => {
+        const cellSize = 2.25 / someComponentData.componentStructure[0];
+        const cellSizeHalf = cellSize / 2;
+        const cellRadius = cellSizeHalf;
+        return someComponentData.componentSpacer[1].map((someSpacerPoint) => {
+          const columnIndex = someSpacerPoint;
+          const rowIndex = componentIndex;
+          return (
+            <circle
+              r={cellRadius}
+              cx={columnIndex * cellSize + cellSizeHalf - 1.125}
+              cy={rowIndex * cellSize + cellSizeHalf - 1.125}
+              fill={"yellow"}
+            />
+          );
+        });
+      })}
     </Fragment>
   );
 }
 
 interface SpacerTerminalWeightsGraphicProps
-  extends Pick<SpacerCompositionGraphicProps, "spacerToyState"> {}
+  extends Pick<SpacerCompositionGraphicProps, "spacerComponentsData"> {}
 
 function SpacerTerminalWeightsGraphic(
   props: SpacerTerminalWeightsGraphicProps
 ) {
-  const { spacerToyState } = props;
+  const { spacerComponentsData } = props;
   return (
     <ClumsyGraphic
-      geometryProps={{ spacerToyState }}
-      Geometry={GroupWeightsGeometry}
+      geometryProps={{ spacerComponentsData }}
+      Geometry={TerminalWeightsGeometry}
     />
   );
 }
 
 interface TerminalWeightsGeometryProps
-  extends Pick<SpacerTerminalWeightsGraphicProps, "spacerToyState"> {}
+  extends Pick<SpacerTerminalWeightsGraphicProps, "spacerComponentsData"> {}
 
-function GroupWeightsGeometry(props: TerminalWeightsGeometryProps) {
-  const { spacerToyState } = props;
-  const cellSize = 2.25 / spacerToyState.spacerStructure[0];
-  const cellSizeHalf = cellSize / 2;
+function TerminalWeightsGeometry(props: TerminalWeightsGeometryProps) {
+  const { spacerComponentsData } = props;
   return (
     <Fragment>
-      {componentSpacers(spacerToyState.spacerStructure).map(
-        (someComponent, componentIndex) => {
-          const currentLineage = spacerLineage(someComponent);
-          const currentGroup = spacerGroup(
-            currentLineage[currentLineage.length - 1]!
-          );
-          const currentSlotWeights = spacerSlotWeights(
-            currentGroup.map((someSpacerStructure) =>
-              spacer(someSpacerStructure)
-            )
-          );
-          return currentSlotWeights.map((someSlotWeight, slotIndex) => {
+      {spacerComponentsData.map((someComponentData) => {
+        const cellSize = 2.25 / someComponentData.componentSpacer[0];
+        const cellSizeHalf = cellSize / 2;
+        return someComponentData.terminalSlotWeights.map(
+          (someSlotWeight, slotIndex) => {
             const columnIndex = slotIndex;
-            const rowIndex = componentIndex;
+            const rowIndex = someComponentData.componentIndex;
             const radiusMax = cellSizeHalf;
             const radiusMin = radiusMax / 4;
             const radiusRange = radiusMax - radiusMin;
-            const radiusStep = radiusRange / currentSlotWeights[0]!;
+            const radiusStep =
+              radiusRange / someComponentData.terminalSlotWeights[0]!;
             return someSlotWeight > 0 ? (
               <circle
                 r={someSlotWeight * radiusStep + radiusMin}
@@ -126,64 +113,66 @@ function GroupWeightsGeometry(props: TerminalWeightsGeometryProps) {
                 fill={"yellow"}
               />
             ) : null;
-          });
-        }
-      )}
+          }
+        );
+      })}
     </Fragment>
   );
 }
 
 interface SpacerSymmetricWeightsGraphicProps
-  extends Pick<SpacerCompositionGraphicProps, "spacerToyState"> {}
+  extends Pick<SpacerCompositionGraphicProps, "spacerComponentsData"> {}
 
 function SpacerSymmetricWeightsGraphic(
   props: SpacerSymmetricWeightsGraphicProps
 ) {
-  const { spacerToyState } = props;
+  const { spacerComponentsData } = props;
   return (
     <ClumsyGraphic
-      geometryProps={{ spacerToyState }}
+      geometryProps={{ spacerComponentsData }}
       Geometry={SymmetricWeightsGeometry}
     />
   );
 }
 
 interface SymmetricWeightsGeometryProps
-  extends Pick<SpacerSymmetricWeightsGraphicProps, "spacerToyState"> {}
+  extends Pick<SpacerSymmetricWeightsGraphicProps, "spacerComponentsData"> {}
 
 function SymmetricWeightsGeometry(props: SymmetricWeightsGeometryProps) {
-  const { spacerToyState } = props;
-  const currentComponents = componentSpacers(spacerToyState.spacerStructure);
+  const { spacerComponentsData } = props;
   const partitionRoot =
-    currentComponents.length === 1
+    spacerComponentsData.length === 1
       ? 1
-      : currentComponents.length <= 4
+      : spacerComponentsData.length <= 4
       ? 2
-      : currentComponents.length <= 9
+      : spacerComponentsData.length <= 9
       ? 3
-      : currentComponents.length <= 16
+      : spacerComponentsData.length <= 16
       ? 4
-      : currentComponents.length <= 25
+      : spacerComponentsData.length <= 25
       ? 5
-      : currentComponents.length <= 36
+      : spacerComponentsData.length <= 36
       ? 6
-      : currentComponents.length <= 49
+      : spacerComponentsData.length <= 49
       ? 7
-      : currentComponents.length <= 64
+      : spacerComponentsData.length <= 64
       ? 8
       : NaN;
   const paddedParitionRoot = partitionRoot / 4 + partitionRoot;
   return (
     <Fragment>
-      {currentComponents.map((someComponent, componentIndex) => {
-        const columnIndex = componentIndex % partitionRoot;
-        const rowIndex = Math.floor(componentIndex / partitionRoot);
+      {spacerComponentsData.map((someComponentData) => {
+        const columnIndex = someComponentData.componentIndex % partitionRoot;
+        const rowIndex = Math.floor(
+          someComponentData.componentIndex / partitionRoot
+        );
         const cellSize = 2.25 / partitionRoot;
         const cellSizeHalf = cellSize / 2;
-        return spacerFullSlotWeights(spacer(someComponent)).map(
+        return someComponentData.symmetricSlotWeights.map(
           (someSlotWeight, slotIndex, currentFullSlotWeights) => {
             const pointAngle =
-              ((2 * Math.PI) / spacerToyState.spacerStructure[0]) * slotIndex -
+              ((2 * Math.PI) / someComponentData.componentSpacer[0]) *
+                slotIndex -
               Math.PI / 2;
             const pointCosine = Math.cos(pointAngle);
             const pointSine = Math.sin(pointAngle);
