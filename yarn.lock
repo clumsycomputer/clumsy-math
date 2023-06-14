@@ -2838,6 +2838,11 @@ clone@^1.0.2:
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==
 
+clumsy-math@^4.0.0-alpha.2:
+  version "4.0.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/clumsy-math/-/clumsy-math-4.0.0-alpha.2.tgz#ae7d56f683282b99a1c451481f6dac3c54769028"
+  integrity sha512-+KEe7CbGZc7QzVLbufmRFxZtW6NVWFQRcv/8ayJCb58YOnx9G8LsgK1H03YweegDeXfqNVnF5N4Lno88yDjTFg==
+
 coa@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/coa/-/coa-2.0.2.tgz#43f6c21151b4ef2bf57187db0d73de229e3e7ec3"

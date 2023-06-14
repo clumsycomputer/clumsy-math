@@ -1,24 +1,19 @@
-import { StateUpdater } from "preact/hooks";
-import { SpacerToyState } from "./SpacerToyPage";
+import { Fragment } from "preact/jsx-runtime";
+import { ClumsyButton } from "../components/ClumsyButton";
+import { Graphic } from "../components/ClumsyGraphic";
 import {
   ClampedNumberInput,
   ModulusNumberInput,
 } from "../components/ClumsyInput";
-import {
-  SpacerComponentsData,
-  useSpacerComponentsData,
-} from "./useSpacerComponentsData";
-import { ClumsyButton } from "../components/ClumsyButton";
-import { Fragment } from "preact/jsx-runtime";
-import { AlignedSpacerStructure } from "clumsy-math";
 import cssModule from "./SpacerControls.module.scss";
+import { SpacerToyState } from "./SpacerToyPage";
+import { useSpacerComponentsData } from "./useSpacerComponentsData";
 
 export interface SpacerControlsProps
   extends Pick<
     ReturnType<typeof useSpacerComponentsData>,
     "spacerComponentsData"
   > {
-  setSpacerToyState: StateUpdater<SpacerToyState>;
   spacerToyState: SpacerToyState;
   updateSpacerResolution: (nextSpacerResolution: number) => void;
   updateLayerDensity: (layerIndex: number, nextLayerDensity: number) => void;
@@ -167,6 +162,29 @@ function WeightDistributionGraphic(props: WeightDistributionGraphicProps) {
   ];
   const weightDistributionRangeSize =
     weightDistributionRange[1] - weightDistributionRange[0] + 1;
+  return (
+    <Graphic
+      height={24}
+      viewRect={[-0.5, -0.5, weightDistributionRangeSize + 1, 2]}
+      Geometry={WeightDistributionGeometry}
+      geometryProps={{
+        focusedWeight,
+        sortedWeightDistribution,
+        weightDistributionRange,
+      }}
+    />
+  );
+}
+
+interface WeightDistributionGeometryProps
+  extends Pick<WeightDistributionGraphicProps, "focusedWeight"> {
+  sortedWeightDistribution: Array<[number, number]>;
+  weightDistributionRange: [number, number];
+}
+
+function WeightDistributionGeometry(props: WeightDistributionGeometryProps) {
+  const { sortedWeightDistribution, weightDistributionRange, focusedWeight } =
+    props;
   const maxRadius = 0.5;
   const minRadius = 0.2;
   const [minFoo, maxFoo] = sortedWeightDistribution.reduce(
@@ -180,45 +198,25 @@ function WeightDistributionGraphic(props: WeightDistributionGraphicProps) {
   const radiusRangeSize = maxRadius - minRadius;
   const radiusStep = radiusRangeSize / fooRangeSize;
   return (
-    <div
-      style={{
-        display: "flex",
-        overflow: "hidden",
-        borderRadius: 4,
-      }}
-    >
-      <svg
-        height={24}
-        viewBox={`-0.5 -0.5 ${weightDistributionRangeSize + 1} 2`}
-      >
-        <rect
-          x={-0.5}
-          y={-0.5}
-          width={weightDistributionRangeSize + 1}
-          height={2}
-          fill={"grey"}
-        />
-        {sortedWeightDistribution.map((someWeightPair) => {
-          return (
-            <Fragment>
-              <circle
-                cx={someWeightPair[0] - weightDistributionRange[0] + 0.5}
-                cy={0.5}
-                r={radiusStep * (someWeightPair[1] - minFoo) + minRadius}
-                fill={"yellow"}
-              />
-              {focusedWeight === someWeightPair[0] ? (
-                <circle
-                  cx={someWeightPair[0] - weightDistributionRange[0] + 0.5}
-                  cy={0.5}
-                  r={minRadius}
-                  fill={"black"}
-                />
-              ) : null}
-            </Fragment>
-          );
-        })}
-      </svg>
-    </div>
+    <Fragment>
+      {sortedWeightDistribution.map((someWeightPair) => (
+        <Fragment>
+          <circle
+            cx={someWeightPair[0] - weightDistributionRange[0] + 0.5}
+            cy={0.5}
+            r={radiusStep * (someWeightPair[1] - minFoo) + minRadius}
+            fill={"yellow"}
+          />
+          {focusedWeight === someWeightPair[0] ? (
+            <circle
+              cx={someWeightPair[0] - weightDistributionRange[0] + 0.5}
+              cy={0.5}
+              r={minRadius}
+              fill={"black"}
+            />
+          ) : null}
+        </Fragment>
+      ))}
+    </Fragment>
   );
 }

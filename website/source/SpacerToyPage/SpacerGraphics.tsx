@@ -1,5 +1,5 @@
 import { Fragment } from "preact/jsx-runtime";
-import { ClumsyGraphic, ClumsyGraphicItem } from "../components/ClumsyGraphic";
+import { UnitGraphic, GraphicDisplay } from "../components/ClumsyGraphic";
 import cssModule from "./SpacerGraphics.module.scss";
 import { useSpacerComponentsData } from "./useSpacerComponentsData";
 
@@ -13,19 +13,21 @@ export function SpacerGraphics(props: SpacerGraphicsProps) {
   const { spacerComponentsData } = props;
   return (
     <div className={cssModule.graphicContainers}>
-      <ClumsyGraphicItem itemLabel={"composition"}>
-        <SpacerCompositionGraphic spacerComponentsData={spacerComponentsData} />
-      </ClumsyGraphicItem>
-      <ClumsyGraphicItem itemLabel={"terminal weights"}>
-        <SpacerTerminalWeightsGraphic
-          spacerComponentsData={spacerComponentsData}
-        />
-      </ClumsyGraphicItem>
-      <ClumsyGraphicItem itemLabel={"symmetric weights"}>
-        <SpacerSymmetricWeightsGraphic
-          spacerComponentsData={spacerComponentsData}
-        />
-      </ClumsyGraphicItem>
+      <GraphicDisplay
+        graphicLabel={"composition"}
+        DisplayGraphic={SpacerCompositionGraphic}
+        displayGraphicProps={{ spacerComponentsData }}
+      />
+      <GraphicDisplay
+        graphicLabel={"terminal weights"}
+        DisplayGraphic={SpacerTerminalWeightsGraphic}
+        displayGraphicProps={{ spacerComponentsData }}
+      />
+      <GraphicDisplay
+        graphicLabel={"symmetric weights"}
+        DisplayGraphic={SpacerSymmetricWeightsGraphic}
+        displayGraphicProps={{ spacerComponentsData }}
+      />
     </div>
   );
 }
@@ -36,7 +38,7 @@ interface SpacerCompositionGraphicProps
 function SpacerCompositionGraphic(props: SpacerCompositionGraphicProps) {
   const { spacerComponentsData } = props;
   return (
-    <ClumsyGraphic
+    <UnitGraphic
       geometryProps={{ spacerComponentsData }}
       Geometry={CompositionGeometry}
     />
@@ -79,7 +81,7 @@ function SpacerTerminalWeightsGraphic(
 ) {
   const { spacerComponentsData } = props;
   return (
-    <ClumsyGraphic
+    <UnitGraphic
       geometryProps={{ spacerComponentsData }}
       Geometry={TerminalWeightsGeometry}
     />
@@ -128,7 +130,7 @@ function SpacerSymmetricWeightsGraphic(
 ) {
   const { spacerComponentsData } = props;
   return (
-    <ClumsyGraphic
+    <UnitGraphic
       geometryProps={{ spacerComponentsData }}
       Geometry={SymmetricWeightsGeometry}
     />

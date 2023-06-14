@@ -1,24 +1,34 @@
 .graphicContainer {
+  flex-grow: 1;
   display: flex;
   overflow: hidden;
   border-radius: 4px;
-  width: 256px;
-  height: 256px;
+}
+
+.graphic {
+  flex-grow: 1;
+  display: flex;
 }
 
 .graphicBackground {
   fill: grey;
 }
 
-.graphicItemContainer {
+.displayContainer {
   display: flex;
   flex-direction: column;
   padding: 0.5em;
 }
 
-.graphicItemLabel {
+.graphicLabel {
   font-family: monospace;
   font-size: 1.5em;
   font-weight: 700;
   padding-block: 0.25em;
+}
+
+.displayGraphicContainer {
+  display: flex;
+  width: 256px;
+  height: 256px;
 }

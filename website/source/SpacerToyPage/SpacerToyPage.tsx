@@ -4,6 +4,10 @@ import { SpacerControls } from "./SpacerControls";
 import { SpacerGraphics } from "./SpacerGraphics";
 import { useSpacerComponentsData } from "./useSpacerComponentsData";
 
+export interface SpacerToyState {
+  spacerStructure: AlignedSpacerStructure;
+}
+
 export function SpacerToyPage() {
   const [spacerToyState, setSpacerToyState] = useState<SpacerToyState>({
     spacerStructure: [12, [5, 0]],
@@ -16,7 +20,6 @@ export function SpacerToyPage() {
       <SpacerGraphics spacerComponentsData={spacerComponentsData} />
       <SpacerControls
         spacerToyState={spacerToyState}
-        setSpacerToyState={setSpacerToyState}
         spacerComponentsData={spacerComponentsData}
         updateSpacerResolution={(nextSpacerResolution) => {
           const [_, ...currentSpacerLayers] = spacerToyState.spacerStructure;
@@ -91,8 +94,4 @@ export function SpacerToyPage() {
       />
     </div>
   );
-}
-
-export interface SpacerToyState {
-  spacerStructure: AlignedSpacerStructure;
 }

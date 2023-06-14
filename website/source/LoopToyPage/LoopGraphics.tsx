@@ -9,7 +9,7 @@ import {
 } from "clumsy-math";
 import { Fragment } from "preact";
 import { useMemo } from "preact/hooks";
-import { ClumsyGraphic, ClumsyGraphicItem } from "../components/ClumsyGraphic";
+import { UnitGraphic, GraphicDisplay } from "../components/ClumsyGraphic";
 import cssModule from "./LoopGraphics.module.scss";
 import { LoopToyState } from "./LoopToyPage";
 
@@ -24,18 +24,21 @@ export function LoopGraphics(props: LoopGraphicsProps) {
   });
   return (
     <div className={cssModule.graphicList}>
-      <ClumsyGraphicItem itemLabel={"shape"}>
-        <ShapeLoopGraphic
-          loopToyState={loopToyState}
-          loopGeometry={loopGeometry}
-        />
-      </ClumsyGraphicItem>
-      <ClumsyGraphicItem itemLabel={"sine"}>
-        <SineLoopGraphic loopGeometry={loopGeometry} />
-      </ClumsyGraphicItem>
-      <ClumsyGraphicItem itemLabel={"pendulum"}>
-        <PendulumLoopGraphic loopGeometry={loopGeometry} />
-      </ClumsyGraphicItem>
+      <GraphicDisplay
+        graphicLabel={"shape"}
+        DisplayGraphic={ShapeLoopGraphic}
+        displayGraphicProps={{ loopToyState, loopGeometry }}
+      />
+      <GraphicDisplay
+        graphicLabel={"sine"}
+        DisplayGraphic={SineLoopGraphic}
+        displayGraphicProps={{ loopGeometry }}
+      />
+      <GraphicDisplay
+        graphicLabel={"pendulum"}
+        DisplayGraphic={PendulumLoopGraphic}
+        displayGraphicProps={{ loopGeometry }}
+      />
     </div>
   );
 }
@@ -90,7 +93,7 @@ interface PendulumLoopGraphicProps
 
 function PendulumLoopGraphic(props: PendulumLoopGraphicProps) {
   return (
-    <ClumsyGraphic
+    <UnitGraphic
       geometryProps={props}
       Geometry={({ loopGeometry }) => (
         <polyline
@@ -114,7 +117,7 @@ interface SineLoopGraphicProps
 
 function SineLoopGraphic(props: SineLoopGraphicProps) {
   return (
-    <ClumsyGraphic
+    <UnitGraphic
       geometryProps={props}
       Geometry={({ loopGeometry }) => (
         <polyline
@@ -138,7 +141,7 @@ interface ShapeLoopGraphicProps
     Pick<ReturnType<typeof useLoopGeometry>, "loopGeometry"> {}
 
 function ShapeLoopGraphic(props: ShapeLoopGraphicProps) {
-  return <ClumsyGraphic Geometry={ShapeGeometry} geometryProps={props} />;
+  return <UnitGraphic Geometry={ShapeGeometry} geometryProps={props} />;
 }
 
 interface ShapeGeometryProps extends ShapeLoopGraphicProps {}
