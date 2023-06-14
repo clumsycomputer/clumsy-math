@@ -2,7 +2,7 @@ import {
   AlignedSpacerStructure,
   Spacer,
   SpacerGroupStructure,
-  componentSpacers,
+  spacerComponents,
   orientatedSpacer,
   spacer,
   spacerGroup,
@@ -49,7 +49,7 @@ export function useSpacerComponentsData(api: UseSpacerComponentsDataApi) {
   const componentDataCacheRef = useRef<SpacerComponentsData>([]);
   return useMemo(() => {
     const componentDataCache = componentDataCacheRef.current;
-    const currentComponents = componentSpacers(spacerToyState.spacerStructure);
+    const currentComponents = spacerComponents(spacerToyState.spacerStructure);
     const nextComponentDataCache =
       currentComponents.reduce<SpacerComponentsData>(
         (resultComponentsData, componentStructure, componentIndex) => {
