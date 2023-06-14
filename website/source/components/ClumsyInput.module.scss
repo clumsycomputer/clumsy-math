@@ -1,0 +1,45 @@
+$themeOutlineColor: #2196f3;
+$themeOutlineWidth: 3px;
+$themeOutline: solid $themeOutlineWidth transparent;
+$themeOutlineOffset: 0;
+$themeOutlineRadius: 4px;
+$themeBoxShadowOutline: 0 0 0 $themeOutlineWidth $themeOutlineColor;
+
+.numberInputContainer {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  align-items: center;
+  border-style: solid;
+  border-radius: 4px;
+  border-width: 2px;
+  border-color: black;
+  padding-right: 4px;
+
+  &:has(.numberInput:focus) {
+    outline: $themeOutline;
+    outline-offset: $themeOutlineOffset;
+    box-shadow: $themeBoxShadowOutline;
+    border-radius: $themeOutlineRadius;
+  }
+}
+
+.numberInput {
+  max-width: 64px;
+  margin: 0;
+  border: none;
+  outline: none;
+  padding: 0.25em;
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 1.25em;
+}
+
+.invalidNumberInput {
+  color: red;
+}
+
+.inputButton {
+  display: flex;
+  cursor: pointer;
+}

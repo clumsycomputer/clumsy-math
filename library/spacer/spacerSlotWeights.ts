@@ -31,12 +31,12 @@ export function spacerSlotWeights(
  *
  * @example
  * ```typescript
- * spacerFullSlotWeights(
+ * spacerSymmetricSlotWeights(
  *   spacer([5, [3, 0]]),
  * ) // [3, 1, 2, 2, 1]
  * ```
  */
-export function spacerFullSlotWeights(
+export function spacerSymmetricSlotWeights(
   someSpacer: Spacer
 ): Array<SpacerSlotWeight> {
   return spacerSlotWeights(

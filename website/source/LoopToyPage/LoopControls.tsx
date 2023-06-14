@@ -3,6 +3,7 @@ import { JSX, ComponentChildren, ComponentChild } from "preact";
 import { StateUpdater } from "preact/hooks";
 import { LoopToyState } from "./LoopToyPage";
 import cssModule from "./LoopControls.module.scss";
+import { ClumsyButton } from "../components/ClumsyButton";
 
 export interface LoopControlsProps {
   loopToyState: LoopToyState;
@@ -30,7 +31,7 @@ export function LoopControls(props: LoopControlsProps) {
         )
       )}
       <div className={cssModule.addLayerContainer}>
-        <LoopButton
+        <ClumsyButton
           onClick={() => {
             const nextLoopStructure: LoopStructure =
               loopToyState.loopStructure.map((someLoopLayer) => [
@@ -44,7 +45,7 @@ export function LoopControls(props: LoopControlsProps) {
           }}
         >
           add layer
-        </LoopButton>
+        </ClumsyButton>
       </div>
     </div>
   );
@@ -83,7 +84,7 @@ function TerminalLoopLayerControls(props: TerminalLoopLayerControlsProps) {
       layerIndex={layerIndex}
       removeButton={
         <div className={cssModule.removeLayerContainer}>
-          <LoopButton
+          <ClumsyButton
             onClick={() => {
               const nextLoopStructure: LoopStructure =
                 loopToyState.loopStructure.map((someLoopLayer) => [
@@ -97,7 +98,7 @@ function TerminalLoopLayerControls(props: TerminalLoopLayerControlsProps) {
             }}
           >
             remove
-          </LoopButton>
+          </ClumsyButton>
         </div>
       }
     />
@@ -228,20 +229,6 @@ function LoopSliderInput(props: LoopSliderInputProps) {
           });
         }}
       />
-    </div>
-  );
-}
-
-interface LoopButtonProps
-  extends Required<Pick<JSX.HTMLAttributes<HTMLDivElement>, "onClick">> {
-  children: ComponentChildren;
-}
-
-function LoopButton(props: LoopButtonProps) {
-  const { onClick, children } = props;
-  return (
-    <div className={cssModule.loopButton} onClick={onClick}>
-      {children}
     </div>
   );
 }

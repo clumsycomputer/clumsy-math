@@ -87,7 +87,7 @@ export function spacerId(
  * // ]
  * ```
  */
-export function componentSpacers<
+export function spacerComponents<
   SomeSpacerStructure extends RecursiveEuclidSpacerStructure
 >(someSpacerStructure: SomeSpacerStructure): Array<SomeSpacerStructure> {
   const [spacerResolution, ...spacerLayers] = someSpacerStructure;
