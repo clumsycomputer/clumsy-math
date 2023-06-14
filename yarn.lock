@@ -7432,6 +7432,13 @@ preact-cli@^3.4.5:
     workbox-strategies "^6.5.3"
     workbox-webpack-plugin "^6.5.3"
 
+preact-render-to-string@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/preact-render-to-string/-/preact-render-to-string-6.1.0.tgz#6e3c70dbb9662962b626836566b091c53b6d19ae"
+  integrity sha512-/AsKU4Q4R8r4aKwwNQrkQQNUVEDmTeZr6IwesDffobFRPcTk4dSQrfo1VOcXjtlcUss6QYEe7JShUGbQIhaw+A==
+  dependencies:
+    pretty-format "^3.8.0"
+
 preact-router@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/preact-router/-/preact-router-4.1.1.tgz#06e7fab0896e22406f98fc997b1faadbfed06369"
@@ -7469,6 +7476,11 @@ pretty-error@^2.0.2:
   dependencies:
     lodash "^4.17.20"
     renderkid "^2.0.4"
+
+pretty-format@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-3.8.0.tgz#bfbed56d5e9a776645f4b1ff7aa1a3ac4fa3c385"
+  integrity sha512-WuxUnVtlWL1OfZFQFuqvnvs6MiAGk9UNsBostyBOB0Is9wb5uRESevA6rnl/rkksXaGX3GzZhPup5d6Vp1nFew==
 
 process-nextick-args@~2.0.0:
   version "2.0.1"

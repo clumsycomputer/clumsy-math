@@ -23,7 +23,8 @@
     "generateReadme": "ts-node ./scripts/generateReadme/main.ts",
     "buildNpmPackage": "ts-node ./scripts/buildNpmPackage.ts",
     "buildDevelopPackage": "yarn buildNpmPackage && mv -f ./clumsy-math ./node_modules",
-    "developWebsite": "NODE_OPTIONS=--openssl-legacy-provider preact watch --cwd ./website --src ./source --host 127.0.0.1 --esm false"
+    "developWebsite": "NODE_OPTIONS=--openssl-legacy-provider preact watch --cwd ./website --src ./source --host 127.0.0.1 --esm false",
+    "buildWebsite": "NODE_OPTIONS=--openssl-legacy-provider preact build --cwd ./website --src ./source --esm false --sw false"
   },
   "dependencies": {
     "typescript": "^5.0.4"
@@ -36,6 +37,7 @@
     "clumsy-math": "^4.0.0-alpha.3",
     "preact": "^10.15.1",
     "preact-cli": "^3.4.5",
+    "preact-render-to-string": "^6.1.0",
     "preact-router": "^4.1.1",
     "sass": "^1.62.1",
     "sass-loader": "10",
